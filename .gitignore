@@ -1,0 +1,32 @@
+
+### Folders
+
+/**/incremental_db
+/**/output_files
+/**/simulation
+/**/synthesis
+/**/synthesis_output
+/**/db
+/**/devkits
+/**/build
+
+
+/**/*.v
+/**/*.json
+/**/*.bak
+/**/*.rpt
+/**/*.qdf
+/**/*.DS_store
+/**/*.sv.bak
+/**/*.ninja
+/**/build/.ninja
+/**/build/.txt
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/build.ninja
+/rules.ninja
+/.ninja_deps
+/.ninja_log
+/Proyecto final/build/
+.DS_Store
