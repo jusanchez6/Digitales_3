@@ -17,14 +17,8 @@ int main (void) {
 	// generación de la s-box
 	generate_sbox(sbox);
 
-	// Imprimir la S-box generada
-	printf("S-box:\n");
-	for (int i = 0; i < 256; i++) {
-		printf("%02x ", sbox[i]);
-		if ((i + 1) % 16 == 0) {
-			printf("\n");
-		}
-	}
 
+	// expandir clave
+	
 	return 0;
 }
