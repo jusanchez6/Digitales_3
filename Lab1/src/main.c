@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "../include/AES_Func.h"
 
+uint8_t sbox[256];
 
 int main (void) {
 	// generación de la s-box
