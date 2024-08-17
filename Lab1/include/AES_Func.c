@@ -48,3 +48,35 @@ void subBytes(state_t* state) {
     }
 }
 
+void MixColumns (state_t* state) {
+   uint8_t i, t, temp, tm;
+
+
+    for (i = 0; i < 4; i++) {
+        t = (*state)[i][0];                                                         //Guardo el valor de la primera fila de la columa i
+        temp = (*state)[i][0] ^ (*state)[i][1] ^ (*state)[i][2] ^ (*state)[i][3];   // Xor sobre todas las posiciones de la columna (Para simplificar el calculo)
+
+        // Cambio de cada posicion de la columna 
+        // Primera posicion de la columna
+        tm = (*state)[i][0] ^ (*state)[0][1];       // Tm hace el calculo de 0x02*a2 XOR 0x03*a3
+        tm = xtime(tm);                             // Multiplica Tm por 2
+        (*state)[i][0] ^= tm ^ temp;
+
+        // Segunda posicion de la columna
+        tm = (*state)[i][1] ^ (*state)[0][2];       
+        tm = xtime(tm);                             
+        (*state)[i][1] ^= tm ^ temp; 
+
+        // tercera posicion de la colimna
+        tm = (*state)[i][2] ^ (*state)[0][3];       
+        tm = xtime(tm);                             
+        (*state)[i][2] ^= tm ^ temp;
+
+        // cuarta posicion de la columna
+        tm = (*state)[i][3] ^ t;
+        tm = xtime(tm);
+        (*state)[i][3] ^= tm ^ temp;
+        
+    }
+
+}
