@@ -11,14 +11,17 @@
 #include <stdio.h>
 #include "../include/AES_Func.h"
 
-uint8_t sbox[256];
 
 int main (void) {
-	// generación de la s-box
-	generate_sbox(sbox);
+	state_t state = {
+		{0x43, 0x53, 0x63, 0x73},
+		{0x44, 0x54, 0x64, 0x74},
+		{0x45, 0x55, 0x65, 0x75},
+		{0x46, 0x56, 0x66, 0x76}
+	};
 
+	subBytes(&state);
+	print_state(&state);
 
-	// expandir clave
-	
 	return 0;
 }

@@ -9,7 +9,8 @@
 /**/db
 /**/devkits
 /**/build
-
+/**/*.exe
+/**/prob.c
 
 /**/*.v
 /**/*.json
