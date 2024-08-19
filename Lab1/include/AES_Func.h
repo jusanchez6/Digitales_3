@@ -19,6 +19,6 @@
     void print_state(state_t* state);
     void subBytes(state_t* state);
     void MixColumns (state_t* state);
-    
+    void ShiftRows(state_t* state); 
 
 #endif
