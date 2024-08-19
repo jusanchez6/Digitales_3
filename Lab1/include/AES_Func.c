@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "AES_Func.h"
 
-#define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
+//#define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
 
 static const uint8_t sbox[256] = {
   //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
@@ -24,6 +24,14 @@ static const uint8_t sbox[256] = {
   0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
   0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 
 };
+
+
+#define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
+
+static uint8_t xtime (uint8_t x) {
+    // Funcion de multiplicacion en GF(2^8) que le robe a un gringo marica en internet
+    return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
+}
 
 void print_state(state_t* state) {
     uint8_t i, j;

@@ -16,6 +16,7 @@
         uint8_t RoundKey[AES_KeyExpSize];
     };
 
+    
     void print_state(state_t* state);
     void subBytes(state_t* state);
     void MixColumns (state_t* state);
