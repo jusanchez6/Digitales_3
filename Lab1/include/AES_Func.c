@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "AES_Func.h"
 
-//#define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
+#define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
 
 static const uint8_t sbox[256] = {
   //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
@@ -25,9 +25,6 @@ static const uint8_t sbox[256] = {
   0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 
 };
 
-
-#define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
-
 static uint8_t xtime (uint8_t x) {
     // Funcion de multiplicacion en GF(2^8) que le robe a un gringo marica en internet
     return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
@@ -38,7 +35,7 @@ void print_state(state_t* state) {
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 4; j++) {
-            printf("%02X ", (*state)[j][i]);
+            printf("%02X ", (*state)[i][j]);
         }
         printf("\n");
     }
@@ -84,15 +81,46 @@ void MixColumns (state_t* state) {
         (*state)[i][3] ^= tm ^ temp;
         
     }
-
 }
 
 void ShiftRows(state_t* state){
-    uint8_t i, j, temp;
-    for (int i; i < 4;i++){
-        for (int j; j<4;j++){
-            temp=(j+i)% 4;
-            *state[i][j]=*state[i][temp];
+    uint8_t i, j;
+    uint8_t row[4];
+    for (int i=0; i<4;i++){
+        for (int j=0; j<4 ; j++){
+            row[j]=(*state)[i][(j+i)% 4];
+        }
+        for (int j=0; j<4;j++){
+            (*state)[i][j]=row[j];
         }
     }
 }
+
+void AddRoundKey(state_t* state, state_t* key){
+    for (int i=0;i<4;i++){
+        for(int j=0;j<4;j++){
+            (*state)[i][j]=(*state)[i][j]^(*key)[i][j];
+        }
+    }
+}
+
+/* Algorithm 2 Pseudocode for KEYEXPANSION()
+1: procedure KEYEXPANSION(key)
+2:  i ← 0
+3:  while i ≤ Nk −1 do
+4:      w[i] ← key[4 ∗ i..4 ∗ i+3]
+5:      i ← i+1
+6: end while . When the loop concludes, i = Nk.
+7: while i ≤ 4 ∗Nr +3 do
+8:      temp ← w[i−1]
+9:      if i mod Nk = 0 then
+10:         temp ← SUBWORD(ROTWORD(temp))⊕Rcon[i/Nk]
+11:     else if Nk > 6 and i mod Nk = 4 then
+12:         temp ← SUBWORD(temp)
+13:     end if
+14:     w[i] ← w[i−Nk]⊕temp
+15:     i ← i+1
+16: end while
+17: return w
+18: end procedure*/
+//void KeyExpansion(state_t* state){}

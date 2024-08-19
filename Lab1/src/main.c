@@ -10,6 +10,7 @@
 #include "../include/AES_Func.h"
 
 /*
+10 RONDAS PARA EL ALGORITMO CON 128 BITS
 Algorithm 1 Pseudocode for CIPHER()
 1: procedure CIPHER(in, Nr, w)
 	2: state ← in
@@ -34,8 +35,15 @@ int main (void) {
 		{0x45, 0x55, 0x65, 0x75},
 		{0x46, 0x56, 0x66, 0x76}
 	};
-
-	subBytes(&state);
+	state_t kkey = {
+		{0x1, 0x1, 0x1, 0x1},
+		{0x2, 0x2, 0x2, 0x2},
+		{0x3, 0x3, 0x3, 0x3},
+		{0x4, 0x4, 0x4, 0x4}
+	};
+	print_state(&state);
+	printf("\n");
+	AddRoundKey(&state,&kkey);
 	print_state(&state);
 
 	return 0;
