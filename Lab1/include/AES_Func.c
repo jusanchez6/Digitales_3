@@ -27,6 +27,13 @@ static const uint8_t sbox[256] = {
 
 #define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
 
+
+static uint8_t xtime (uint8_t x) {
+    // Funcion de multiplicacion en GF(2^8) que le robe a un gringo marica en internet
+    return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
+}
+
+
 void print_state(state_t* state) {
     uint8_t i, j;
 
