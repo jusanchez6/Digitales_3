@@ -22,6 +22,6 @@
     void ShiftRows(state_t* state); 
     void AddRoundKey(state_t* state, state_t* w);
     void KeyExpansion();
-    void cypher(state_t* state, state_t* key)
+    void cypher(state_t* state, state_t* key);
 
 #endif

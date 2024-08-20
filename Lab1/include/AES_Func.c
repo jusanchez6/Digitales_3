@@ -5,6 +5,8 @@
 
 #define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
 
+uint32_t w[44]; // Arreglo de 44 palabras de 32 bits
+
 static const uint8_t sbox[256] = {
   //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
   0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
@@ -24,6 +26,31 @@ static const uint8_t sbox[256] = {
   0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
   0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 
 };
+
+// Constantes de ronda
+static const uint8_t Rcon[10] = {
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36
+};
+
+static uint8_t xtime (uint8_t x) {
+    // Funcion de multiplicacion en GF(2^8) que le robe a un gringo marica en internet
+    return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
+}
+
+static uint32_t RotWord (uint32_t word) {
+    return (word << 8)|(word >> 24);
+}
+
+static uint32_t SubWord (uint32_t word) {
+    uint8_t *bytes = (uint8_t *)&word;
+    for (int i = 0; i < 4; i++)
+    {
+        bytes[i]= sbox[bytes[i]];
+    }
+    
+    return word;
+
+}
 
 static uint8_t xtime (uint8_t x) {
     // Funcion de multiplicacion en GF(2^8) que le robe a un gringo marica en internet
@@ -104,26 +131,32 @@ void AddRoundKey(state_t* state, state_t* key){
     }
 }
 
-/* Algorithm 2 Pseudocode for KEYEXPANSION()
-1: procedure KEYEXPANSION(key)
-2:  i ← 0
-3:  while i ≤ Nk −1 do
-4:      w[i] ← key[4 ∗ i..4 ∗ i+3]
-5:      i ← i+1
-6: end while . When the loop concludes, i = Nk.
-7: while i ≤ 4 ∗Nr +3 do
-8:      temp ← w[i−1]
-9:      if i mod Nk = 0 then
-10:         temp ← SUBWORD(ROTWORD(temp))⊕Rcon[i/Nk]
-11:     else if Nk > 6 and i mod Nk = 4 then
-12:         temp ← SUBWORD(temp)
-13:     end if
-14:     w[i] ← w[i−Nk]⊕temp
-15:     i ← i+1
-16: end while
-17: return w
-18: end procedure*/
-void KeyExpansion (state_t* state) {
+void KeyExpansion (const uint8_t* key, uint32_t* w) {
+    int i = 0;
+    int Nk = 4;     // Número de columnas de la clave
+    int Nr = 10;    // Número de rondas de cifrado
+
+    uint8_t temp;    // Variable temporal para almacenar la palabra de la clave
+
+    // Copia de la clave original en las primeras Nk palabras de la clave expandida
+    while (i < Nk) {
+        w[i] = (key[4*i]<< 24)| (key[4*i + 1] << 16) | (key[4*i + 2] << 8) | (key[4*i + 3]);
+        i++;
+    }
+
+    // Generación de las palabras restantes de la clave expandida
+    while (i < 4*(Nr+1))
+    {
+        temp = w[i-1];
+        if (i % Nk == 0) {
+            temp = SubWord(RotWord(temp)) ^ (Rcon[i/Nk] << 24);
+        } else if (Nk > 6 && i % Nk == 4) {
+            temp = SubWord(temp);
+        }
+        w[i] = w[i - Nk] ^ temp;
+        i++;
+    }
+    
 
 }
 
