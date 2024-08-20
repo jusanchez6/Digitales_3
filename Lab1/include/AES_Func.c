@@ -123,4 +123,20 @@ void AddRoundKey(state_t* state, state_t* key){
 16: end while
 17: return w
 18: end procedure*/
-//void KeyExpansion(state_t* state){}
+void KeyExpansion (state_t* state) {
+
+}
+
+
+void cypher(state_t* state, state_t* key) {
+    AddRoundKey(state, key);
+    for (int i = 0; i < 9; i++) {
+        subBytes(state);
+        ShiftRows(state);
+        MixColumns(state);
+        AddRoundKey(state, key);
+    }
+    subBytes(state);
+    ShiftRows(state);
+    AddRoundKey(state, key);
+}
