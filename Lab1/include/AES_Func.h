@@ -22,5 +22,12 @@
     void ShiftRows(state_t* state); 
     void AddRoundKey(state_t* state, state_t* w);
     //void KeyExpansion();
+    //void openFile();
+
+    void readKey(uint8_t* key);
+    void writeState(state_t* state);
+    void eraseEncripted();
+
+    void readState(state_t* state,uint32_t* round);
 
 #endif

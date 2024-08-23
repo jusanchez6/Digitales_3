@@ -29,22 +29,26 @@ Algorithm 1 Pseudocode for CIPHER()
 */
 
 int main (void) {
-	state_t state = {
+	uint32_t readRound=0;
+	state_t state;
+	/*= {
 		{0x01, 0x53, 0x63, 0x73},
 		{0x44, 0x54, 0x64, 0x74},
 		{0x45, 0x55, 0x65, 0x75},
 		{0x46, 0x56, 0x66, 0x76}
-	};
-	state_t kkey = {
-		{0x1, 0x1, 0x1, 0x1},
-		{0x2, 0x2, 0x2, 0x2},
-		{0x3, 0x3, 0x3, 0x3},
-		{0x4, 0x4, 0x4, 0x4}
-	};
+	};*/
+	uint8_t key[16];
+	//fromTheTop();
+	printf("\nRead 1:\n");
+	readState(&state,&readRound);
 	print_state(&state);
-	printf("\n");
-	AddRoundKey(&state,&kkey);
+	
+    printf("\nRead 2:\n");
+	readState(&state,&readRound);
 	print_state(&state);
-
+	
+	printf("\nRead 3:\n");
+	readState(&state,&readRound);
+	print_state(&state);
 	return 0;
 }

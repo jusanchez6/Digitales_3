@@ -30,6 +30,16 @@ static uint8_t xtime (uint8_t x) {
     return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
 }
 
+static uint8_t getHex(uint8_t c){
+    int rtVal;
+        if(c >= '0' && c <= '9') {
+            rtVal = c - '0';
+        } else {
+            rtVal = c - 'a' + 10;
+        }
+    return rtVal;
+}
+
 void print_state(state_t* state) {
     uint8_t i, j;
 
@@ -104,23 +114,61 @@ void AddRoundKey(state_t* state, state_t* key){
     }
 }
 
-/* Algorithm 2 Pseudocode for KEYEXPANSION()
-1: procedure KEYEXPANSION(key)
-2:  i ← 0
-3:  while i ≤ Nk −1 do
-4:      w[i] ← key[4 ∗ i..4 ∗ i+3]
-5:      i ← i+1
-6: end while . When the loop concludes, i = Nk.
-7: while i ≤ 4 ∗Nr +3 do
-8:      temp ← w[i−1]
-9:      if i mod Nk = 0 then
-10:         temp ← SUBWORD(ROTWORD(temp))⊕Rcon[i/Nk]
-11:     else if Nk > 6 and i mod Nk = 4 then
-12:         temp ← SUBWORD(temp)
-13:     end if
-14:     w[i] ← w[i−Nk]⊕temp
-15:     i ← i+1
-16: end while
-17: return w
-18: end procedure*/
-//void KeyExpansion(state_t* state){}
+void readKey(uint8_t* key){
+  FILE *filePointer = NULL; //pointer to file
+  uint8_t val, c;
+  uint8_t i=0;
+
+  // open the file to be read, in read mode "r"
+  filePointer = fopen("../TextFiles/key.txt", "r");
+
+  //leer de a caracter y pasar a ascii
+   while ((c = fgetc(filePointer)) != 0XFF)
+  {
+    //print the character to a string
+    key[i]=16*getHex(c)+getHex(fgetc(filePointer));
+    i++;
+  }
+  fclose(filePointer);
+  filePointer = NULL; //soltar el espacio
+}
+
+void writeState(state_t* state){
+    FILE *fptr;
+    fptr = fopen("../TextFiles/encripted.txt", "a");
+    // Write some text to the file
+    for (int i=0;i<4;i++){
+        for (int j=0; j<4;j++){
+            fprintf(fptr, "%c",(*state)[i][j]);
+        }
+    }
+    // Close the file
+    fclose(fptr);
+}
+
+
+void readState(state_t* state,uint32_t* round){
+    FILE *fptr;
+    uint8_t i=0;
+    uint8_t c;
+    fptr = fopen("../TextFiles/text.txt", "r");
+    fseek(fptr,16*(*round),0);
+    // Write some text to the file
+    while ((c=fgetc(fptr)) != 0xFF && i<16){
+        (*state)[i%4][i-(i%4)*4]=c;
+        i++;
+    }
+    while (i<16){
+        (*state)[i%4][i-(i%4)*4]=0xFF;
+        i++;
+    }
+    // Close the file
+    fclose(fptr); 
+    (*round)++;
+}
+
+void eraseEncripted(){
+    //como se abre en escribir, se borra lo anterior
+    fclose(fopen("../TextFiles/encripted.txt", "w"));
+}
+
