@@ -123,53 +123,82 @@ void ShiftRows(state_t* state){
     }
 }
 
-void AddRoundKey(state_t* state, state_t* key){
-    for (int i=0;i<4;i++){
-        for(int j=0;j<4;j++){
-            (*state)[i][j]=(*state)[i][j]^(*key)[i][j];
+void AddRoundKey(uint8_t round, state_t* state, uint8_t* RoundKey){
+    int i, j;
+    for (i = 0; i < 4; i++){
+        for (j = 0; j < 4; j++){
+            (*state)[i][j] ^= RoundKey[(round* 4 * Nb)+(i + Nb) + j];
         }
     }
 }
 
-void KeyExpansion (const uint8_t* key, uint32_t* w) {
-    int i = 0;
-    int Nk = 4;     // Número de columnas de la clave
-    int Nr = 10;    // Número de rondas de cifrado
-
-    uint8_t temp;    // Variable temporal para almacenar la palabra de la clave
-
-    // Copia de la clave original en las primeras Nk palabras de la clave expandida
-    while (i < Nk) {
-        w[i] = (key[4*i]<< 24)| (key[4*i + 1] << 16) | (key[4*i + 2] << 8) | (key[4*i + 3]);
-        i++;
-    }
-
-    // Generación de las palabras restantes de la clave expandida
-    while (i < 4*(Nr+1))
-    {
-        temp = w[i-1];
-        if (i % Nk == 0) {
-            temp = SubWord(RotWord(temp)) ^ (Rcon[i/Nk] << 24);
-        } else if (Nk > 6 && i % Nk == 4) {
-            temp = SubWord(temp);
-        }
-        w[i] = w[i - Nk] ^ temp;
-        i++;
-    }
+void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
+    int i, j, k;
     
 
+    uint8_t temp[4];    // Variable temporal para las operaciones columna/fila
+
+    // Copia de la clave original en las primeras Nk palabras de la clave expandida
+    for (i = 0; i < Nk; i++) {
+        RoundKey[(i*4) + 0] = key[(i*4) + 0];
+        RoundKey[(i*4) + 1] = key[(i*4) + 1];
+        RoundKey[(i*4) + 2] = key[(i*4) + 2];
+        RoundKey[(i*4) + 3] = key[(i*4) + 3];
+    }
+
+    // Generación de las claves de ronda
+    for (i = Nk; i < Nb*(Nr+1); i++) {
+        
+
+        k = (i-1)*4;
+        temp[0] = RoundKey[k + 0];
+        temp[1] = RoundKey[k + 1];
+        temp[2] = RoundKey[k + 2];
+        temp[3] = RoundKey[k + 3];
+
+        if (i % Nk == 0) {
+
+            // RotWord
+            uint8_t temp2 = temp[0];
+            temp[0] = temp[1];
+            temp[1] = temp[2];
+            temp[2] = temp[3];
+            temp[3] = temp2;
+
+            // SubWord
+            temp[0] = get_sbox_value(temp[0]);
+            temp[1] = get_sbox_value(temp[1]);
+            temp[2] = get_sbox_value(temp[2]);
+            temp[3] = get_sbox_value(temp[3]);
+
+            // Rcon
+            temp[0] = temp[0] ^ Rcon[i/Nk];
+        }
+        
+        // Clave de ronda y actualización de RoundKey
+        j = i * 4;
+        k = (i - Nk) * 4;
+
+        RoundKey[j + 0] = RoundKey[k + 0] ^ temp[0];
+        RoundKey[j + 1] = RoundKey[k + 1] ^ temp[1];
+        RoundKey[j + 2] = RoundKey[k + 2] ^ temp[2];
+        RoundKey[j + 3] = RoundKey[k + 3] ^ temp[3];
+
+    }
+
 }
 
 
-void cypher(state_t* state, state_t* key) {
-    AddRoundKey(state, key);
-    for (int i = 0; i < 9; i++) {
+void AES128_Encrypt(state_t* state, uint8_t* key){
+    int round = 0;
+    AddRoundKey(round, state, key);
+    for (round = 1; round < Nr; round++){
         subBytes(state);
         ShiftRows(state);
         MixColumns(state);
-        AddRoundKey(state, key);
+        AddRoundKey(round, state, key);
     }
     subBytes(state);
     ShiftRows(state);
-    AddRoundKey(state, key);
+    AddRoundKey(round, state, key);
 }
