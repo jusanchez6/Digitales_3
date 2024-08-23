@@ -3,7 +3,7 @@
  *  @date 14/8/2024
  *  @authors: Maria Del Mar Arbelaez Sandoval
  *  @authors: Julian Mauricio Sanchez Ceballos
- *  @brief This program encrypts and decrypts a message using the AES algorithm.
+ *  @brief This program encrypts and decrypts (haha lol no just encrypt) a message using the AES algorithm.
 */
 
 #include <stdio.h>

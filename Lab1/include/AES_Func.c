@@ -5,6 +5,8 @@
 
 #define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
 
+uint32_t w[44]; // Arreglo de 44 palabras de 32 bits
+
 static const uint8_t sbox[256] = {
   //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
   0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
@@ -24,6 +26,31 @@ static const uint8_t sbox[256] = {
   0xe1, 0xf8, 0x98, 0x11, 0x69, 0xd9, 0x8e, 0x94, 0x9b, 0x1e, 0x87, 0xe9, 0xce, 0x55, 0x28, 0xdf,
   0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 
 };
+
+// Constantes de ronda
+static const uint8_t Rcon[10] = {
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36
+};
+
+static uint8_t xtime (uint8_t x) {
+    // Funcion de multiplicacion en GF(2^8) que le robe a un gringo marica en internet
+    return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
+}
+
+static uint32_t RotWord (uint32_t word) {
+    return (word << 8)|(word >> 24);
+}
+
+static uint32_t SubWord (uint32_t word) {
+    uint8_t *bytes = (uint8_t *)&word;
+    for (int i = 0; i < 4; i++)
+    {
+        bytes[i]= sbox[bytes[i]];
+    }
+    
+    return word;
+
+}
 
 static uint8_t xtime (uint8_t x) {
     // Funcion de multiplicacion en GF(2^8) que le robe a un gringo marica en internet
@@ -106,12 +133,84 @@ void ShiftRows(state_t* state){
     }
 }
 
-void AddRoundKey(state_t* state, state_t* key){
-    for (int i=0;i<4;i++){
-        for(int j=0;j<4;j++){
-            (*state)[i][j]=(*state)[i][j]^(*key)[i][j];
+void AddRoundKey(uint8_t round, state_t* state, uint8_t* RoundKey){
+    int i, j;
+    for (i = 0; i < 4; i++){
+        for (j = 0; j < 4; j++){
+            (*state)[i][j] ^= RoundKey[(round* 4 * Nb)+(i + Nb) + j];
         }
     }
+}
+
+void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
+    int i, j, k;
+    
+
+    uint8_t temp[4];    // Variable temporal para las operaciones columna/fila
+
+    // Copia de la clave original en las primeras Nk palabras de la clave expandida
+    for (i = 0; i < Nk; i++) {
+        RoundKey[(i*4) + 0] = key[(i*4) + 0];
+        RoundKey[(i*4) + 1] = key[(i*4) + 1];
+        RoundKey[(i*4) + 2] = key[(i*4) + 2];
+        RoundKey[(i*4) + 3] = key[(i*4) + 3];
+    }
+
+    // Generación de las claves de ronda
+    for (i = Nk; i < Nb*(Nr+1); i++) {
+        
+
+        k = (i-1)*4;
+        temp[0] = RoundKey[k + 0];
+        temp[1] = RoundKey[k + 1];
+        temp[2] = RoundKey[k + 2];
+        temp[3] = RoundKey[k + 3];
+
+        if (i % Nk == 0) {
+
+            // RotWord
+            uint8_t temp2 = temp[0];
+            temp[0] = temp[1];
+            temp[1] = temp[2];
+            temp[2] = temp[3];
+            temp[3] = temp2;
+
+            // SubWord
+            temp[0] = get_sbox_value(temp[0]);
+            temp[1] = get_sbox_value(temp[1]);
+            temp[2] = get_sbox_value(temp[2]);
+            temp[3] = get_sbox_value(temp[3]);
+
+            // Rcon
+            temp[0] = temp[0] ^ Rcon[i/Nk];
+        }
+        
+        // Clave de ronda y actualización de RoundKey
+        j = i * 4;
+        k = (i - Nk) * 4;
+
+        RoundKey[j + 0] = RoundKey[k + 0] ^ temp[0];
+        RoundKey[j + 1] = RoundKey[k + 1] ^ temp[1];
+        RoundKey[j + 2] = RoundKey[k + 2] ^ temp[2];
+        RoundKey[j + 3] = RoundKey[k + 3] ^ temp[3];
+
+    }
+
+}
+
+
+void AES128_Encrypt(state_t* state, uint8_t* key){
+    int round = 0;
+    AddRoundKey(round, state, key);
+    for (round = 1; round < Nr; round++){
+        subBytes(state);
+        ShiftRows(state);
+        MixColumns(state);
+        AddRoundKey(round, state, key);
+    }
+    subBytes(state);
+    ShiftRows(state);
+    AddRoundKey(round, state, key);
 }
 
 void readKey(uint8_t* key){
