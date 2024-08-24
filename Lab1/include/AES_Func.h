@@ -14,7 +14,7 @@
     #define Nk 4     // Número de columnas de la clave
     #define Nr 10    // Número de rondas de cifrado
 
-    uint8_t RoundKey[AES128_keyExpSize];        // Clave expandida de 176 bytes
+    extern uint8_t RoundKey[AES128_keyExpSize];        // Clave expandida de 176 bytes
                                             // 16 bytes por cada ronda
 
     typedef uint8_t state_t[4][4];  // Definición del tipo de variable de state para AES

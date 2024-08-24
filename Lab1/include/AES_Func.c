@@ -5,7 +5,6 @@
 
 #define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
 
-uint32_t w[44]; // Arreglo de 44 palabras de 32 bits
 
 static const uint8_t sbox[256] = {
   //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F

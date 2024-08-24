@@ -9,6 +9,9 @@
 #include <stdio.h>
 #include "../include/AES_Func.h"
 
+
+uint8_t RoundKey[AES128_keyExpSize];        // Clave expandida de 176 bytes
+
 int main (void) {
 	uint32_t readRound=0;
 	bool flag=false;
