@@ -52,11 +52,6 @@ static uint32_t SubWord (uint32_t word) {
 
 }
 
-static uint8_t xtime (uint8_t x) {
-    // Funcion de multiplicacion en GF(2^8) que le robe a un gringo marica en internet
-    return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
-}
-
 static uint8_t getHex(uint8_t c){
     int rtVal;
         if(c >= '0' && c <= '9') {
@@ -198,7 +193,6 @@ void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
 
 }
 
-
 void AES128_Encrypt(state_t* state, uint8_t* key){
     int round = 0;
     AddRoundKey(round, state, key);
@@ -213,23 +207,30 @@ void AES128_Encrypt(state_t* state, uint8_t* key){
     AddRoundKey(round, state, key);
 }
 
-void readKey(uint8_t* key){
-  FILE *filePointer = NULL; //pointer to file
-  uint8_t val, c;
-  uint8_t i=0;
+void readKey(uint8_t* key, bool way){
+    //if way is true, the txt is written in hex
+    //if false, it is written in ascii
+    FILE *filePointer = NULL; //pointer to file
+    uint8_t val, c;
+    uint8_t i=0;
 
-  // open the file to be read, in read mode "r"
-  filePointer = fopen("../TextFiles/key.txt", "r");
+    // open the file to be read, in read mode "r"
+    filePointer = fopen("../TextFiles/key.txt", "r");
 
-  //leer de a caracter y pasar a ascii
-   while ((c = fgetc(filePointer)) != 0XFF)
-  {
-    //print the character to a string
-    key[i]=16*getHex(c)+getHex(fgetc(filePointer));
-    i++;
-  }
-  fclose(filePointer);
-  filePointer = NULL; //soltar el espacio
+    //leer de a caracter y pasar a ascii
+    while ((c = fgetc(filePointer)) != 0XFF){
+        //print the character to a string
+        if(way){
+            key[i]=16*getHex(c)+getHex(fgetc(filePointer));
+        }
+        else{
+            key[i]=c;
+        }
+        i++;
+
+    }
+    fclose(filePointer);
+    filePointer = NULL; //soltar el espacio
 }
 
 void writeState(state_t* state){
@@ -245,8 +246,7 @@ void writeState(state_t* state){
     fclose(fptr);
 }
 
-
-void readState(state_t* state,uint32_t* round){
+void readState(state_t* state,uint32_t* round,bool*flag){
     FILE *fptr;
     uint8_t i=0;
     uint8_t c;
@@ -257,12 +257,13 @@ void readState(state_t* state,uint32_t* round){
         (*state)[i%4][i-(i%4)*4]=c;
         i++;
     }
-    while (i<16){
+    if(i==0){*flag=true;}
+    while (i<16 && i!=0){
         (*state)[i%4][i-(i%4)*4]=0xFF;
         i++;
     }
     // Close the file
-    fclose(fptr); 
+    fclose(fptr);
     (*round)++;
 }
 
@@ -270,4 +271,3 @@ void eraseEncripted(){
     //como se abre en escribir, se borra lo anterior
     fclose(fopen("../TextFiles/encripted.txt", "w"));
 }
-
