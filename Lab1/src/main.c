@@ -9,27 +9,22 @@
 #include <stdio.h>
 #include "../include/AES_Func.h"
 
-
-uint8_t RoundKey[AES128_keyExpSize];        // Clave expandida de 176 bytes
-
 int main (void) {
+	uint8_t RoundKey[AES128_keyExpSize];        // Clave expandida de 176 bytes
 	uint32_t readRound=0;
 	bool flag=false;
 	state_t state;
 	uint8_t key[16];
 
-	readKey(&key[0],true); //true for hex, false for chars
-	//key in hex-->	  5468617473206d79204b756e67204675
-	//key in ascii--> Thats my Kung Fu
-
+	readKey(&key[0],false); //true for hex, false for chars
+	eraseEncripted();
 	KeyExpansion(&key[0],&RoundKey[0]);
-
-
 	while (!flag){
 		readState(&state,&readRound,&flag);
 		if(!flag){
-			printf("\n%d\n",flag);
-			print_state(&state);
+			AES128_Encrypt(&state,&RoundKey[0]);
+			//print_state(&state);
+			writeState(&state);
 		}
 	}
 }

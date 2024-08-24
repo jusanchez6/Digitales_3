@@ -46,9 +46,7 @@ static uint32_t SubWord (uint32_t word) {
     {
         bytes[i]= sbox[bytes[i]];
     }
-    
     return word;
-
 }
 
 static uint8_t getHex(uint8_t c){
@@ -83,10 +81,19 @@ void subBytes(state_t* state) {
 }
 
 void MixColumns (state_t* state) {
-   uint8_t i, t, temp, tm;
+   //uint8_t t, tm;
+   uint8_t temp[4];
 
+    for (uint8_t i = 0; i < 4; i++) {
+        for (uint8_t j=0;j<4;j++){ temp[j]=(*state)[j][i];}
 
-    for (i = 0; i < 4; i++) {
+        (*state)[0][i]=xtime(temp[1]) ^ temp[1] ^ xtime(temp[0]) ^ temp[2] ^ temp[3];
+        (*state)[1][i]=xtime(temp[2]) ^ temp[2] ^ xtime(temp[1]) ^ temp[0] ^ temp[3];
+        (*state)[2][i]=xtime(temp[3]) ^ temp[3] ^ xtime(temp[2]) ^ temp[0] ^ temp[1];
+        (*state)[3][i]=xtime(temp[0]) ^ temp[0] ^ xtime(temp[3]) ^ temp[1] ^ temp[2];
+
+    }
+        /*
         t = (*state)[i][0];                                                         //Guardo el valor de la primera fila de la columa i
         temp = (*state)[i][0] ^ (*state)[i][1] ^ (*state)[i][2] ^ (*state)[i][3];   // Xor sobre todas las posiciones de la columna (Para simplificar el calculo)
 
@@ -109,9 +116,8 @@ void MixColumns (state_t* state) {
         // cuarta posicion de la columna
         tm = (*state)[i][3] ^ t;
         tm = xtime(tm);
-        (*state)[i][3] ^= tm ^ temp;
+        (*state)[i][3] ^= tm ^ temp;*/
         
-    }
 }
 
 void ShiftRows(state_t* state){
@@ -129,16 +135,16 @@ void ShiftRows(state_t* state){
 
 void AddRoundKey(uint8_t round, state_t* state, uint8_t* RoundKey){
     int i, j;
+
     for (i = 0; i < 4; i++){
         for (j = 0; j < 4; j++){
-            (*state)[i][j] ^= RoundKey[(round* 4 * Nb)+(i + Nb) + j];
+            (*state)[i][j] ^= RoundKey[(round* 4 * Nb)+ i + (j * Nb)];
         }
     }
 }
 
 void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
     int i, j, k;
-    
 
     uint8_t temp[4];    // Variable temporal para las operaciones columna/fila
 
@@ -152,8 +158,6 @@ void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
 
     // Generación de las claves de ronda
     for (i = Nk; i < Nb*(Nr+1); i++) {
-        
-
         k = (i-1)*4;
         temp[0] = RoundKey[k + 0];
         temp[1] = RoundKey[k + 1];
@@ -176,7 +180,7 @@ void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
             temp[3] = get_sbox_value(temp[3]);
 
             // Rcon
-            temp[0] = temp[0] ^ Rcon[i/Nk];
+            temp[0] = temp[0] ^ Rcon[i/Nk-1];
         }
         
         // Clave de ronda y actualización de RoundKey
@@ -192,18 +196,42 @@ void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
 
 }
 
-void AES128_Encrypt(state_t* state, uint8_t* key){
-    int round = 0;
-    AddRoundKey(round, state, key);
+void AES128_Encrypt(state_t* state, uint8_t* Roundkey){
+    uint8_t round = 0;
+    printf("Estado inicial: \n");
+    print_state(&(*state));
+
+    AddRoundKey(round, state, &Roundkey[0]);
+    printf("\nEstado con add: \n");
+    print_state(&(*state));
     for (round = 1; round < Nr; round++){
+        printf("\nRONDA: %d\n",round);
+
         subBytes(state);
+        printf("\nEstado con subbytes: \n");
+        print_state(&(*state));
+        
         ShiftRows(state);
+        printf("\nEstado con shiftrows: \n");
+        print_state(&(*state));
+
         MixColumns(state);
-        AddRoundKey(round, state, key);
+        printf("\nEstado con mixcolumns: \n");
+        print_state(&(*state));
+
+        AddRoundKey(round, state, Roundkey);
+        printf("\nEstado con addroundkey: \n");
+        print_state(&(*state));
     }
     subBytes(state);
+    printf("\nEstado con subbytes final: \n");
+    print_state(&(*state));
     ShiftRows(state);
-    AddRoundKey(round, state, key);
+    printf("\nEstado con shiftrows final: \n");
+    print_state(&(*state));
+    AddRoundKey(round, state, Roundkey);
+    printf("\nEstado con addroundkey final: \n");
+    print_state(&(*state));
 }
 
 void readKey(uint8_t* key, bool way){
@@ -253,12 +281,12 @@ void readState(state_t* state,uint32_t* round,bool*flag){
     fseek(fptr,16*(*round),0);
     // Write some text to the file
     while ((c=fgetc(fptr)) != 0xFF && i<16){
-        (*state)[i%4][i-(i%4)*4]=c;
+        (*state)[i%4][i/4]=c;
         i++;
     }
     if(i==0){*flag=true;}
     while (i<16 && i!=0){
-        (*state)[i%4][i-(i%4)*4]=0xFF;
+        (*state)[i%4][i/4]=0xff;
         i++;
     }
     // Close the file
