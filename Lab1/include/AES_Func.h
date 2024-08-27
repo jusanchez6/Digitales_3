@@ -29,9 +29,9 @@
     void AES128_Encrypt(state_t* state, uint8_t* Roundkey);
 
     void readKey(uint8_t* key,bool way);
-    void writeState(state_t* state);
+    void writeState(state_t* state,bool hex);
     void eraseEncripted();
 
-    void readState(state_t* state, uint32_t* round, bool*flag);
+    void readState(state_t* state, uint32_t* round, bool*flag, bool hex);
 
 #endif

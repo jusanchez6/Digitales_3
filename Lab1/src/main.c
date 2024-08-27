@@ -7,24 +7,28 @@
 */
 
 #include <stdio.h>
+#include <time.h>
 #include "../include/AES_Func.h"
 
 int main (void) {
+	time_t start, end;
 	uint8_t RoundKey[AES128_keyExpSize];        // Clave expandida de 176 bytes
 	uint32_t readRound=0;
 	bool flag=false;
 	state_t state;
 	uint8_t key[16];
 
+	start = time(NULL);
 	readKey(&key[0],false); //true for hex, false for chars
 	eraseEncripted();
 	KeyExpansion(&key[0],&RoundKey[0]);
 	while (!flag){
-		readState(&state,&readRound,&flag);
+		readState(&state,&readRound,&flag,false); //true for hex, false for chars
 		if(!flag){
 			AES128_Encrypt(&state,&RoundKey[0]);
-			//print_state(&state);
-			writeState(&state);
+			writeState(&state, true);
 		}
 	}
+	end = time(NULL);
+	printf("Time taken to run is %f seconds", difftime(end, start));
 }

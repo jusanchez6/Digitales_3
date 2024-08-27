@@ -198,40 +198,17 @@ void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
 
 void AES128_Encrypt(state_t* state, uint8_t* Roundkey){
     uint8_t round = 0;
-    printf("Estado inicial: \n");
-    print_state(&(*state));
-
     AddRoundKey(round, state, &Roundkey[0]);
-    printf("\nEstado con add: \n");
-    print_state(&(*state));
+
     for (round = 1; round < Nr; round++){
-        printf("\nRONDA: %d\n",round);
-
-        subBytes(state);
-        printf("\nEstado con subbytes: \n");
-        print_state(&(*state));
-        
+        subBytes(state);        
         ShiftRows(state);
-        printf("\nEstado con shiftrows: \n");
-        print_state(&(*state));
-
         MixColumns(state);
-        printf("\nEstado con mixcolumns: \n");
-        print_state(&(*state));
-
         AddRoundKey(round, state, Roundkey);
-        printf("\nEstado con addroundkey: \n");
-        print_state(&(*state));
     }
     subBytes(state);
-    printf("\nEstado con subbytes final: \n");
-    print_state(&(*state));
     ShiftRows(state);
-    printf("\nEstado con shiftrows final: \n");
-    print_state(&(*state));
     AddRoundKey(round, state, Roundkey);
-    printf("\nEstado con addroundkey final: \n");
-    print_state(&(*state));
 }
 
 void readKey(uint8_t* key, bool way){
@@ -260,20 +237,21 @@ void readKey(uint8_t* key, bool way){
     filePointer = NULL; //soltar el espacio
 }
 
-void writeState(state_t* state){
+void writeState(state_t* state,bool hex){
     FILE *fptr;
     fptr = fopen("../TextFiles/encripted.txt", "a");
     // Write some text to the file
     for (int i=0;i<4;i++){
         for (int j=0; j<4;j++){
-            fprintf(fptr, "%c",(*state)[i][j]);
+            if (hex) {fprintf(fptr, "%02x",(*state)[j][i]);}
+            else{fprintf(fptr, "%c",(*state)[j][i]);}
         }
     }
     // Close the file
     fclose(fptr);
 }
 
-void readState(state_t* state,uint32_t* round,bool*flag){
+void readState(state_t* state,uint32_t* round,bool*flag,bool hex){
     FILE *fptr;
     uint8_t i=0;
     uint8_t c;
@@ -281,7 +259,12 @@ void readState(state_t* state,uint32_t* round,bool*flag){
     fseek(fptr,16*(*round),0);
     // Write some text to the file
     while ((c=fgetc(fptr)) != 0xFF && i<16){
-        (*state)[i%4][i/4]=c;
+        if(hex){
+            (*state)[i%4][i/4]=16*getHex(c)+getHex(fgetc(fptr));
+        }
+        else{
+            (*state)[i%4][i/4]=c;
+        }
         i++;
     }
     if(i==0){*flag=true;}
