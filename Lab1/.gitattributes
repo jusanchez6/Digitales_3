@@ -1,0 +1,2 @@
+TextFiles/text_100M.txt filter=lfs diff=lfs merge=lfs -text
+TextFiles/text_1G.txt filter=lfs diff=lfs merge=lfs -text
