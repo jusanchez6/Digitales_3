@@ -1,11 +1,25 @@
+/**
+ * @file AES_Func.c
+ * @brief Archivo de implementación para el cifrado AES
+ * @details Este archivo contiene las funciones necesarias para la implementación del cifrado AES-128.
+ * Incluye funciones para la expansión de clave, encriptación de datos, y manipulación del estado en AES.
+ * 
+ * @authors Maria Del Mar Arbelaez, Julian Sanchez
+ * @date 2024-08-27
+ * @version 1.0
+ * 
+ */
+
+
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdint.h>
 #include "AES_Func.h"
 
-#define get_sbox_value(num) (sbox[num])         // Funcion diabolica que retorna el valor de la s-box en la posición num
 
+#define get_sbox_value(num) (sbox[num])      /// Función que obtiene el valor de la S-box     
 
+/// Matriz de sustitución S-box
 static const uint8_t sbox[256] = {
   //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
   0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
@@ -26,11 +40,18 @@ static const uint8_t sbox[256] = {
   0x8c, 0xa1, 0x89, 0x0d, 0xbf, 0xe6, 0x42, 0x68, 0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16 
 };
 
-// Constantes de ronda
+/** 
+ * Rcon - Round Constant
+*/
 static const uint8_t Rcon[10] = {
     0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36
 };
 
+/** 
+ * xtime - Multiplicación en GF(2^8)
+ * Formula: xtime(x) = (x<<1) ^ (((x>>7) & 1) * 0x1b)
+ * @param[in] x
+*/
 static uint8_t xtime (uint8_t x) {
     // Funcion de multiplicacion en GF(2^8) que le robe a un gringo marica en internet
     return ((x<<1) ^ (((x>>7) & 1) * 0x1b));
@@ -59,6 +80,13 @@ static uint8_t getHex(uint8_t c){
     return rtVal;
 }
 
+/** 
+ * @brief Imprime el state
+ * 
+ * Imprime el state[4][4] iterando sobre sus filas y columnas
+ * 
+ * @param[in] state Puntero a la matriz de estado (4x4) donde se almacenará el bloque de datos leído.
+*/
 void print_state(state_t* state) {
     uint8_t i, j;
 
@@ -70,6 +98,12 @@ void print_state(state_t* state) {
     }
 }
 
+/**
+ * @brief Realiza la operacion de sustitucion de bytes
+ * 
+ * Realiza la Sustitucion de los bytes mediante la sbox
+ * @param[in] state Puntero a la matriz de estado (4x4) donde se almacenará el bloque de datos leído.
+ */
 void subBytes(state_t* state) {
     uint8_t i, j;
 
@@ -79,6 +113,21 @@ void subBytes(state_t* state) {
         }
     }
 }
+
+/**
+ * @brief Realiza la mezcla de las columnas
+ * 
+ * \verbatim
+ * Realiza la mezcla de las columnas
+ * mediante la multiplicación en GF(2^8)
+ * fórmula: state[0][i] = 0x02 * a0 + 0x03 * a1 + a2 + a3
+ * fórmula: state[1][i] = a0 + 0x02 * a1 + 0x03 * a2 + a3
+ * fórmula: state[2][i] = a0 + a1 + 0x02 * a2 + 0x03 * a3
+ * fórmula: state[3][i] = 0x03 * a0 + a1 + a2 + 0x02 * a3
+ * \endverbatim
+ * @param[in] state Puntero a la matriz de estado (4x4) donde se almacenará el bloque de datos leído.
+ */
+
 
 void MixColumns (state_t* state) {
    //uint8_t t, tm;
@@ -93,32 +142,14 @@ void MixColumns (state_t* state) {
         (*state)[3][i]=xtime(temp[0]) ^ temp[0] ^ xtime(temp[3]) ^ temp[1] ^ temp[2];
 
     }
-        /*
-        t = (*state)[i][0];                                                         //Guardo el valor de la primera fila de la columa i
-        temp = (*state)[i][0] ^ (*state)[i][1] ^ (*state)[i][2] ^ (*state)[i][3];   // Xor sobre todas las posiciones de la columna (Para simplificar el calculo)
-
-        // Cambio de cada posicion de la columna 
-        // Primera posicion de la columna
-        tm = (*state)[i][0] ^ (*state)[0][1];       // Tm hace el calculo de 0x02*a2 XOR 0x03*a3
-        tm = xtime(tm);                             // Multiplica Tm por 2
-        (*state)[i][0] ^= tm ^ temp;
-
-        // Segunda posicion de la columna
-        tm = (*state)[i][1] ^ (*state)[0][2];       
-        tm = xtime(tm);                             
-        (*state)[i][1] ^= tm ^ temp; 
-
-        // tercera posicion de la colimna
-        tm = (*state)[i][2] ^ (*state)[0][3];       
-        tm = xtime(tm);                             
-        (*state)[i][2] ^= tm ^ temp;
-
-        // cuarta posicion de la columna
-        tm = (*state)[i][3] ^ t;
-        tm = xtime(tm);
-        (*state)[i][3] ^= tm ^ temp;*/
         
 }
+
+/**
+ * @brief Realiza el desplazamiento de las filas
+ * 
+ * @param[in] state Puntero a la matriz de estado (4x4) donde se almacenará el bloque de datos leído.
+ */
 
 void ShiftRows(state_t* state){
     uint8_t i, j;
@@ -133,6 +164,15 @@ void ShiftRows(state_t* state){
     }
 }
 
+/**
+ * @brief Aplica la operación XOR entre el state y la clave de ronda
+ * 
+ * Realiza la operación XOR entre el state y la clave de ronda
+ * correspondiente en la ronda actual
+ * @param[in] round Ronda actual
+ * @param[in] state Puntero a la matriz de estado (4x4) donde se almacenará el bloque de datos leído.
+ * @param[in] RoundKey Puntero a la clave de ronda
+ */
 void AddRoundKey(uint8_t round, state_t* state, uint8_t* RoundKey){
     int i, j;
 
@@ -143,6 +183,15 @@ void AddRoundKey(uint8_t round, state_t* state, uint8_t* RoundKey){
     }
 }
 
+/**
+ * @brief Expande la clave original en claves de ronda para el algoritmo AES.
+ *
+ * Esta función toma la clave original y la expande para generar todas las claves de ronda 
+ * necesarias para las operaciones de cifrado en AES. Incluye las operaciones RotWord, SubWord, y Rcon.
+ *
+ * @param[in] key Clave original utilizada para la expansión.
+ * @param[out] RoundKey Claves de ronda generadas a partir de la clave original.
+ */
 void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
     int i, j, k;
 
@@ -196,6 +245,17 @@ void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
 
 }
 
+/**
+ * @brief Cifra un bloque de datos usando el algoritmo AES-128.
+ *
+ * Esta función realiza el proceso completo de cifrado de un bloque de datos 
+ * utilizando el algoritmo AES-128, aplicando las rondas de sustitución, 
+ * desplazamiento, mezcla de columnas, y adición de clave de ronda.
+ *
+ * @param[in,out] state Bloque de datos a cifrar, representado como una matriz de estado 4x4.
+ * @param[in] Roundkey Conjunto de claves de ronda generadas a partir de la clave original.
+ */
+
 void AES128_Encrypt(state_t* state, uint8_t* Roundkey){
     uint8_t round = 0;
     AddRoundKey(round, state, &Roundkey[0]);
@@ -210,6 +270,16 @@ void AES128_Encrypt(state_t* state, uint8_t* Roundkey){
     ShiftRows(state);
     AddRoundKey(round, state, Roundkey);
 }
+
+/**
+ * @brief Lee una clave desde un archivo y la almacena en un arreglo.
+ *
+ * Esta función lee una clave desde un archivo de texto y la almacena en un arreglo de bytes. 
+ * La interpretación de la clave puede ser en formato hexadecimal o ASCII según el valor de `way`.
+ *
+ * @param[out] key Arreglo donde se almacenará la clave leída.
+ * @param[in] way Determina si la clave se interpreta como hexadecimal (true) o ASCII (false).
+ */
 
 void readKey(uint8_t* key, bool way){
     //if way is true, the txt is written in hex
@@ -237,6 +307,16 @@ void readKey(uint8_t* key, bool way){
     filePointer = NULL; //soltar el espacio
 }
 
+/**
+ * @brief Escribe la matriz de estado en un archivo, en formato hexadecimal o ASCII.
+ *
+ * Esta función toma la matriz de estado y la escribe en un archivo de texto. 
+ * La salida puede ser en formato hexadecimal o en ASCII, dependiendo del valor de `hex`.
+ *
+ * @param[in] state Puntero a la matriz de estado (4x4) que se va a escribir.
+ * @param[in] hex Indica si la salida debe ser en formato hexadecimal (true) o ASCII (false).
+ */
+
 void writeState(state_t* state,bool hex){
     FILE *fptr;
     fptr = fopen("../TextFiles/encripted.txt", "a");
@@ -251,14 +331,27 @@ void writeState(state_t* state,bool hex){
     fclose(fptr);
 }
 
-void readState(state_t* state,uint32_t* round,bool*flag,bool hex){
+/**
+ * @brief Lee un bloque de datos desde un archivo y lo almacena en la matriz de estado.
+ *
+ * Esta función lee un bloque de datos desde un archivo de texto y lo almacena en la matriz de estado. 
+ * La lectura puede interpretarse en formato hexadecimal o ASCII, según el valor de `hex`. 
+ * Además, la función actualiza el número de ronda y una bandera que indica si se ha alcanzado el final del archivo.
+ *
+ * @param[out] state Puntero a la matriz de estado (4x4) donde se almacenará el bloque de datos leído.
+ * @param[in,out] round Número de ronda actual, se incrementa después de cada lectura.
+ * @param[out] flag Bandera que indica si se ha alcanzado el final del archivo.
+ * @param[in] hex Indica si la entrada está en formato hexadecimal (true) o ASCII (false).
+ */
+
+void readState(state_t* state,uint32_t* round, bool* flag, bool hex){
     FILE *fptr;
     uint8_t i=0;
     uint8_t c;
     fptr = fopen("../TextFiles/text.txt", "r");
     fseek(fptr,16*(*round),0);
     // Write some text to the file
-    while ((c=fgetc(fptr)) != 0xFF && i<16){
+    while ((c=fgetc(fptr)) != 0xFF && i<16) {
         if(hex){
             (*state)[i%4][i/4]=16*getHex(c)+getHex(fgetc(fptr));
         }
@@ -277,6 +370,12 @@ void readState(state_t* state,uint32_t* round,bool*flag,bool hex){
     (*round)++;
 }
 
+/**
+ * @brief Borra el contenido del archivo de salida encriptada.
+ *
+ * Esta función abre el archivo `encripted.txt` en modo de escritura, lo que borra su contenido previo. 
+ * El archivo se cierra inmediatamente después de abrirlo.
+ */
 void eraseEncripted(){
     //como se abre en escribir, se borra lo anterior
     fclose(fopen("../TextFiles/encripted.txt", "w"));

@@ -1,0 +1,22 @@
+/**
+ * @mainpage Documentación del Proyecto de Cifrado AES
+ *
+ * @section intro Introducción
+ * Este proyecto implementa el algoritmo de cifrado AES-128 en C. El archivo principal, `main.c`,
+ * contiene la función principal que gestiona la encriptación de datos. A continuación se detallan los
+ * componentes principales y el flujo de ejecución del programa.
+ *
+ * @section details Detalles del Programa
+ * - La clave y el estado se leen desde archivos de texto.
+ * - La clave se expande para el cifrado AES-128.
+ * - El estado se encripta utilizando la clave expandida.
+ * - El resultado se guarda en el archivo `encripted.txt`.
+ *
+ * @section author Información del Autor
+ * - Autor: [Tu Nombre]
+ * - Fecha: [Fecha]
+ * - Versión: 1.0
+ *
+ * @section notes Notas
+ * Asegúrate de que los archivos de entrada y salida estén correctamente configurados antes de ejecutar el programa.
+ */

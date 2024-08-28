@@ -1,3 +1,17 @@
+/**
+ * @file AES_Func.h
+ * @brief Archivo cabecera para el cifrado AES
+ * @details Este archivo contiene las definiciones de las funciones y variables necesarias para
+ * la implementación del cifrado AES-128. Incluye la definición de tipos de datos, variables globales,
+ * y prototipos de funciones necesarias para el cifrado en AES.
+ * 
+ * @authors Maria Del Mar Arbelaez, Julian Sanchez
+ * @date 2024-08-27
+ * @version 1.0
+ * 
+ */
+
+
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -14,10 +28,26 @@
     #define Nk 4     // Número de columnas de la clave
     #define Nr 10    // Número de rondas de cifrado
 
-    extern uint8_t RoundKey[AES128_keyExpSize]; // Clave expandida de 176 bytes
-                                            // 16 bytes por cada ronda
+    /**
+     * @brief Clave expandida de 176 bytes (16 bytes por cada ronda).
+     * 
+     * Esta variable externa representa la clave expandida para AES-128, la cual tiene una longitud
+     * total de 176 bytes. Está definida en el archivo de implementación y es utilizada en la
+     * encriptación y desencriptación de datos. La clave expandida se genera a partir de la clave
+     * original de 16 bytes (128 bits) mediante el proceso de expansión de clave.
+    */
+    extern uint8_t RoundKey[AES128_keyExpSize]; 
 
-    typedef uint8_t state_t[4][4];  // Definición del tipo de variable de state para AES
+    /**
+     * @brief Tipo de dato para el estado en AES.
+     * 
+     * Este tipo de dato representa el estado de 4x4 bytes utilizado en el algoritmo de cifrado
+     * AES-128. La matriz `state_t` es una matriz bidimensional de bytes (uint8_t), donde cada elemento
+     * corresponde a un byte del estado en el proceso de encriptación o desencriptación.
+     * 
+     * @note La matriz de estado se manipula en la implementación del algoritmo de cifrado AES-128.
+    */
+    typedef uint8_t state_t[4][4];  
     
     void print_state(state_t* state);
     void subBytes(state_t* state);
