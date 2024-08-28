@@ -19,6 +19,6 @@ Este proyecto implementa el algoritmo de cifrado AES-128 en lenguaje C. El objet
    - El archivo `key.txt` debe contener la clave de 16 bytes en formato hexadecimal o ASCII.
 
 2. **Compilación:**
-   Ejecuta el siguiente comando para compilar el proyecto:
+   Ejecuta el siguiente comando en la carpeta de src:
    ```bash
-   gcc -o aes128 main.c 
+   gcc main.c AES128_Func.c -o main.exe 
