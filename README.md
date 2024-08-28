@@ -7,7 +7,9 @@ Este proyecto implementa el algoritmo de cifrado AES-128 en lenguaje C. El objet
 
 ## Contenidos
 
-- **`main.c`**: Archivo principal que contiene la función principal del programa. Gestiona la lectura de la clave y el estado, expande la clave para el cifrado, encripta el estado y guarda el resultado en un archivo de salida.
+- **`main.c`**: Archivo principal que contiene la función principal del programa. Gestiona la lectura de la clave y la generación del state que es una matriz de 4x4, expande la clave para el cifrado, encripta el estado y guarda el resultado en un archivo de salida.
+- **`AES128_Func.c`**: Archivo que contiene las funciones que implementadas por la función `Cypher` encargada de llevar a cabo la encriptación bajo el estandar AES128
+- **`AES128_Func.h`**: Archivo de cabecera con las declaraciones de las funciones y variables utilizadas en el proceso de encriptación.
 
 
 ## Instrucciones de Uso
