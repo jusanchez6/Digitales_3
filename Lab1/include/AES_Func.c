@@ -127,8 +127,6 @@ void subBytes(state_t* state) {
  * \endverbatim
  * @param[in] state Puntero a la matriz de estado (4x4) donde se almacenará el bloque de datos leído.
  */
-
-
 void MixColumns (state_t* state) {
    //uint8_t t, tm;
    uint8_t temp[4];
@@ -150,7 +148,6 @@ void MixColumns (state_t* state) {
  * 
  * @param[in] state Puntero a la matriz de estado (4x4) donde se almacenará el bloque de datos leído.
  */
-
 void ShiftRows(state_t* state){
     uint8_t i, j;
     uint8_t row[4];
@@ -255,7 +252,6 @@ void KeyExpansion (const uint8_t* key, uint8_t* RoundKey) {
  * @param[in,out] state Bloque de datos a cifrar, representado como una matriz de estado 4x4.
  * @param[in] Roundkey Conjunto de claves de ronda generadas a partir de la clave original.
  */
-
 void AES128_Encrypt(state_t* state, uint8_t* Roundkey){
     uint8_t round = 0;
     AddRoundKey(round, state, &Roundkey[0]);
@@ -276,12 +272,13 @@ void AES128_Encrypt(state_t* state, uint8_t* Roundkey){
  *
  * Esta función lee una clave desde un archivo de texto y la almacena en un arreglo de bytes. 
  * La interpretación de la clave puede ser en formato hexadecimal o ASCII según el valor de `way`.
+ * Esta función muestra un error si el path no lleva a un archivo de texto.
  *
  * @param[out] key Arreglo donde se almacenará la clave leída.
+ * @param[in] pathkey Arreglo de caracteres que llevan el path del archivo donde se encuentra la llave.
  * @param[in] way Determina si la clave se interpreta como hexadecimal (true) o ASCII (false).
  */
-
-void readKey(uint8_t* key, bool way){
+void readKey( uint8_t* key,char*pathkey, bool way){
     //if way is true, the txt is written in hex
     //if false, it is written in ascii
     FILE *filePointer = NULL; //pointer to file
@@ -289,8 +286,8 @@ void readKey(uint8_t* key, bool way){
     uint8_t i=0;
 
     // open the file to be read, in read mode "r"
-    filePointer = fopen("../TextFiles/key.txt", "r");
-
+    filePointer = fopen(pathkey, "r");
+    if (filePointer == NULL){ perror("Error: ");} //error when there is no file
     //leer de a caracter y pasar a ascii
     while ((c = fgetc(filePointer)) != 0XFF){
         //print the character to a string
@@ -315,20 +312,17 @@ void readKey(uint8_t* key, bool way){
  *
  * @param[in] state Puntero a la matriz de estado (4x4) que se va a escribir.
  * @param[in] hex Indica si la salida debe ser en formato hexadecimal (true) o ASCII (false).
- */
+ * @param[in] fptr Puntero del archivo que va escribiendo.
 
-void writeState(state_t* state,bool hex){
-    FILE *fptr;
-    fptr = fopen("../TextFiles/encripted.txt", "a");
+ */
+void writeState(state_t* state,bool hex,FILE **fptr){
     // Write some text to the file
     for (int i=0;i<4;i++){
         for (int j=0; j<4;j++){
-            if (hex) {fprintf(fptr, "%02x",(*state)[j][i]);}
-            else{fprintf(fptr, "%c",(*state)[j][i]);}
+            if (hex) {fprintf(*fptr, "%02x",(*state)[j][i]);}
+            else{fprintf(*fptr, "%c",(*state)[j][i]);}
         }
     }
-    // Close the file
-    fclose(fptr);
 }
 
 /**
@@ -336,24 +330,21 @@ void writeState(state_t* state,bool hex){
  *
  * Esta función lee un bloque de datos desde un archivo de texto y lo almacena en la matriz de estado. 
  * La lectura puede interpretarse en formato hexadecimal o ASCII, según el valor de `hex`. 
- * Además, la función actualiza el número de ronda y una bandera que indica si se ha alcanzado el final del archivo.
+ * Además, la función actualiza una bandera que indica si se ha alcanzado el final del archivo.
  *
  * @param[out] state Puntero a la matriz de estado (4x4) donde se almacenará el bloque de datos leído.
- * @param[in,out] round Número de ronda actual, se incrementa después de cada lectura.
  * @param[out] flag Bandera que indica si se ha alcanzado el final del archivo.
  * @param[in] hex Indica si la entrada está en formato hexadecimal (true) o ASCII (false).
- */
+ * @param[in] fptr Puntero de lectura del archivo.
 
-void readState(state_t* state,uint32_t* round, bool* flag, bool hex){
-    FILE *fptr;
+ */
+void readState(state_t* state, bool* flag, bool hex,FILE **fptr){
     uint8_t i=0;
     uint8_t c;
-    fptr = fopen("../TextFiles/text.txt", "r");
-    fseek(fptr,16*(*round),0);
     // Write some text to the file
-    while ((c=fgetc(fptr)) != 0xFF && i<16) {
+    while (i<16 && (c=fgetc(*fptr)) != 0xFF) {
         if(hex){
-            (*state)[i%4][i/4]=16*getHex(c)+getHex(fgetc(fptr));
+            (*state)[i%4][i/4]=16*getHex(c)+getHex(fgetc(*fptr));
         }
         else{
             (*state)[i%4][i/4]=c;
@@ -365,18 +356,35 @@ void readState(state_t* state,uint32_t* round, bool* flag, bool hex){
         (*state)[i%4][i/4]=0xff;
         i++;
     }
-    // Close the file
-    fclose(fptr);
-    (*round)++;
 }
 
 /**
- * @brief Borra el contenido del archivo de salida encriptada.
+ * @brief Abre los archivos de lectura y escritura.
  *
- * Esta función abre el archivo `encripted.txt` en modo de escritura, lo que borra su contenido previo. 
- * El archivo se cierra inmediatamente después de abrirlo.
+ * Esta función abre los archivos de lectura y escritura tomando en cuenta el path de cada uno. 
+ * Adicionalmente, la función muestra un error si el archivo de lectura no se encuentra.
+ *
+ * @param[in] file_name_read Arreglo de caracteres del path del archivo de lectura.
+ * @param[in] file_name_write Arreglo de caracteres del path del archivo de escritura.
+ * @param[in] fptr_read Puntero del archivo de lectura.
+ * @param[in] fptr_write Puntero del archivo de escritura.
  */
-void eraseEncripted(){
-    //como se abre en escribir, se borra lo anterior
-    fclose(fopen("../TextFiles/encripted.txt", "w"));
+void openFiles(char* file_name_read,char* file_name_write,FILE **fptr_read,FILE**fptr_write){
+    *fptr_read = fopen(file_name_read, "r");
+    if (*fptr_read == NULL){ perror("Error: ");} //error when there is no file
+    *fptr_write = fopen(file_name_write, "w");
 }
+
+/**
+ * @brief Cierra los archivos de lectura y escritura.
+ *
+ * Esta función cierra los archivos de lectura y escritura liberando el espacio en memoria. 
+ *
+ * @param[in] fptr_read Puntero del archivo de lectura.
+ * @param[in] fptr_write Puntero del archivo de escritura.
+ */
+void closeFiles(FILE **fptr_read,FILE **fptr_write){
+    fclose(*fptr_read);
+    fclose(*fptr_write);
+}
+

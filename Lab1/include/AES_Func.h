@@ -58,10 +58,11 @@
     void KeyExpansion (const uint8_t* key, uint8_t* RoundKey);
     void AES128_Encrypt(state_t* state, uint8_t* Roundkey);
 
-    void readKey(uint8_t* key,bool way);
-    void writeState(state_t* state,bool hex);
-    void eraseEncripted();
+    void readKey(uint8_t* key,char* pathkey, bool way);
 
-    void readState(state_t* state, uint32_t* round, bool*flag, bool hex);
+    void openFiles(char* file_name_read, char* file_name_write, FILE **fptr_read,FILE **fptr_write);
+    void readState(state_t* state, bool*flag, bool hex, FILE **fptr);
+    void writeState(state_t* state, bool hex,FILE **fptr);
+    void closeFiles(FILE **fptr_read,FILE **fptr_write);
 
 #endif
