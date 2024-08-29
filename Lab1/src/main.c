@@ -38,24 +38,31 @@
  * @return Retorna 0 al finalizar la ejecución.
  */
 int main (void) {
+	FILE *fptr_read,*fptr_write;
 	time_t start, end;
 	uint8_t RoundKey[AES128_keyExpSize];        // Clave expandida de 176 bytes
-	uint32_t readRound=0;
 	bool flag=false;
 	state_t state;
 	uint8_t key[16];
+	char path_read[]="../TextFiles/text_10M.txt";
+	char path_write[]="../TextFiles/encripted.txt";
+	char path_key[]="../TextFiles/key.txt";
 
+    printf("Todos los paths deben llevar a TextFiles.\n Ingrese el path de read, write y key separados por espacios.\n");
+	//ESTO FUNCIONA, pero no me gusta :(
+	scanf("%s %s %s",path_read,path_write,path_key);
 	start = time(NULL);
-	readKey(&key[0],false); //true for hex, false for chars
-	eraseEncripted();
+	openFiles(&path_read[0],&path_write[0],&fptr_read,&fptr_write);
+	readKey(&key[0],&path_key[0],false); //true for hex, false for chars
 	KeyExpansion(&key[0],&RoundKey[0]);
 	while (!flag){
-		readState(&state,&readRound,&flag,false); //true for hex, false for chars
+		readState(&state,&flag,false,&fptr_read); //true for hex, false for chars
 		if(!flag){
-			AES128_Encrypt(&state,&RoundKey[0]);
-			writeState(&state, true);
+			//AES128_Encrypt(&state,&RoundKey[0]);
+			writeState(&state, false, &fptr_write); //true for hex, false for chars
 		}
 	}
+	closeFiles(&fptr_read,&fptr_write);
 	end = time(NULL);
 	printf("Time taken to run is %f seconds", difftime(end, start));
 }
