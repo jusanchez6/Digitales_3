@@ -37,32 +37,34 @@
  * 
  * @return Retorna 0 al finalizar la ejecución.
  */
-int main (void) {
+//int main (void) {
+//EL ORDEN ES read_file key_file en el PATH
+int main (int argc, char*argv[]) {
+	if(argc!=3){return -1;}
+
+	//INICIALIZACION DE VARIABLES
 	FILE *fptr_read,*fptr_write;
-	time_t start, end;
+	double start, end;
 	uint8_t RoundKey[AES128_keyExpSize];        // Clave expandida de 176 bytes
 	bool flag=false;
 	state_t state;
 	uint8_t key[16];
-	char path_read[]="../TextFiles/text_10M.txt";
-	char path_write[]="../TextFiles/encripted.txt";
-	char path_key[]="../TextFiles/key.txt";
 
-    printf("Todos los paths deben llevar a TextFiles.\n Ingrese el path de read, write y key separados por espacios.\n");
-	//ESTO FUNCIONA, pero no me gusta :(
-	scanf("%s %s %s",path_read,path_write,path_key);
-	start = time(NULL);
-	openFiles(&path_read[0],&path_write[0],&fptr_read,&fptr_write);
-	readKey(&key[0],&path_key[0],false); //true for hex, false for chars
+	//EMPIEZA A CORRER EL TIEMPO, SE ABREN LOS ARCHIVOS, Y SE ENCRIPTAN
+	start = (double) clock();
+	openFiles(&argv[1][0],&fptr_read,&fptr_write);
+	readKey(&key[0],&argv[2][0],false); //true for hex, false for chars
 	KeyExpansion(&key[0],&RoundKey[0]);
 	while (!flag){
 		readState(&state,&flag,false,&fptr_read); //true for hex, false for chars
 		if(!flag){
-			//AES128_Encrypt(&state,&RoundKey[0]);
+			AES128_Encrypt(&state,&RoundKey[0]);
 			writeState(&state, false, &fptr_write); //true for hex, false for chars
 		}
 	}
+
+	//FINALIZACION DEL PROGRAMA
 	closeFiles(&fptr_read,&fptr_write);
-	end = time(NULL);
-	printf("Time taken to run is %f seconds", difftime(end, start));
+	end =(double) clock();
+	printf("Time taken to run is %f seconds", (double)((end-start)/CLOCKS_PER_SEC));
 }
