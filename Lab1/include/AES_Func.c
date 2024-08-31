@@ -365,14 +365,13 @@ void readState(state_t* state, bool* flag, bool hex,FILE **fptr){
  * Adicionalmente, la función muestra un error si el archivo de lectura no se encuentra.
  *
  * @param[in] file_name_read Arreglo de caracteres del path del archivo de lectura.
- * @param[in] file_name_write Arreglo de caracteres del path del archivo de escritura.
  * @param[in] fptr_read Puntero del archivo de lectura.
  * @param[in] fptr_write Puntero del archivo de escritura.
  */
-void openFiles(char* file_name_read,char* file_name_write,FILE **fptr_read,FILE**fptr_write){
+void openFiles(char* file_name_read,FILE **fptr_read,FILE**fptr_write){
     *fptr_read = fopen(file_name_read, "r");
     if (*fptr_read == NULL){ perror("Error: ");} //error when there is no file
-    *fptr_write = fopen(file_name_write, "w");
+    *fptr_write = fopen("../TextFiles/encripted.txt", "w");
 }
 
 /**

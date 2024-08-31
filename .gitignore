@@ -23,10 +23,8 @@
 /**/build/.ninja
 /**/build/.txt
 
-/**/**/text_100M.txt
-/**/**/TexFiles/text_10M.txt
-/**/**/TexFiles/text_1G.txt
-/****/TexFiles/text.txt
+/**/TextFiles
+
 /build/
 /CMakeFiles/
 /CMakeCache.txt

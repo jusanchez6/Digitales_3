@@ -60,7 +60,7 @@
 
     void readKey(uint8_t* key,char* pathkey, bool way);
 
-    void openFiles(char* file_name_read, char* file_name_write, FILE **fptr_read,FILE **fptr_write);
+    void openFiles(char* file_name_read, FILE **fptr_read,FILE **fptr_write);
     void readState(state_t* state, bool*flag, bool hex, FILE **fptr);
     void writeState(state_t* state, bool hex,FILE **fptr);
     void closeFiles(FILE **fptr_read,FILE **fptr_write);
