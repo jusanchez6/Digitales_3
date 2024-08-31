@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/43e13d73-60d3-4ee2-b766-231c188d9905)# Laboratorio de Digitales 3
+# Laboratorio de Digitales 3
 # Laboratorio 1: Implementación de Cifrado AES-128
 
 ## Descripción
