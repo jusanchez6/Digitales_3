@@ -37,7 +37,7 @@
  * 
  * @return Retorna 0 al finalizar la ejecución.
  */
-//int main (void) {
+
 //EL ORDEN ES read_file key_file en el PATH
 int main (int argc, char*argv[]) {
 	if(argc!=3){return -1;}
