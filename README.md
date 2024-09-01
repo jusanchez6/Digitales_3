@@ -24,7 +24,7 @@ Este proyecto implementa el algoritmo de cifrado AES-128 en lenguaje C. El objet
 2. **Compilación:**
    Ejecuta el siguiente comando en la carpeta de `src`:
    ```bash
-   gcc main.c AES128_Func.c -o main.exe
+   gcc main.c AES_Func.c -o main.exe
 
 3. **Ejecución:**
    En la carpeta de src ejecutar el siguiente comando:
