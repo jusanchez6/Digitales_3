@@ -27,9 +27,9 @@ Este proyecto implementa el algoritmo de cifrado AES-128 en lenguaje C. El objet
    gcc main.c AES_Func.c -o main.exe
 
 3. **Ejecución:**
-   En la carpeta de src ejecutar el siguiente comando:
+   En la carpeta de src ejecutar el siguiente comando, teniendo en cuenta que el path que se maneja para el proyecto es `../TextFiles/archivo.txt`:
    ```bash
-   ./main.exe ../TextFiles/text.txt ../TextFiles/key.txt
+   ./main.exe PATH_TO_FILE_TO_ENCRYPT PATH_TO_KEY
 
 Dentro de la carpeta `textFiles` debe existir el nombre del archivo que se desea cifrar, asi como la clave. 
 
