@@ -11,6 +11,8 @@
 /**/build
 /**/*.exe
 /**/prob.c
+/**/html
+
 
 /**/*.v
 /**/*.json
