@@ -12,8 +12,12 @@
 // Libs header file
 #include "libs.h"
 
+
+// Remove the redefinition of 'bitmask'
 uint16_t bitmask = 0;
-uint8_t position = 0;
+volatile uint8_t position = -1;
+
+
 
 /**
  * @brief This function initializes the GPIOs.
@@ -32,12 +36,14 @@ void init_gpio (void ) {
     gpio_set_dir(PIN_B_2, GPIO_IN);
     gpio_set_dir(PIN_B_4, GPIO_IN);
     gpio_set_dir(PIN_B_8, GPIO_IN);
+    gpio_set_dir(BUTTON_PIN, GPIO_IN);
 
     // Set pull down resistors
     gpio_pull_down(PIN_B_1);
     gpio_pull_down(PIN_B_2);
     gpio_pull_down(PIN_B_4);
     gpio_pull_down(PIN_B_8);
+    gpio_pull_down(BUTTON_PIN);
 }
 
 

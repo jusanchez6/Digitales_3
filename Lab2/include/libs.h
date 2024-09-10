@@ -17,6 +17,8 @@
     #define BUTTON_PIN  27
 
     // Initialization of the bitmask for the binary read
+    extern uint16_t bitmask;
+    extern volatile uint8_t position;
 
 
 

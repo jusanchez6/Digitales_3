@@ -22,15 +22,39 @@ int main() {
 	// STDIO initialization
     stdio_init_all();
 
-    // inicializar los pines
+    // initialize the gpios
     init_gpio();
+
+    // set the irq
+    gpio_set_irq_enabled_with_callback(BUTTON_PIN, GPIO_IRQ_EDGE_FALL, true, &button_isr);
 
     
 
 
 	// Infinite loop. This function shouldn't finish or return
     while (1) {
-        int8_t value = read_binary_input();
+        if (position == -1) {
+            position = read_binary_input();
+            printf("Read position %d \n", position);
+        } else {
+            // verify the number in the bitmask variable
+            if (position >= 1 && position <= 9) {
+                if (check_bitmask(bitmask, position)) {
+                    printf("position %d already selected \n");
+                } else {
+                    bitmask |= (1 << position);
+                }
+            } else {
+                printf("invalid input, try again \n");
+            }
+
+            // reset the variable for the next lecture
+
+            position = -1;
+            
+        }
+
+        sleep_ms(100);
 
     }
     
