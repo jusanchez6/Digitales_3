@@ -109,9 +109,10 @@ int8_t read_binary_input(void)
  *
  * This function changes the player.
  */
-void change_player (void)
+void change_player (bool player)
 {
-    g_state_player = !g_state_player;
+    player = !player;
+    gpio_put(PLAYERS_PIN, player);
 }
 
 
@@ -128,11 +129,11 @@ void set_led(uint8_t position, bool player)
     if (player)
     {   
         // Set the LED for player 2 pos + 2
-        gpio_put_masked(LEDS_PIN, (1 << (position + 2)));
+        gpio_put_masked(LEDS_PIN, (1 << (position * 2)));
     }
     else
     {
-        gpio_put_masked(LEDS_PIN, (1 << position + 1));
+        gpio_put_masked(LEDS_PIN, (1 << ((position * 2) + 1)));
     }
 }
 
@@ -148,7 +149,7 @@ void set_led(uint8_t position, bool player)
 void button_isr(uint gpio, uint32_t events)
 {
 
-    while (position = !255)
+    while (position =! 255)
     {
         if (position >= 1 && position <= 9)
         {
@@ -169,15 +170,16 @@ void button_isr(uint gpio, uint32_t events)
                 // verificar si se hizo tres en raya
 
                 // verificar si se llenó el tablero
-                
+                     
                 // cambiar el estado del jugador
-                change_player();
+                change_player(g_state_player);
             }
         }
         else
         {
             printf("invalid input, try again \n");
-            position = -1;
+            break;
         }
     }
+    position = -1;
 }
