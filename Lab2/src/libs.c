@@ -11,70 +11,47 @@
 // Libs header file
 #include "libs.h"
 
-
-// Remove the redefinition of 'bitmask'
+// Global variables
 uint16_t bitmask = 0;
 volatile uint8_t position = -1;
-
-/**
- * @brief This is the variable to store the current player.
- *
- * This variable stores the current player.
- * 0: Player 1
- * 1: Player 2
- */
 volatile bool g_state_player = 0;
+volatile uint16_t g_state_leds_0 = 0;
+volatile uint16_t g_state_leds_1 = 0;
+volatile bool button_pressed = false;
 
 /**
  * @brief This function initializes the GPIOs.
- *
- * This function initializes the GPIOs that are going to be used.
  */
 void init_read_gpio(void)
 {
-    // Initialize the GPIOs
-
     gpio_init_mask(READ_PINS);
     gpio_init(BUTTON_PIN);
-
-    // Set the direction of the GPIOs
     gpio_set_dir_in_masked(READ_PINS);
-
     gpio_set_dir(BUTTON_PIN, GPIO_IN);
 
     // Set pull down resistors
-    gpio_pull_down(20);
     gpio_pull_down(21);
     gpio_pull_down(22);
-    gpio_pull_down(23);
+    gpio_pull_down(26);
+    gpio_pull_down(27);
     gpio_pull_down(BUTTON_PIN);
 }
 
 /**
  * @brief This function initializes the LEDs.
- *
- * This function initializes the LEDs that are going to be used.
  */
 void init_leds(void)
 {
-    // Initialize the GPIOs
+    gpio_init_mask(LEDS_PIN_PLAYER_0);
+    gpio_set_dir_out_masked(LEDS_PIN_PLAYER_0);
 
-    gpio_init_mask(LEDS_PIN);
+    gpio_init_mask(LEDS_PIN_PLAYER_1);
+    gpio_set_dir_out_masked(LEDS_PIN_PLAYER_1);
 
-    // Set the direction of the GPIOs
-    gpio_set_dir_out_masked(LEDS_PIN);
 }
 
 /**
- * @brief This function checks the bitmask.
- *
- * This function checks the bitmask to see if a position is already selected.
- *
- * @param bitmask The bitmask to check
- * @param position The position to check
- *
- * @return True if the position is already selected, false otherwise
- *
+ * @brief Checks if a specific position is already selected.
  */
 bool check_bitmask(uint16_t bitmask, uint8_t position)
 {
@@ -82,104 +59,145 @@ bool check_bitmask(uint16_t bitmask, uint8_t position)
 }
 
 /**
- * @brief This function reads the binary input.
- *
- * This function reads the binary input from the GPIOs.
- *
- * @param void
- *
- * @return The value read from the GPIO
+ * @brief Reads binary input from the GPIOs.
  */
 int8_t read_binary_input(void)
 {
-    // Read the GPIO
-
     position = 0;
-
-    position |= gpio_get(20) << 0;
-    position |= gpio_get(21) << 1;
-    position |= gpio_get(22) << 2;
-    position |= gpio_get(23) << 3;
-
+    position |= gpio_get(21) << 0;
+    position |= gpio_get(22) << 1;
+    position |= gpio_get(26) << 2;
+    position |= gpio_get(27) << 3;
     return position;
 }
 
 /**
- * @brief This function changes the player.
- *
- * This function changes the player.
+ * @brief Changes the current player.
  */
-void change_player (bool player)
+void change_player(void)
 {
-    player = !player;
-    gpio_put(PLAYERS_PIN, player);
+    g_state_player = !g_state_player;   
+    gpio_put(PLAYERS_PIN, !gpio_get(PLAYERS_PIN));
 }
 
-
 /**
- * @brief This function sets the LED.
- *
- * This function sets the LED.
- *
- * @param position The position of the LED to set
+ * @brief Sets the LED for the given position and player.
  */
 void set_led(uint8_t position, bool player)
 {
-    // Set the LED
-    if (player)
-    {   
-        // Set the LED for player 2 pos + 2
-        gpio_put_masked(LEDS_PIN, (1 << (position * 2)));
+    printf("Setting LED %d for player %d \n", position, player);
+    if (!player)
+    {
+        // Set the LED for player 0
+        gpio_put_masked(LEDS_PIN, gpio_get_all() | (1 << (position * 2)));
+
+        // Update the state of the LEDs for player 0
+        g_state_leds_0 |= (1 << (position - 1));
     }
     else
     {
-        gpio_put_masked(LEDS_PIN, (1 << ((position * 2) + 1)));
+        // Set the LED for player 1
+        gpio_put_masked(LEDS_PIN, gpio_get_all() | (1 << ((position * 2) + 1)));
+
+        // Update the state of the LEDs for player 1
+        g_state_leds_1 |= (1 << (position - 1));
+    }
+
+    sleep_ms(1000);  // Esperar un segundo para el feedback
+    printf("State LEDs 0: %x \n", g_state_leds_0);
+    printf("State LEDs 1: %x \n", g_state_leds_1);
+}
+
+/**
+ * @brief Checks specific winning patterns for the player.
+ */
+void check_winner(void)
+{
+    // Combinaciones ganadoras en un tablero de 3x3
+    uint16_t winning_patterns[8] = {
+        0x07,  // 000 000 111 - fila 1
+        0x38,  // 000 111 000 - fila 2
+        0x1C0, // 111 000 000 - fila 3
+        0x49,  // 001 001 001 - columna 1
+        0x92,  // 010 010 010 - columna 2
+        0x124, // 100 100 100 - columna 3
+        0x54,  // 100 010 001 - diagonal 1
+        0x111  // 001 010 100 - diagonal 2
+    };
+
+    // Revisar si el jugador 0 tiene alguna combinación ganadora
+    for (int i = 0; i < 8; i++)
+    {
+        if ((g_state_leds_0 & winning_patterns[i]) == winning_patterns[i])
+        {
+            printf("Player 0 wins!\n");
+            sleep_ms(1000);  // Esperar un segundo antes de apagar todos los LEDs
+            reset_game();
+            return;
+        }
+    }
+
+    // Revisar si el jugador 1 tiene alguna combinación ganadora
+    for (int i = 0; i < 8; i++)
+    {
+        if ((g_state_leds_1 & winning_patterns[i]) == winning_patterns[i])
+        {
+            printf("Player 1 wins!\n");
+            sleep_ms(1000);  // Esperar un segundo antes de apagar todos los LEDs
+            reset_game();
+            return;
+        }
+    }
+
+    // Revisar si hay un empate
+    if ((g_state_leds_0 | g_state_leds_1) == 0x1ff)  // Todas las posiciones ocupadas
+    {
+        printf("It's a tie!\n");
+        sleep_ms(1000);  // Esperar un segundo antes de apagar todos los LEDs
+        gpio_put_masked(LEDS_PIN, 0);  // Apagar todos los LEDs
     }
 }
 
-
 /**
- * @brief This is the interrupt service routine for the button.
- *
- * This function is called when the button is pressed.
- *
- * @param gpio The GPIO number that triggered the interrupt
- * @param events The interrupt events
+ * @brief Resets the game after a win or tie.
  */
-void button_isr(uint gpio, uint32_t events)
+void reset_game(void)
 {
+    bitmask = 0;
+    g_state_leds_0 = 0;
+    g_state_leds_1 = 0;
+    gpio_put_masked(LEDS_PIN, 0); // Turn off all LEDs
+    printf("Game reset!\n");
+}
 
-    while (position =! 255)
+void proccess_game (void) {
+    if (position >= 1 && position <= 9)
     {
-        if (position >= 1 && position <= 9)
+        if (check_bitmask(bitmask, position))
         {
-            if (check_bitmask(bitmask, position))
-            {
-                printf("position %d already selected \n");
-                // rutina de error para indicar que la posición ya fue seleccionada
-                position = -1;
-                break;
-            }
-            else
-            {
-                bitmask |= (1 << position);
-                printf("position %d selected \n", position);
-                // encender el led indicado
-                set_led(position, g_state_player);
-
-                // verificar si se hizo tres en raya
-
-                // verificar si se llenó el tablero
-                     
-                // cambiar el estado del jugador
-                change_player(g_state_player);
-            }
+            printf("Position %d already selected \n", position);
         }
         else
         {
-            printf("invalid input, try again \n");
-            break;
+            bitmask |= (1 << position);
+            printf("Position %d selected \n", position);
+            set_led(position, g_state_player);
+            check_winner();
+            change_player();
         }
     }
-    position = -1;
+    else
+    {
+        printf("Invalid input, try again \n");
+    }
+    position = -1; // Reset position after handling
+}
+
+/**
+ * @brief This is the interrupt service routine for the button.
+ */
+void button_isr(uint gpio, uint32_t events)
+{
+    button_pressed = true;
+    
 }

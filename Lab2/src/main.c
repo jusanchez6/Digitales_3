@@ -23,11 +23,18 @@ int main() {
     stdio_init_all();
 
     // initialize the gpios
-    init_gpio();
+    init_read_gpio();
+    init_leds();
 
     // set the irq
-    gpio_set_irq_enabled_with_callback(BUTTON_PIN, GPIO_IRQ_EDGE_FALL | GPIO_IRQ_EDGE_RISE, true, &button_isr);
+    gpio_set_irq_enabled_with_callback(BUTTON_PIN, GPIO_IRQ_EDGE_FALL, true, &button_isr);
+    position = -1;
+    
+    gpio_init(19);
+    gpio_init(17);
 
+    gpio_set_dir(19, GPIO_OUT);
+    gpio_set_dir(17, GPIO_OUT);
     
     // que solo lea el valor de la posicion si es 255
     // y no haga nada mas hasta que se active el boton
@@ -38,12 +45,14 @@ int main() {
 
 	// Infinite loop. This function shouldn't finish or return
     while (JUANITA) {
+        
 
-        if (position == 255) {
+        if (button_pressed) {
             position = read_binary_input();
-            printf("Read position %d \n", position);
+            proccess_game();
+            button_pressed = false;
         } 
-        sleep_ms(100);
+        sleep_ms(500);
     }
     
     return 0;    
