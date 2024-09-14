@@ -18,11 +18,10 @@
     #define PLAYERS_PIN 20
 
     // DEFINITION OF THE LEDS
-    #define LEDS_PIN 0x003FFFFC // 0000 0000 0000 1111 1111 1111 1111 1100
+    #define LEDS_PIN 0x001FFFFC // 0000 0010 0001 1111 1111 1111 1111 1100
 
-    #define LEDS_PIN_PLAYER_0 0x0000AAAA  // 1010 1010 1010 1010 (en binario)
-
-    #define LEDS_PIN_PLAYER_1 0x00005555  // 0101 0101 0101 0101 (en binario)
+    #define LEDS_PIN_PLAYER_0 0x000AAAA8  // 1010 1010 1010 1010 1000 (en binario)
+    #define LEDS_PIN_PLAYER_1 0x00055554  // 0101 0101 0101 0101 0100 (en binario)
 
     extern volatile uint8_t position;
     extern volatile bool g_state_player;
@@ -42,7 +41,9 @@
     void change_player (void);
     void reset_game (void);
     void check_winner (void);
-    void proccess_game (void);
+    void process_game (void);
+    void process_time(uint8_t*);
+    void choose_player(void);
 
 
     // to do:
@@ -72,8 +73,5 @@
 
     // rutina para indicar un error
     // - patron 4 (que se enciendan de manera intermitente los leds por medio segundo)
-
-
-
 
 #endif

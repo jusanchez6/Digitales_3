@@ -26,6 +26,7 @@ void init_read_gpio(void)
 {
     gpio_init_mask(READ_PINS);
     gpio_init(BUTTON_PIN);
+
     gpio_set_dir_in_masked(READ_PINS);
     gpio_set_dir(BUTTON_PIN, GPIO_IN);
 
@@ -42,12 +43,9 @@ void init_read_gpio(void)
  */
 void init_leds(void)
 {
-    gpio_init_mask(LEDS_PIN_PLAYER_0);
-    gpio_set_dir_out_masked(LEDS_PIN_PLAYER_0);
-
-    gpio_init_mask(LEDS_PIN_PLAYER_1);
-    gpio_set_dir_out_masked(LEDS_PIN_PLAYER_1);
-
+    //pines de jugadores
+    gpio_init_mask(LEDS_PIN);
+    gpio_set_dir_out_masked(LEDS_PIN);
 }
 
 /**
@@ -103,7 +101,7 @@ void set_led(uint8_t position, bool player)
         g_state_leds_1 |= (1 << (position - 1));
     }
 
-    sleep_ms(1000);  // Esperar un segundo para el feedback
+    sleep_ms(100);  // Esperar un segundo para el feedback
     printf("State LEDs 0: %x \n", g_state_leds_0);
     printf("State LEDs 1: %x \n", g_state_leds_1);
 }
@@ -167,10 +165,11 @@ void reset_game(void)
     g_state_leds_0 = 0;
     g_state_leds_1 = 0;
     gpio_put_masked(LEDS_PIN, 0); // Turn off all LEDs
+    choose_player();
     printf("Game reset!\n");
 }
 
-void proccess_game (void) {
+void process_game (void) {
     if (position >= 1 && position <= 9)
     {
         if (check_bitmask(bitmask, position))
@@ -199,5 +198,33 @@ void proccess_game (void) {
 void button_isr(uint gpio, uint32_t events)
 {
     button_pressed = true;
-    
+}
+
+void process_time(uint8_t *moment){
+    //if moment=1, RISE-> start timer
+    //if moment=0, FALL-> finish timer and print
+    static volatile uint32_t diff;
+    printf("RISE:%d\n",*moment);
+    if (*moment){
+        diff=time_us_32();
+        *moment=0;
+    }
+    else{
+        diff=(time_us_32()-diff)/1000;
+        *moment=1;
+        printf("Time button pressed in ms: %d\n",diff);
+        if (diff >= 5000){
+            reset_game();
+            *moment=2;
+        }
+
+    }
+}
+
+void choose_player(void){
+    if(time_us_32()%2){
+        g_state_player=0;
+    }
+    else{g_state_player=1;}
+    gpio_put(PLAYERS_PIN, g_state_player);
 }
