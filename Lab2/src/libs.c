@@ -46,6 +46,9 @@ void init_leds(void)
     //pines de jugadores
     gpio_init_mask(LEDS_PIN);
     gpio_set_dir_out_masked(LEDS_PIN);
+
+    gpio_init(INNER_LED);
+    gpio_set_dir(INNER_LED,true);
 }
 
 /**
@@ -151,8 +154,10 @@ void check_winner(void)
     if ((g_state_leds_0 | g_state_leds_1) == 0x1ff)  // Todas las posiciones ocupadas
     {
         printf("It's a tie!\n");
-        sleep_ms(1000);  // Esperar un segundo antes de apagar todos los LEDs
-        gpio_put_masked(LEDS_PIN, 0);  // Apagar todos los LEDs
+        sleep_ms(a_delay/2);  // Esperar un segundo antes de apagar todos los LEDs
+        draw_animation();
+        reset_game();
+        return;
     }
 }
 
@@ -175,6 +180,9 @@ void process_game (void) {
         if (check_bitmask(bitmask, position))
         {
             printf("Position %d already selected \n", position);
+            gpio_put(INNER_LED, 1);  // Prender LED de error
+            sleep_ms(3000);
+            gpio_put(INNER_LED,0);
         }
         else
         {
@@ -188,6 +196,9 @@ void process_game (void) {
     else
     {
         printf("Invalid input, try again \n");
+        gpio_put(INNER_LED, 1);  // Prender led de error
+        sleep_ms(3000);
+        gpio_put(INNER_LED,0);
     }
     position = -1; // Reset position after handling
 }
@@ -200,9 +211,14 @@ void button_isr(uint gpio, uint32_t events)
     button_pressed = true;
 }
 
+/**
+ * @brief This allows to take time on different moments of the button press to check if
+ * its more than 5 seconds.
+ */
 void process_time(uint8_t *moment){
     //if moment=1, RISE-> start timer
     //if moment=0, FALL-> finish timer and print
+    //if diff>5000, moment=3, which is the reset moment.
     static volatile uint32_t diff;
     printf("RISE:%d\n",*moment);
     if (*moment){
@@ -221,10 +237,52 @@ void process_time(uint8_t *moment){
     }
 }
 
+
+/**
+ * @brief This uses internal clock to choose the player randomly.
+ */
 void choose_player(void){
     if(time_us_32()%2){
         g_state_player=0;
     }
     else{g_state_player=1;}
     gpio_put(PLAYERS_PIN, g_state_player);
+}
+
+void start_animation(void){
+    // triki-like sequence :)
+}
+
+/**
+ * @brief This shows the draw animation
+ */
+void draw_animation(void){
+    //very circle-oriented since it is a draw
+    // 1010 1010 1010 1010 1000 (en binario) --> PLAYER 0
+    // 0101 0101 0101 0101 0100 (en binario) --> PLAYER 1
+    
+    printf("Draw animation start!\n");
+    gpio_put_masked(LEDS_PIN, 0);  // Apagar todos los LEDs
+    sleep_ms(a_delay/2);  // Esperar un segundo antes de apagar todos los LEDs
+
+    for (uint8_t i=0; i<=3; i++){
+        uint32_t a= (i%2 ? 0x22220 :~0x22220);// & ~(0xc00);
+        gpio_put_masked(LEDS_PIN_PLAYER_0,(i%2 ? 0x22220 :~0x22220) & ~0xc00 );
+        gpio_put_masked(LEDS_PIN_PLAYER_1,(i%2 ? 0x44044 :~0x44044) & ~0xc00 );
+        sleep_ms(a_delay);
+        gpio_put_masked(LEDS_PIN_PLAYER_0,0);
+        gpio_put_masked(LEDS_PIN_PLAYER_1,0);
+        sleep_ms(a_delay/2);
+        gpio_put_masked(LEDS_PIN_PLAYER_1, i%2 ? 0xc00 :0 );
+        gpio_put_masked(LEDS_PIN_PLAYER_0, i%2 ? 0 : 0xc00 );
+        sleep_ms(a_delay);
+        gpio_put_masked(LEDS_PIN_PLAYER_0,0);
+        gpio_put_masked(LEDS_PIN_PLAYER_1,0);
+        sleep_ms(a_delay/2);
+    }
+}
+
+void win_animation(bool player){
+    //thingy running around
+
 }

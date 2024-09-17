@@ -22,6 +22,10 @@
 
     #define LEDS_PIN_PLAYER_0 0x000AAAA8  // 1010 1010 1010 1010 1000 (en binario)
     #define LEDS_PIN_PLAYER_1 0x00055554  // 0101 0101 0101 0101 0100 (en binario)
+    #define INNER_LED 25 //LED interno
+
+    #define striped_pattern   0xFFF77777
+    #define a_delay 500
 
     extern volatile uint8_t position;
     extern volatile bool g_state_player;
@@ -45,33 +49,12 @@
     void process_time(uint8_t*);
     void choose_player(void);
 
+    void start_animation(void);
+    void draw_animation(void);
+    void win_animation(bool player);
+
 
     // to do:
-
-    // rutina para verificar si hay tres en raya
-    // - verificar si hay tres en ray
-
-    // rutina para verificar si hay empate
-    // - verificar si hay empate
-
-    // Rutina para apagar los leds
-
-    // rutina para cuando gana jugador 0
-    // - patron 1
-    // - limpiar la mascara
-    // - apagar leds
-
-    // rutina para cuando gana jugador 1
-    // - patron 2
-    // - limpiar la mascara
-    // - apagar leds
-
-    // rutina para cuando se empata
-    // - patron 3
-    // - limpiar la mascara
-    // - apagar leds
-
-    // rutina para indicar un error
-    // - patron 4 (que se enciendan de manera intermitente los leds por medio segundo)
+    //animaciones
 
 #endif
