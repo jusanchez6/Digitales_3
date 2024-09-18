@@ -42,12 +42,14 @@ int main() {
     reset_game();
     while (JUANITA) {
         if (button_pressed) {
-            process_time(&moment);
+            win_animation(true);
+            win_animation(false);
+            /*process_time(&moment);
             //printf("RISE:%d \n",moment);
             if(moment==1){
                 position = read_binary_input();
                 process_game();
-            }
+            }*/
             button_pressed = false;
             sleep_ms(50);
         }
