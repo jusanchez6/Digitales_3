@@ -20,6 +20,100 @@ volatile uint16_t g_state_leds_1 = 0;
 volatile bool button_pressed = false;
 
 /**
+ * @brief This shows the start animation on the leds.
+ */
+static void start_animation(void){
+    printf("Initial animation start!\n");
+
+    gpio_put_masked(LEDS_PIN, 0);  // Apagar todos los LEDs
+    sleep_ms(a_delay/2);  // Esperar un segundo antes de apagar todos los LEDs
+
+    // triki-like sequence :)
+    uint8_t pos[]={5,1,2,7,4,8,6};
+    for (uint8_t i=0; i<7;i++){
+        set_led(pos[i],i%2);
+        sleep_ms(a_delay);
+
+    }
+    sleep_ms(a_delay/2);
+    gpio_put_masked(LEDS_PIN,0);
+    sleep_ms(a_delay/2);
+
+    // 0010 1001 0101 0001 1000 (tablero) --> 29518
+
+    for (uint8_t i=0; i<3;i++){
+        gpio_put_masked(LEDS_PIN,0x29518);
+        sleep_ms(a_delay);
+
+        gpio_put_masked(LEDS_PIN,0);
+        sleep_ms(a_delay/4);
+    }
+}
+
+/**
+ * @brief This shows the draw animation
+ */
+static void draw_animation(void){
+    // very circle-oriented since it is a draw
+    // 1010 1010 1010 1010 1000 (en binario) --> PLAYER 0
+    // 0101 0101 0101 0101 0100 (en binario) --> PLAYER 1
+    
+    printf("Draw animation start!\n");
+    gpio_put_masked(LEDS_PIN, 0);  // Apagar todos los LEDs
+    sleep_ms(a_delay/2);  // Esperar un segundo antes de apagar todos los LEDs
+
+    for (uint8_t i=0; i<=3; i++){
+        gpio_put_masked(LEDS_PIN_PLAYER_0,(i%2 ? 0x22220 :~0x22220) & ~0xc00 );
+        gpio_put_masked(LEDS_PIN_PLAYER_1,(i%2 ? 0x44044 :~0x44044) & ~0xc00 );
+        sleep_ms(a_delay);
+        gpio_put_masked(LEDS_PIN_PLAYER_0,0);
+        gpio_put_masked(LEDS_PIN_PLAYER_1,0);
+        sleep_ms(a_delay/2);
+        gpio_put_masked(LEDS_PIN_PLAYER_1, i%2 ? 0xc00 :0 );
+        gpio_put_masked(LEDS_PIN_PLAYER_0, i%2 ? 0 : 0xc00 );
+        sleep_ms(a_delay);
+        gpio_put_masked(LEDS_PIN_PLAYER_0,0);
+        gpio_put_masked(LEDS_PIN_PLAYER_1,0);
+        sleep_ms(a_delay/2);
+    }
+}
+
+/**
+ * @brief This shows the winning animation with each player as the winner
+ */
+static void win_animation(bool player){
+    //thingy running around
+    // 0101 0101 0101 0101 0100 (en binario) --> PLAYER 1
+    // 1010 1010 1010 1010 1000 (en binario) --> PLAYER 0
+
+    printf("Win animation start!\n");
+    printf("player mask:%x\n",LEDS_PIN_PLAYER_1<<(player));
+
+    gpio_put_masked(LEDS_PIN, 0);  // Apagar todos los LEDs
+    sleep_ms(a_delay/2);  // Esperar un segundo antes de apagar todos los LEDs
+
+    uint8_t pos[]={0,1,2,5,8,7,6,3,4,3,6,7,8,5,2,1,0};
+
+    for (uint8_t i=0; i<=17; i++){
+        if(i!=9){gpio_put(2+(player)+pos[i]*2,1);}
+        if(i!=0){gpio_put(2+(player)+pos[i-1]*2,1);}
+        sleep_ms(a_delay/2);
+
+        gpio_put_masked(LEDS_PIN_PLAYER_1 << (player),0);
+        sleep_ms(a_delay/5);
+    }
+    // 0001 0001 0101 0001 0000 --> 11510
+    for(uint8_t i=0; i<3;i++){
+        gpio_put_masked(LEDS_PIN_PLAYER_1 << (player), 0x11510 << (player) );
+        sleep_ms(a_delay/1.5);
+
+        gpio_put_masked(LEDS_PIN_PLAYER_1 << (player),0);
+        sleep_ms(a_delay/4);
+    }
+
+}
+
+/**
  * @brief This function initializes the GPIOs.
  */
 void init_read_gpio(void)
@@ -132,7 +226,8 @@ void check_winner(void)
         if ((g_state_leds_0 & winning_patterns[i]) == winning_patterns[i])
         {
             printf("Player 0 wins!\n");
-            sleep_ms(1000);  // Esperar un segundo antes de apagar todos los LEDs
+            sleep_ms(a_delay/2);  // Esperar un segundo antes de apagar todos los LEDs
+            win_animation(false);
             reset_game();
             return;
         }
@@ -144,7 +239,8 @@ void check_winner(void)
         if ((g_state_leds_1 & winning_patterns[i]) == winning_patterns[i])
         {
             printf("Player 1 wins!\n");
-            sleep_ms(1000);  // Esperar un segundo antes de apagar todos los LEDs
+            sleep_ms(a_delay/2);  // Esperar un segundo antes de apagar todos los LEDs
+            win_animation(true);
             reset_game();
             return;
         }
@@ -166,18 +262,27 @@ void check_winner(void)
  */
 void reset_game(void)
 {
+    gpio_put_masked(LEDS_PIN, 0); // Turn off all LEDs
     bitmask = 0;
     g_state_leds_0 = 0;
     g_state_leds_1 = 0;
-    gpio_put_masked(LEDS_PIN, 0); // Turn off all LEDs
+    start_animation();
+
+    bitmask = 0;
+    g_state_leds_0 = 0;
+    g_state_leds_1 = 0;
     choose_player();
     printf("Game reset!\n");
 }
 
+/**
+ * @brief This processes the game, first, it checks if the position is valid, if it is, it sets the led,
+ * sees if anyone's won and changes the player if anyone hasn't. It cleans the position after handling.
+ */
 void process_game (void) {
     if (position >= 1 && position <= 9)
     {
-        if (check_bitmask(bitmask, position))
+        if (check_bitmask(bitmask, position)) 
         {
             printf("Position %d already selected \n", position);
             gpio_put(INNER_LED, 1);  // Prender LED de error
@@ -247,68 +352,4 @@ void choose_player(void){
     }
     else{g_state_player=1;}
     gpio_put(PLAYERS_PIN, g_state_player);
-}
-
-void start_animation(void){
-    // triki-like sequence :)
-}
-
-/**
- * @brief This shows the draw animation
- */
-void draw_animation(void){
-    //very circle-oriented since it is a draw
-    // 1010 1010 1010 1010 1000 (en binario) --> PLAYER 0
-    // 0101 0101 0101 0101 0100 (en binario) --> PLAYER 1
-    
-    printf("Draw animation start!\n");
-    gpio_put_masked(LEDS_PIN, 0);  // Apagar todos los LEDs
-    sleep_ms(a_delay/2);  // Esperar un segundo antes de apagar todos los LEDs
-
-    for (uint8_t i=0; i<=3; i++){
-        gpio_put_masked(LEDS_PIN_PLAYER_0,(i%2 ? 0x22220 :~0x22220) & ~0xc00 );
-        gpio_put_masked(LEDS_PIN_PLAYER_1,(i%2 ? 0x44044 :~0x44044) & ~0xc00 );
-        sleep_ms(a_delay);
-        gpio_put_masked(LEDS_PIN_PLAYER_0,0);
-        gpio_put_masked(LEDS_PIN_PLAYER_1,0);
-        sleep_ms(a_delay/2);
-        gpio_put_masked(LEDS_PIN_PLAYER_1, i%2 ? 0xc00 :0 );
-        gpio_put_masked(LEDS_PIN_PLAYER_0, i%2 ? 0 : 0xc00 );
-        sleep_ms(a_delay);
-        gpio_put_masked(LEDS_PIN_PLAYER_0,0);
-        gpio_put_masked(LEDS_PIN_PLAYER_1,0);
-        sleep_ms(a_delay/2);
-    }
-}
-
-void win_animation(bool player){
-    //thingy running around
-    // 0101 0101 0101 0101 0100 (en binario) --> PLAYER 1
-    // 1010 1010 1010 1010 1000 (en binario) --> PLAYER 0
-
-    printf("Win animation start!\n");
-    printf("player mask:%x\n",LEDS_PIN_PLAYER_1<<(player^1));
-
-    gpio_put_masked(LEDS_PIN, 0);  // Apagar todos los LEDs
-    sleep_ms(a_delay/2);  // Esperar un segundo antes de apagar todos los LEDs
-
-    uint8_t pos[]={0,1,2,5,8,7,6,3,4,4,3,6,7,8,5,2,1,0};
-
-    for (uint8_t i=0; i<=17; i++){
-        if(i!=9){gpio_put(2+(player^1)+pos[i]*2,1);}
-        if(i!=0){gpio_put(2+(player^1)+pos[i-1]*2,1);}
-        sleep_ms(a_delay/1.5);
-
-        gpio_put_masked(LEDS_PIN_PLAYER_1 << (player^1),0);
-        sleep_ms(a_delay/4);
-    }
-    // 0001 0001 0101 0001 0000 --> 11510
-    for(uint8_t i=0; i<3;i++){
-        gpio_put_masked(LEDS_PIN_PLAYER_1 << (player^1), 0x11510 << (player^1) );
-        sleep_ms(a_delay/1.5);
-
-        gpio_put_masked(LEDS_PIN_PLAYER_1 << (player^1),0);
-        sleep_ms(a_delay/4);
-    }
-
 }

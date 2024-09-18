@@ -49,11 +49,6 @@
     void process_time(uint8_t*);
     void choose_player(void);
 
-    void start_animation(void);
-    void draw_animation(void);
-    void win_animation(bool player);
-
-
     // to do:
     //animaciones
 
