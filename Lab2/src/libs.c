@@ -3,7 +3,7 @@
  * 
  * @brief Implementación de las funciones de la librería
  * 
- * Implementación de las funciones de la librería
+ * 
  * 
  * @authors Maria Del Mar Arbelaez Sandoval
  *         Julian Mauricio Sanchez Ceballos
@@ -33,7 +33,7 @@ volatile uint16_t g_state_leds_0 = 0;
 volatile uint16_t g_state_leds_1 = 0;
 volatile bool button_pressed = false;
 
-/**
+
 
 static void start_animation(void){
     printf("Initial animation start!\n");
