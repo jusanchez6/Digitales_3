@@ -1,5 +1,14 @@
 /**
  * @file libs.c
+ * 
+ * @brief Implementación de las funciones de la librería
+ * 
+ * Implementación de las funciones de la librería
+ * 
+ * @authors Maria Del Mar Arbelaez Sandoval
+ *         Julian Mauricio Sanchez Ceballos
+ * 
+ * @date 2024-09-18
  */
 
 // Standard libraries
@@ -11,7 +20,12 @@
 // Libs header file
 #include "libs.h"
 
-// Global variables
+/**
+ * @brief Definición de la variable que contiene la mascara de posiciones
+ * 
+ * Variable que contiene la mascara de posiciones seleccionadas por los jugadores.
+ */
+
 uint16_t bitmask = 0;
 volatile uint8_t position = -1;
 volatile bool g_state_player = 0;
@@ -20,8 +34,7 @@ volatile uint16_t g_state_leds_1 = 0;
 volatile bool button_pressed = false;
 
 /**
- * @brief This shows the start animation on the leds.
- */
+
 static void start_animation(void){
     printf("Initial animation start!\n");
 
@@ -50,9 +63,7 @@ static void start_animation(void){
     }
 }
 
-/**
- * @brief This shows the draw animation
- */
+
 static void draw_animation(void){
     // very circle-oriented since it is a draw
     // 1010 1010 1010 1010 1000 (en binario) --> PLAYER 0
@@ -78,9 +89,7 @@ static void draw_animation(void){
     }
 }
 
-/**
- * @brief This shows the winning animation with each player as the winner
- */
+
 static void win_animation(bool player){
     //thingy running around
     // 0101 0101 0101 0101 0100 (en binario) --> PLAYER 1
@@ -113,9 +122,7 @@ static void win_animation(bool player){
 
 }
 
-/**
- * @brief This function initializes the GPIOs.
- */
+
 void init_read_gpio(void)
 {
     gpio_init_mask(READ_PINS);
@@ -132,9 +139,7 @@ void init_read_gpio(void)
     gpio_pull_down(BUTTON_PIN);
 }
 
-/**
- * @brief This function initializes the LEDs.
- */
+
 void init_leds(void)
 {
     //pines de jugadores
@@ -145,17 +150,13 @@ void init_leds(void)
     gpio_set_dir(INNER_LED,true);
 }
 
-/**
- * @brief Checks if a specific position is already selected.
- */
+
 bool check_bitmask(uint16_t bitmask, uint8_t position)
 {
     return bitmask & (1 << position);
 }
 
-/**
- * @brief Reads binary input from the GPIOs.
- */
+
 int8_t read_binary_input(void)
 {
     position = 0;
@@ -166,18 +167,14 @@ int8_t read_binary_input(void)
     return position;
 }
 
-/**
- * @brief Changes the current player.
- */
+
 void change_player(void)
 {
     g_state_player = !g_state_player;   
     gpio_put(PLAYERS_PIN, !gpio_get(PLAYERS_PIN));
 }
 
-/**
- * @brief Sets the LED for the given position and player.
- */
+
 void set_led(uint8_t position, bool player)
 {
     printf("Setting LED %d for player %d \n", position, player);
@@ -203,9 +200,7 @@ void set_led(uint8_t position, bool player)
     printf("State LEDs 1: %x \n", g_state_leds_1);
 }
 
-/**
- * @brief Checks specific winning patterns for the player.
- */
+
 void check_winner(void)
 {
     // Combinaciones ganadoras en un tablero de 3x3
@@ -275,10 +270,7 @@ void reset_game(void)
     printf("Game reset!\n");
 }
 
-/**
- * @brief This processes the game, first, it checks if the position is valid, if it is, it sets the led,
- * sees if anyone's won and changes the player if anyone hasn't. It cleans the position after handling.
- */
+
 void process_game (void) {
     if (position >= 1 && position <= 9)
     {
@@ -308,18 +300,13 @@ void process_game (void) {
     position = -1; // Reset position after handling
 }
 
-/**
- * @brief This is the interrupt service routine for the button.
- */
+
 void button_isr(uint gpio, uint32_t events)
 {
     button_pressed = true;
 }
 
-/**
- * @brief This allows to take time on different moments of the button press to check if
- * its more than 5 seconds.
- */
+
 void process_time(uint8_t *moment){
     //if moment=1, RISE-> start timer
     //if moment=0, FALL-> finish timer and print
@@ -343,9 +330,7 @@ void process_time(uint8_t *moment){
 }
 
 
-/**
- * @brief This uses internal clock to choose the player randomly.
- */
+
 void choose_player(void){
     if(time_us_32()%2){
         g_state_player=0;

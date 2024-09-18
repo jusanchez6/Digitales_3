@@ -1,24 +1,26 @@
 /*!
-\mainpage Implementación de Cifrado AES-128
+\mainpage TIC TAC TOE 
 
-\section intro_sec Introducción
+\section intro_sec Descripción
 
-Como primer laboratorio de la asignatura de Electrónica Digital 3, se propone la implementación de un cifrado AES-128 en C. El cifrado AES (Advanced Encryption Standard) es un algoritmo de cifrado simétrico que se utiliza para proteger datos confidenciales. AES-128 es la variante más común de este algoritmo y utiliza una clave de 128 bits para cifrar los datos. Esto es útil para el entendimiento de operaciones a nivel de bit y el acercamiento a la programación en lenguaje C.
+Este laboratorio muestra el desarrollo de un juego de Tic Tac Toe (o Tres en linea) utilizando un microcontrolador para
+gestionar el tablero de juego 3x3 representado por 9 LEDs bicolor
 
-Este proyecto implementa el algoritmo de cifrado AES-128 en C. El archivo principal, \ref main.c "main.c", contiene la función principal que gestiona la encriptación de datos. A continuación se detallan los componentes principales y el flujo de ejecución del programa.
-
+Aqui se muestra la documentación del codigo. 
 \section details_sec Detalles del Programa
-- La clave y el estado se leen desde archivos de texto.
-- La clave se expande para el cifrado AES-128.
-- El estado se encripta utilizando la clave expandida.
-- El resultado se guarda en el archivo `encripted.txt`.
+El juego cuenta con las siguientes caracteristicas
+
+- Gestion de turnos
+- Secuencias de inicio y fin de juego (Para los distintos casos).
+- Validación de movimientos.
+
 
 \section author_sec Información de los Autores
 - **Autores**: Maria Del Mar Arbelaez Sandoval, Julian Mauricio Sanchez Ceballos
 - **Asignatura**: Electrónica Digital 3
-- **Fecha**: 27/8/2024
-- **Versión**: 1.1
+- **Fecha**: 18/9/2024
+- **Versión**: 1.0
 
 \section notes_sec Notas
-Asegúrate de que los archivos de entrada y salida estén correctamente configurados antes de ejecutar el programa.
+La version del juego se puede encontrar en: https://github.com/jusanchez6/Digitales_3
 */

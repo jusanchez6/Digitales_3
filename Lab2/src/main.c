@@ -1,8 +1,15 @@
 /**
  * @file main.c
- * @brief This is a brief description of the main C file.
+ * @brief Archivo que contiene la función main.
  *
- * Detailed description of the main C file.
+ * Archivo que contiene la función main del programa.
+ * 
+ * @authors Maria Del Mar Arbelaez Sandoval
+ *         Julian Mauricio Sanchez Ceballos
+ * 
+ * @date 2024-09-18
+ * 
+ * 
  */
 
 // Standard libraries
@@ -16,7 +23,8 @@
 /**
  * @brief Main program.
  *
- * This function initializes the MCU and does an infinite cycle.
+ * Función principal del programa, desde aqui se llama los metodos
+ * que gestionan todo el juego.
  */
 int main() {
 	// STDIO initialization
