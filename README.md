@@ -50,3 +50,5 @@ Dentro de la carpeta `textFiles` debe existir el nombre del archivo que se desea
 2. Se generará una carpeta con el nombre `html` en esta carpeta hay un archivo llamado `index.html` al abrir ese archivo se obtendrá la documentación en doxygen.
 
 :) 
+
+# Laboratorio 2: Tres en linea, manejo de gpio
