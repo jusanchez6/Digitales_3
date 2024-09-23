@@ -43,6 +43,7 @@ int main() {
     uint8_t moment=1;
     reset_game();
     while (JUANITA) {
+        
         if (button_pressed) {
             process_time(&moment);
             if(moment==1){
