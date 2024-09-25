@@ -43,6 +43,82 @@
  * 
  */
 
+#ifndef __ADC_H_
+#define __ADC_H_
+
+#include <stdint.h>
+
+/**
+ * \addtogroup ADC rp2350 ADC module
+ * ADC module for the RP2350 board.
+ * 
+ * @{
+ * \brief Hardware library for the RP2350 ADC module.
+ */
+
+
+/**
+ * \addtogroup ADC_CS ADC Control and Status Register
+ * Type definition, constants and macros associatesd to the ADC Control and Status Register.
+ * @{
+ * \brief ADC Control and Status Register
+ */
+
+/**
+ * \typedef __ADC_CS_t
+ * typedef for ADC Control and Status Register.
+ */
+typedef union {
+    uint32_t WORD; /**< Whole register */
+    struct BITS{
+        uint32_t ADCEN              : 1; /**< ADC Enable */
+        uint32_t ADCTS_EN           : 1; /**< POWER TEMPERATURE SENSOR */
+        uint32_t ADC_START_ONCE     : 1; /**< SINGLE CONVERSION */
+        uint32_t ADC_START_MANY     : 1; /**< MANY CONVERSIONS */
+        uint32_t RESERVE            : 4; /**< Reserved */
+        uint32_t ADC_Ready          : 1; /**< ADC Ready */
+        uint32_t ADC_ERR            : 1; /**< ADC Error */
+        uint32_t ADC_STICKY         : 1; /**< ADC Sticky Error */
+        uint32_t RESERVED           : 1; /**< Reserved */
+        uint32_t ADC_AINSEL         : 4; /**< ADC Channel Select */
+        uint32_t ADC_RROBIN         : 9; /**< ADC Round Robin */
+        uint32_t                    : 7; /**< Reserved */
+    } BITS; /**< Bitfield structure */
+
+} __ADC_CS_t;
+
+/**
+ * Mask for the ADC Control and Status Register.
+ */
+#define mADC_CS_ADCEN           (0x00000001) /**< ADC Enable */
+#define mADC_CS_ADCTS_EN        (0x00000002) /**< POWER TEMPERATURE SENSOR */
+#define mADC_CS_ADC_START_ONCE  (0x00000004) /**< SINGLE CONVERSION */
+#define mADC_CS_ADC_START_MANY  (0x00000008) /**< MANY CONVERSIONS */
+#define mADC_CS_ADC_Ready       (0x00000080) /**< ADC Ready */
+#define mADC_CS_ADC_ERR         (0x00000100) /**< ADC Error */
+#define mADC_CS_ADC_STICKY      (0x00000200) /**< ADC Sticky Error */
+#define mADC_CS_ADC_AINSEL      (0x0000F000) /**< ADC Channel Select */
+#define mADC_CS_ADC_RROBIN      (0x1FF00000) /**< ADC Round Robin */
+
+/**
+ * Constants for the ADC Control and Status Register.
+ */
+#define kADC_CS_ADCEN           (0x00000001) /**< ADC Enable */
+#define kADC_CS_ADCDIS          (0x00000000) /**< ADC Disable */
+#define kADC_CS_ADCTS_EN        (0x00000002) /**< POWER TEMPERATURE SENSOR */
+#define kADC_CS_ADCTS_DIS       (0x00000000) /**< POWER TEMPERATURE SENSOR */
+#define kADC_CS_ADC_START_ONCE  (0x00000004) /**< SINGLE CONVERSION */
+#define kADC_CS_ADC_START_MANY  (0x00000008) /**< MANY CONVERSIONS */
+#define kADC_CS_ADC_STYCKY_CLR  (0x00000200) /**< ADC Sticky Error Clear */
+
+
+/**
+ * @}
+ */
 
 
 
+
+
+
+#endif // __ADC_H_
