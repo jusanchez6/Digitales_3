@@ -121,20 +121,33 @@ typedef struct{
 
 }__SHA256_t;
 
-#define sSHA256 (*((__SHA256_t *)( 0x400f8000)))       ///< Normal RW access struct for BUS FABRIC CONTROL module
-//dunno if it has other accesses
+#define sSHA256 (*((__SHA256_t *)( 0x400f8000)))       ///< Normal RW access struct for SHA256 module
+#define sSHA256_XOR (*((__SHA256_t *)( 0x400f9000)))   ///< Atomic XOR WO access struct for SHA256 module
+#define sSHA256_SET (*((__SHA256_t *)( 0x400fa000)))   ///< Atomic SET WO access struct for SHA256 module
+#define sSHA256_CLR (*((__SHA256_t *)( 0x400fb000)))   ///< Atomic CLEAR WO access struct for SHA256 module
 
 /**
  * \addtogroup SHA256_CSR
  * @{
  */
-#define rSHA256_CSR                 sSHA256.CSR.WORD
-#define bSHA256_START               sSHA256.CSR.BITS.START
-#define bSHA256_WDATA_RDY           sSHA256.CSR.BITS.WDATA_RDY
-#define bSHA256_SUM_VLD             sSHA256.CSR.BITS.SUM_VLD
-#define bSHA256_ERR_WDATA_NOT_RDY   sSHA256.CSR.BITS.ERR_WDATA_NOT_RDY
-#define bSHA256_DMA_SIZE            sSHA256.CSR.BITS.DMA_SIZE
-#define bSHA256_BSWAP               sSHA256.CSR.BITS.BSWAP
+#define rSHA256_CSR                   sSHA256.CSR.WORD
+#define bSHA256_START                 sSHA256.CSR.BITS.START
+#define bSHA256_WDATA_RDY             sSHA256.CSR.BITS.WDATA_RDY
+#define bSHA256_SUM_VLD               sSHA256.CSR.BITS.SUM_VLD
+#define bSHA256_ERR_WDATA_NOT_RDY     sSHA256.CSR.BITS.ERR_WDATA_NOT_RDY
+#define bSHA256_DMA_SIZE              sSHA256.CSR.BITS.DMA_SIZE
+#define bSHA256_BSWAP                 sSHA256.CSR.BITS.BSWAP
+
+#define xorSHA256_DMA_SIZE            sSHA256_XOR.CSR.WORD = mSHA256_DMA_SIZE
+#define xorSHA256_BSWAP               sSHA256_XOR.CSR.WORD = mSHA256_BSWAP
+
+#define setSHA256_START               sSHA256_SET.CSR.WORD = mSHA256_START
+#define setSHA256_ERR_WDATA_NOT_RDY   sSHA256_SET.CSR.WORD = mSHA256_ERR_WDATA_NOT_RDY
+#define setSHA256_DMA_SIZE            sSHA256_SET.CSR.WORD = mSHA256_DMA_SIZE
+#define setSHA256_BSWAP               sSHA256_SET.CSR.WORD = mSHA256_BSWAP
+
+#define clrSHA256_DMA_SIZE            sSHA256_CLR.CSR.WORD = mSHA256_DMA_SIZE
+#define clrSHA256_BSWAP               sSHA256_CLR.CSR.WORD = mSHA256_BSWAP
 /**@} */
 
 /**
@@ -150,6 +163,10 @@ typedef struct{
 #define rSHA256_SUM5                sSHA256.SUM5
 #define rSHA256_SUM6                sSHA256.SUM6
 #define rSHA256_SUM7                sSHA256.SUM7
+
+#define xorSHA256_WDATA             sSHA256_XOR.WDATA
+#define setSHA256_WDATA             sSHA256_SET.WDATA
+#define clrSHA256_WDATA             sSHA256_CLR.WDATA
 
 /**@} */
 /**@} */
