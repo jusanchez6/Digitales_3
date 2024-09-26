@@ -1,5 +1,5 @@
 /**
- * @file ADC.c
+ * @file ADC.H
  * 
  * @brief Hardware library for the RP2350 ADC module.
  * @details This file contains the functions for the ADC module of the RP2350 board.
@@ -49,7 +49,7 @@
 #include <stdint.h>
 
 /**
- * \addtogroup ADC rp2350 ADC module
+ * \addtogroup ADC RP2350 ADC module
  * ADC module for the RP2350 board.
  * 
  * @{
@@ -71,15 +71,15 @@
 typedef union {
     uint32_t WORD; /**< Whole register */
     struct BITS{
-        uint32_t ADCEN              : 1; /**< ADC Enable */
+        uint32_t ADC_EN             : 1; /**< ADC Enable */
         uint32_t ADCTS_EN           : 1; /**< POWER TEMPERATURE SENSOR */
         uint32_t ADC_START_ONCE     : 1; /**< SINGLE CONVERSION */
         uint32_t ADC_START_MANY     : 1; /**< MANY CONVERSIONS */
-        uint32_t RESERVE            : 4; /**< Reserved */
+        uint32_t                    : 4; /**< Reserved */
         uint32_t ADC_Ready          : 1; /**< ADC Ready */
         uint32_t ADC_ERR            : 1; /**< ADC Error */
         uint32_t ADC_STICKY         : 1; /**< ADC Sticky Error */
-        uint32_t RESERVED           : 1; /**< Reserved */
+        uint32_t                    : 1; /**< Reserved */
         uint32_t ADC_AINSEL         : 4; /**< ADC Channel Select */
         uint32_t ADC_RROBIN         : 9; /**< ADC Round Robin */
         uint32_t                    : 7; /**< Reserved */
@@ -116,7 +116,7 @@ typedef union {
 
 
 /**
- * \addtogroup __ADC_RESULT.  ADC_RESULT Register for the rp2350 ADC module
+ * \addtogroup __ADC_RESULT.  ADC_RESULT Register for the RP2350 ADC module
  * Typedef, constants, and macros associated with the ADC_RESULT register
  * @{
  * \brief Result register of the most recent the ADC module.
@@ -128,10 +128,10 @@ typedef union {
  * Type definition for [descripción del registro]
 */
 typedef union{
-    uint32_t WORD;                          ///< Whole register access
+    uint32_t WORD;                                  ///< Whole register access
     struct BITS{
-        uint32_t ADC_RESULT              : 12; ///< ADC Result
-        uint32_t                         : 20; ///< Reserved
+        uint32_t ADC_RESULT              : 12;      ///< ADC Result
+        uint32_t                         : 20;      ///< Reserved
 
     } BITS;
 } __ADC_RESULT_t;
@@ -149,7 +149,7 @@ typedef union{
 
 
 /**
- * \addtogroup __ADC_FCS_REGISTER. FCS Register for the rp2350 ADC module
+ * \addtogroup __ADC_FCS_REGISTER. FCS Register for the RP2350 ADC module
  * Typedef, constants, and macros associated with the FCS_REGISTER register
  * @{
  * \brief FIFO Control and Status Register for the ADC module.
@@ -207,8 +207,8 @@ typedef union{
 
 
 /**
- * \addtogroup __ADC_FIFO_REGISTER. FIFO Register for the rp2350 ADC module
- * Typedef, constants, and macros associated with the [NOMBRE_DEL_REGISTRO] register
+ * \addtogroup __ADC_FIFO_REGISTER. FIFO Register for the RP2350 ADC module
+ * Typedef, constants, and macros associated with the ADC FIFO  register
  * @{
  * \brief Conversion result FIFO
 */
@@ -242,8 +242,8 @@ typedef union{
 
 
 /**
- * \addtogroup __ADC_DIV_REGISTER. DIV Register for the rp2350 ADC module
- * Typedef, constants, and macros associated with the [NOMBRE_DEL_REGISTRO] register
+ * \addtogroup __ADC_DIV_REGISTER. DIV Register for the RP2350 ADC module
+ * Typedef, constants, and macros associated with the ADC DIV register
  * @{
  * \brief Clock divider. If non-zero, CS_START_MANY will start
  conversions at regular intervals rather than back-to-back.
@@ -279,8 +279,8 @@ typedef union{
 
 
 /**
- * \addtogroup __ADC_INTR_REGISTER. INTR Register for the rp2350 ADC module
- * Typedef, constants, and macros associated with the [NOMBRE_DEL_REGISTRO] register
+ * \addtogroup __ADC_INTR_REGISTER. INTR Register for the RP2350 ADC module
+ * Typedef, constants, and macros associated with the ADC INTR register
  * @{
  * \brief Raw interrupt register for the ADC module
 */
@@ -311,8 +311,8 @@ typedef union{
 
 
 /**
- * \addtogroup __ADC_INTE_REGISTER. INTE Register for the rp2350 ADC module
- * Typedef, constants, and macros associated with the [NOMBRE_DEL_REGISTRO] register
+ * \addtogroup __ADC_INTE_REGISTER. INTE Register for the RP2350 ADC module
+ * Typedef, constants, and macros associated with the ADC INTE register
  * @{
  * \brief Interrupt enable
 */
@@ -343,8 +343,8 @@ typedef union{
 
 
 /**
- * \addtogroup __ADC_INTF_REGISTER. INTF Register for the rp2350 ADC module
- * Typedef, constants, and macros associated with the [NOMBRE_DEL_REGISTRO] register
+ * \addtogroup __ADC_INTF_REGISTER. INTF Register for the RP2350 ADC module
+ * Typedef, constants, and macros associated with the ADC INTF register
  * @{
  * \brief Interrupt force
 */
@@ -373,8 +373,8 @@ typedef union{
 /** @} */
 
 /**
- * \addtogroup __ADC_INTS_REGISTER. INTS Register for the rp2350 ADC module
- * Typedef, constants, and macros associated with the INTS register
+ * \addtogroup __ADC_INTS_REGISTER. INTS Register for the RP2350 ADC module
+ * Typedef, constants, and macros associated with the ADC INTS register
  * @{
  * \brief Interrupt status after masking and forcing
 */
@@ -425,27 +425,35 @@ typedef struct {
 
 
 /**
- * \addtogroup __ADC_CS_REGISTER. CS Register for the rp2350 ADC module
+ * \addtogroup Normal Access Macros
  * @{
+ * \brief Normal access macros for the ADC module
+ */
+
+/**
+ * \addtogroup __ADC_CS_REGISTER. CS Register for the RP2350 ADC module
+ * @{
+ * \brief Normal access for ADC Control and Status Register 
  */
 
 
-#define rADC_CS                 (sADC.CS_R.WORD)                    ///< ADC Control and Status Register
-#define bADC_CS_ADCEN           (sADC.CS_R.BITS.ADCEN)              ///< ADC Enable
-#define bADC_CS_ADSCTS_EN       (sADC.CS_R.BITS.ADCTS_EN)           ///< POWER TEMPERATURE SENSOR
-#define bADC_CS_ADC_START_ONCE  (sADC.CS_R.BITS.ADC_START_ONCE)     ///< SINGLE CONVERSION
-#define bADC_CS_START_MANY      (sADC.CS_R.BITS.ADC_START_MANY)     ///< MANY CONVERSIONS
-#define bADC_CS_ADC_Ready       (sADC.CS_R.BITS.ADC_Ready)          ///< ADC Ready
-#define bADC_CS_ADC_ERR         (sADC.CS_R.BITS.ADC_ERR)            ///< ADC Error
-#define bADC_CS_ADC_STICKY      (sADC.CS_R.BITS.ADC_STICKY)         ///< ADC Sticky Error
-#define bADC_CS_ADC_AINSEL      (sADC.CS_R.BITS.ADC_AINSEL)         ///< ADC Channel Select
-#define bADC_CS_ADC_RROBIN      (sADC.CS_R.BITS.ADC_RROBIN)         ///< ADC Round Robin
+#define rADC_CS                 (sADC.CS_R.WORD)                        ///< ADC Control and Status Register
+#define bADC_CS_ADC_EN           (sADC.CS_R.BITS.ADC_EN)                ///< ADC Enable
+#define bADC_CS_ADSCTS_EN       (sADC.CS_R.BITS.ADCTS_EN)               ///< POWER TEMPERATURE SENSOR
+#define bADC_CS_ADC_START_ONCE  (sADC.CS_R.BITS.ADC_START_ONCE)         ///< SINGLE CONVERSION
+#define bADC_CS_START_MANY      (sADC.CS_R.BITS.ADC_START_MANY)         ///< MANY CONVERSIONS
+#define bADC_CS_ADC_Ready       (sADC.CS_R.BITS.ADC_Ready)              ///< ADC Ready
+#define bADC_CS_ADC_ERR         (sADC.CS_R.BITS.ADC_ERR)                ///< ADC Error
+#define bADC_CS_ADC_STICKY      (sADC.CS_R.BITS.ADC_STICKY)             ///< ADC Sticky Error
+#define bADC_CS_ADC_AINSEL      (sADC.CS_R.BITS.ADC_AINSEL)             ///< ADC Channel Select
+#define bADC_CS_ADC_RROBIN      (sADC.CS_R.BITS.ADC_RROBIN)             ///< ADC Round Robin
 
 /**@} */
 
 /**
- * \addtogroup __ADC_RESULT_REGISTER. RST Register for the rp2350 ADC module
+ * \addtogroup __ADC_RESULT_REGISTER. RST Register for the RP2350 ADC module
  * @{
+ * \brief Normal access for ADC Result Register
  */
 #define rADC_RESULT (sADC.RST_R.WORD)                   ///< ADC Result Register
 #define bADC_RESULT (sADC.RST_R.BITS.ADC_RESULT)        ///< ADC Result
@@ -454,8 +462,9 @@ typedef struct {
 
 
 /**
- * \addtogroup __ADC_FCS_REGISTER. FCS Register for the rp2350 ADC module
+ * \addtogroup __ADC_FCS_REGISTER. FCS Register for the RP2350 ADC module
  * @{
+ * \brief Normal access for ADC FIFO Control and Status Register
  */
 #define rADC_FCS            (sADC.FCS_R.WORD)                   ///< FIFO Control and Status Register
 #define bADC_FCS_EN         (sADC.FCS_R.BITS.FCS_EN)            ///< FIFO Enable
@@ -473,8 +482,9 @@ typedef struct {
 
 
 /**
- * \addtogroup __ADC_FIFO_REGISTER. FIFO Register for the rp2350 ADC module
+ * \addtogroup __ADC_FIFO_REGISTER. FIFO Register for the RP2350 ADC module
  * @{
+ * \brief Normal access for ADC FIFO Register 
  */
 #define rADC_FIFO           (sADC.FIFO_R.WORD)                  ///< FIFO Data Register
 #define bADC_FIFO_DATA      (sADC.FIFO_R.BITS.FIFO_DATA)        ///< FIFO Data
@@ -484,8 +494,9 @@ typedef struct {
 
 
 /**
- * \addtogroup __ADC_DIV_REGISTER. DIV Register for the rp2350 ADC module
+ * \addtogroup __ADC_DIV_REGISTER. DIV Register for the RP2350 ADC module
  * @{
+ * \brief Normal access for ADC DIV Register
  */
 #define rADC_DIV            (sADC.DIV_R.WORD)                   ///< Clock Divider Register
 #define bADC_DIV_FRAC       (sADC.DIV_R.BITS.DIV_FRAC)          ///< Frac part of divider
@@ -494,8 +505,9 @@ typedef struct {
 /**@} */
 
 /**
- * \addtogroup __ADC_INTR_REGISTER. INTR Register for the rp2350 ADC module
+ * \addtogroup __ADC_INTR_REGISTER. INTR Register for the RP2350 ADC module
  * @{
+ * \brief Normal access for ADC INTR Register
  */
 #define rADC_INTR           (sADC.INTR_R.WORD)                  ///< Raw interrupt register
 #define bADC_INTR_FIFO      (sADC.INTR_R.BITS.INTR_FIFO)        ///< FIFO interrupt
@@ -503,8 +515,9 @@ typedef struct {
 /**@} */
 
 /**
- * \addtogroup __ADC_INTE_REGISTER. INTE Register for the rp2350 ADC module
+ * \addtogroup __ADC_INTE_REGISTER. INTE Register for the RP2350 ADC module
  * @{
+ * \brief Interrupt enable register
  */
 #define rADC_INTE           (sADC.INTE_R.WORD)                  ///< Interrupt enable register
 #define bADC_INTE_FIFO      (sADC.INTE_R.BITS.INTE_FIFO)        ///< FIFO interrupt enable
@@ -512,8 +525,9 @@ typedef struct {
 /**@} */
 
 /**
- * \addtogroup __ADC_INTF_REGISTER. INTF Register for the rp2350 ADC module
+ * \addtogroup __ADC_INTF_REGISTER. INTF Register for the RP2350 ADC module
  * @{
+ * \brief Interrupt force register
  */
 #define rADC_INTF           (sADC.INTF_R.WORD)                  ///< Interrupt force register
 #define bADC_INTF_FIFO      (sADC.INTF_R.BITS.INTF_FIFO)        ///< FIFO interrupt force
@@ -521,8 +535,9 @@ typedef struct {
 /**@} */
 
 /**
- * \addtogroup __ADC_INTS_REGISTER. INTS Register for the rp2350 ADC module
+ * \addtogroup __ADC_INTS_REGISTER. INTS Register for the RP2350 ADC module
  * @{
+ * \brief Interrupt status after masking and forcing
  */
 #define rADC_INTS           (sADC.INTS_R.WORD)                  ///< Interrupt status after masking and forcing
 #define bADC_INTS_FIFO      (sADC.INTS_R.BITS.INTS_FIFO)        ///< FIFO interrupt status
@@ -531,5 +546,6 @@ typedef struct {
 
 /** @} */
 
+/** @} */
 
 #endif // __ADC_H_

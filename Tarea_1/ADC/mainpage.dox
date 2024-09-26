@@ -1,0 +1,43 @@
+/**
+ * @mainpage RP2350 ADC Module Documentation
+ * 
+ * @section intro_sec Introduction
+ * 
+ * This is the hardware library for the Analog-to-Digital Converter (ADC) module of the RP2350 board. 
+ * It provides all necessary definitions and macros to interact with the memory-mapped ADC registers. 
+ * The ADC module allows conversion of analog signals into digital data with various configurations 
+ * and controls, including single and continuous conversions, FIFO management, and interrupt handling.
+ * 
+ * @section usage_sec Usage
+ * 
+ * The header file defines the structure and access macros for the ADC registers. These macros allow 
+ * the control and monitoring of the ADC module through direct register manipulation. Below are some 
+ * key functionalities provided:
+ * 
+ * - Enable or disable the ADC.
+ * - Select the ADC channel and start single or continuous conversions.
+ * - Monitor the ADC result and error flags.
+ * - Control and manage the FIFO (First In, First Out) buffer.
+ * - Configure the clock divider for ADC sampling.
+ * - Handle interrupts for FIFO and ADC events.
+ * 
+ * @section structure_sec File Structure
+ * 
+ * The file is organized as follows:
+ * 
+ * - **Register Definitions**: Typedefs, register masks, and constants for each ADC register.
+ * - **Module Structure**: Typedefs and macros to access the ADC module as a whole, with atomic set, 
+ *   clear, and XOR operations.
+ * - **Register Access Macros**: Macros to access individual ADC registers and their bitfields.
+ * 
+ * @section license_sec License
+ * 
+ * This file is unlicensed. It is provided without any warranty. Use at your own risk.
+ * 
+ * @section author_sec Author
+ * 
+ * Developed by Julian Mauricio Sanchez Ceballos.
+ * 
+ * @version 1.0
+ * @date September 24, 2024
+ */
