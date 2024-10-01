@@ -546,6 +546,213 @@ typedef struct {
 
 /** @} */
 
+/**
+ * \addtogroup Xor Access MACROS
+ * {@
+ * \brief XOR Access MACROS for the RP2350 ADC module
+ *  
+ */
+
+/**
+ * \addtogroup __ADC_XOR_CS_REGISTER. CS Register for the RP2350 ADC module
+ * @{
+ * \brief XOR access for ADC Control and Status Register 
+ */
+
+#define xorADC_CS_EN            (sADC_XOR.CS_R.BIST.ADC_EN)
+#define xorADC_CS_TS_EN         (sADC_XOR.CS_R.BITS.ADCTS_EN)
+#define xorADC_CS_START_MANY    (sADC_XOR.CS_R.BIS.ADC_START_ONCE){}
+#define xorADC_CS_ADC_START     (sADC_XOR.CS_R.BITS.ADC_START_MANY)
+#define xorADC_CS_AINSEL        (sADC_XOR.CS_R.BITS.ADC_AINSEL)
+#define xorADC_CS_RROBIN        (sADC_XOR.CS_R.BITS.ADC_RROBIN)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_XOR_FCS_REGISTER. FCS Register for the RP2350 ADC module
+ * @{
+ * \brief XOR access for ADC FIFO Control and Status Register
+ */
+
+#define xorADC_FCS_EN           (sADC_XOR.FCS_R.BITS.FCS_EN)
+#define xorADC_FCS_SHIFT        (sADC_XOR.FCS_R.BITS.FCS_SHIFT)
+#define xorADC_FCS_ERR          (sADC_XOR.FCS_R.BITS.FCS_ERR)
+#define xorADC_FCS_DREQ_EN      (sADC_XOR.FCS_R.BITS.FCS_DREQ_EN)
+#define xorADC_FCS_EMPTY        (sADC_XOR.FCS_R.BITS.FCS_EMPTY)
+#define xorADC_FCS_UNDER        (sADC_XOR.FCS_R.BITS.FCS_UNDER)
+#define xorADC_FCS_OVER         (sADC_XOR.FCS_R.BITS.FCS_OVER)
+#define xorADC_fcs_THRESH       (sADC_XOR.FCS_R.BITS.FCS_THRESH)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_XOR_DIV_REGISTER. INTR Register for the RP2350 ADC module
+ * @{
+ * \brief XOR access for ADC DIV Register
+ * 
+ */
+
+#define xorADC_DIV_FRAC         (sADC_XOR.DIV_R.BITS.DIV_FRAC)
+#define xorADC_DIV_INT          (sADC_XOR.DIV_R.BITS.DIV_INT)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_XOR_INTE_REGISTER. INTE Register for the RP2350 ADC module
+ * @{
+ * \brief XOR access for ADC INTE Register
+ */
+#define xorADC_INTE_FIFO        (sADC_XOR.INTE_R.BITS.INTE_FIFO)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_XOR_INTF_REGISTER. INTF Register for the RP2350 ADC module
+ * @{
+ * \brief XOR access for ADC INTF Register
+ */
+#define xorADC_INTF_FIFO        (sADC_XOR.INTF_R.BITS.INTF_FIFO)
+
+/** @} */
+
+/** @} */
+
+/**
+ * \addtogroup SET Access MACROS
+ * @{
+ * \brief SET Access MACROS for the RP2350 ADC module
+ */
+
+/**
+ * \addtogroup __ADC_SET_CS_REGISTER. CS Register for the RP2350 ADC module
+ * @{
+ * \brief SET access for ADC Control and Status Register 
+ */
+#define setADC_CS_EN           (sADC_SET.CS_R.BITS.ADC_EN)
+#define setADC_CS_TS_EN        (sADC_SET.CS_R.BITS.ADCTS_EN)
+#define setADC_CS_START_ONCE   (sADC_SET.CS_R.BITS.ADC_START_ONCE)
+#define setADC_CS_START_MANY   (sADC_SET.CS_R.BIS.ADC_START_ONCE)
+#define setADC_CS_STICKY       (sADC_SET.CS_R.BITS.ADC_STICKY)
+#define setADC_CS_AINSEL       (sADC_SET.CS_R.BITS.ADC_AINSEL)
+#define setADC_CS_RROBIN       (sADC_SET.CS_R.BITS.ADC_RROBIN)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_SET_FCS_REGISTER. FCS Register for the RP2350 ADC module
+ * @{
+ * \brief SET access for ADC FIFO Control and Status Register
+ */
+#define setADC_FCS_EN          (sADC_SET.FCS_R.BITS.FCS_EN)
+#define setADC_FCS_SHIFT       (sADC_SET.FCS_R.BITS.FCS_SHIFT)
+#define setADC_FCS_ERR         (sADC_SET.FCS_R.BITS.FCS_ERR)
+#define setADC_FCS_DREQ_EN     (sADC_SET.FCS_R.BITS.FCS_DREQ_EN)
+#define setADC_FCS_UNDER       (sADC_SET.FCS_R.BITS.FCS_UNDER)
+#define setADC_FCS_OVER        (sADC_SET.FCS_R.BITS.FCS_OVER)
+#define setADC_FCS_LEVEL       (sADC_SET.FCS_R.BITS.FCS_LEVEL)
+#define setADC_FCS_THRESH      (sADC_SET.FCS_R.BITS.FCS_THRESH)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_SET_DIV_REGISTER. DIV Register for the RP2350 ADC module
+ * @{
+ * \brief SET access for ADC DIV Register
+ */
+#define setADC_DIV_FRAC        (sADC_SET.DIV_R.BITS.DIV_FRAC)
+#define setADC_DIV_INT         (sADC_SET.DIV_R.BITS.DIV_INT)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_SET_INTE_REGISTER. INTE Register for the RP2350 ADC module
+ * @{
+ * \brief SET access for ADC INTE Register
+ */
+#define setADC_INTE_FIFO       (sADC_SET.INTE_R.BITS.INTE_FIFO)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_SET_INTF_REGISTER. INTF Register for the RP2350 ADC module
+ * @{
+ * \brief SET access for ADC INTF Register
+ */
+#define setADC_INTF_FIFO       (sADC_SET.INTF_R.BITS.INTF_FIFO)
+
+/** @} */
+/** @} */
+
+/**
+ * \addtogroup CLR Access MACROS
+ * @{
+ * \brief CLR Access MACROS for the RP2350 ADC module
+ */
+
+/**
+ * \addtogroup __ADC_CLR_CS_REGISTER. CS Register for the RP2350 ADC module
+ * @{
+ * \brief CLR access for ADC Control and Status Register 
+ */
+#define clrADC_CS_EN           (sADC_CLR.CS_R.BITS.ADC_EN)
+#define clrADC_CS_TS_EN        (sADC_CLR.CS_R.BITS.ADCTS_EN)
+#define clrADC_CS_START_ONCE   (sADC_CLR.CS_R.BITS.ADC_START_ONCE)
+#define clrADC_CS_START_MANY   (sADC_CLR.CS_R.BIS.ADC_START_ONCE)
+#define clrADC_CS_STICKY       (sADC_CLR.CS_R.BITS.ADC_STICKY)
+#define clrADC_CS_AINSEL       (sADC_CLR.CS_R.BITS.ADC_AINSEL)
+#define clrADC_CS_RROBIN       (sADC_CLR.CS_R.BITS.ADC_RROBIN)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_CLR_FCS_REGISTER. FCS Register for the RP2350 ADC module
+ * @{
+ * \brief CLR access for ADC FIFO Control and Status Register
+ * 
+ */
+#define clrADC_FCS_EN          (sADC_CLR.FCS_R.BITS.FCS_EN)
+#define clrADC_FCS_SHIFT       (sADC_CLR.FCS_R.BITS.FCS_SHIFT)
+#define clrADC_FCS_ERR         (sADC_CLR.FCS_R.BITS.FCS_ERR)
+#define clrADC_FCS_DREQ_EN     (sADC_CLR.FCS_R.BITS.FCS_DREQ_EN)
+#define clrADC_FCS_UNDER       (sADC_CLR.FCS_R.BITS.FCS_UNDER)
+#define clrADC_FCS_OVER        (sADC_CLR.FCS_R.BITS.FCS_OVER)
+#define clrADC_FCS_LEVEL       (sADC_CLR.FCS_R.BITS.FCS_LEVEL)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_CLR_DIV_REGISTER. DIV Register for the RP2350 ADC module
+ * @{
+ * \brief CLR access for ADC DIV Register
+ * 
+ */
+#define clrADC_DIV_FRAC        (sADC_CLR.DIV_R.BITS.DIV_FRAC)
+#define clrADC_DIV_INT         (sADC_CLR.DIV_R.BITS.DIV_INT)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_CLR_INTE_REGISTER. INTE Register for the RP2350 ADC module
+ * @{
+ * \brief CLR access for ADC INTE Register
+ * 
+ */
+#define clrADC_INTE_FIFO       (sADC_CLR.INTE_R.BITS.INTE_FIFO)
+
+/** @} */
+
+/**
+ * \addtogroup __ADC_CLR_INTF_REGISTER. INTF Register for the RP2350 ADC module
+ * @{
+ * \brief CLR access for ADC INTF Register
+ * 
+ */
+#define clrADC_INTF_FIFO       (sADC_CLR.INTF_R.BITS.INTF_FIFO)
+
+/** @} */
+
+/** @} */
+
 /** @} */
 
 #endif // __ADC_H_
