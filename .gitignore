@@ -26,6 +26,7 @@
 /**/build/.txt
 
 /**/TextFiles
+/**/src/test.c
 
 /build/
 /CMakeFiles/
