@@ -24,6 +24,7 @@ include_directories(include)
 target_link_libraries(LAB3 
                     pico_stdlib
                     hardware_gpio
+                    hardware_timer
                     )
 
 # Enable usb output, disable uart output
