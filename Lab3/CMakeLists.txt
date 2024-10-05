@@ -13,8 +13,10 @@ pico_sdk_init()
 
 # C/C++ project files
 add_executable(LAB3
-    src/main.c
-    src/libs.c
+    src/test.c
+    #src/main.c
+    #src/libs.c
+    src/mat.c
 )
 
 # Header folder

@@ -1,6 +1,6 @@
 /**
- * @file main.c
- * @brief Archivo que contiene la función main.
+ * @file test.c
+ * @brief Archivo que contiene la función test.
  *
  * Archivo que contiene la función main del programa.
  * 
@@ -15,7 +15,7 @@
 // Standard libraries
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "libs.h"
+#include "mat.h"
 
 /**
  * @brief Main program.
@@ -26,11 +26,6 @@
 #define JUANITA 1
 
 int main() {
-	return 0;    
-}
-
-/**
- * int main() {
 	// STDIO initialization
     stdio_init_all();
 
@@ -55,4 +50,3 @@ int main() {
     }
     return 0;    
 }
- */
