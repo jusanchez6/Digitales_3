@@ -31,22 +31,13 @@ int main() {
 
     // initialize the gpios
     init_mat();
-    init_callback();
-    //attach timer
-    //repeating_timer_t timer_mat;
-    //if(!add_repeating_timer_ms(5, repeating_timer_callback ,NULL, &timer_mat)){printf("timers don't work :(");}
-    
-    reading=0;
-    volatile uint8_t c=0;
-    bool done=false;
+
+    //reading=0;
+    volatile uint8_t value;
 
     while (JUANITA) {
-        if(reading!=0){
-            done=read_mat(c);}
-        if (done){
-            done=false;
-        }
-        //sleep_ms(3);
+        while(!read_mat(&value)); //bloquear hasta que esté lista la lectura
+        printf("Value read is %c\n",value);
     }
     return 0;    
 }

@@ -51,7 +51,7 @@ typedef struct
 void init_users(void);
 
 /**
- * @brief Verifica las credenmciales ingresadas
+ * @brief Verifica las credenciales ingresadas
  * 
  * Compara el ID y la clave ingresados con los de la base de datos
  * 
@@ -65,8 +65,7 @@ bool verify_credentials(uint8_t *id, uint8_t *key);
 
 
 /**
- * @brief Inicializa el tremporizador para contar el tiempo de entreda de la clave
- * 
+ * @brief Inicializa el temporizador para contar el tiempo de entreda de la clave
  * 
  * Configura una alamar que se dispara despues de un tiempo determinado (10 segundos)
  */

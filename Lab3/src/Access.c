@@ -3,7 +3,7 @@
  * 
  * @brief Implementacion del sistema de control de accesso con teclado matricial
  * 
- * Este archivo contiene la implementacion de las funciones necesarias para el sistema de control de acceso con verificacion de ID y clave de usuario, utilzando ledas y un teclado matricial
+ * Este archivo contiene la implementación de las funciones necesarias para el sistema de control de acceso con verificacion de ID y clave de usuario, utilzando LEDs y un teclado matricial
  * 
  * @authors Maria Del Mar Arbelaez
  *         Julian Mauricio Sanchez
