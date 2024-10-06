@@ -1,0 +1,47 @@
+/**
+ * @mainpage RP2350 SHA-256 Accelerator Module Documentation
+ * 
+ * @section intro_sec Introduction
+ * 
+ * This is the hardware library for the SHA-256 module of the RP2350 board. 
+ * It provides all necessary definitions and macros to interact with the memory-mapped SHA-256 registers. 
+ * The SHA-256 hash algorithm digests an arbitrary-length of data, known as the message, and produces a 
+ * fixed-size result, known as hash. The result, in this case, is always 256 bits in size.
+ * 
+ * @section usage_sec Usage
+ * 
+ * The header file defines the structure and access macros for the SHA256 registers. These macros allow 
+ * the control and monitoring of the SHA-256 module through direct register manipulation. Hash algorithms
+ * are designed such that:
+ * - Given the hash, it is impossible to recover the original message.
+ * - Small changes to the original message result in large changes to the hash.
+ * - Given a message with a particular hash, it is impossible to generate a different message with the same hash.
+ *
+ * To compute a SHA-256 with the RP2350 SHA-256 Accelerator:
+ * 1. Initialize by writing a 1 to `bSHA256_START`.
+ * 2. Write the message to the `rSHA256_WDATA` register, polling `bSHA256_WDATA_RDY` in between writes.
+ * 3. Write additional trailer and padding data to `rSHA256_WDATA`, according to the FIPS 180-4 Secure Hash Standard.
+ * 4. Poll `bSHA256_SUM_VLD` to wait for the last block to be processed.
+ * 5. Read the 256-bit from the 8-RO result registers starting at `rSHA256_SUM0`.
+ *
+ * 
+ * @section structure_sec File Structure
+ * 
+ * The file is organized as follows:
+ * 
+ * - **Register Definitions**: Typedefs, register masks, and constants for each SHA-256 register.
+ * - **Module Structure**: Typedefs and macros to access the SHA-256 module as a whole, with atomic set, 
+ *   clear, and XOR operations.
+ * - **Register Access Macros**: Macros to access individual SHA-256 registers and their bitfields.
+ * 
+ * @section license_sec License
+ * 
+ * This file is unlicensed. It is provided without any warranty. Use at your own risk.
+ * 
+ * @section author_sec Author
+ * 
+ * Developed by María del Mar Arbeláez.
+ * 
+ * @version 1.0
+ * @date October 5, 2024
+ */
