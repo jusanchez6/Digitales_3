@@ -86,6 +86,15 @@ bool timeout_expired(void);
 void cancel_timeout_timer(void);
 
 /**
+ * @brief Cambia la contraseña de un usuario
+ * 
+ * Cambia la contraseña de un usuario en la base de datos
+ * 
+ */
+void change_password(uint8_t *id, uint8_t *new_key);
+
+
+/**
  * @brief Procesa el accesso al sistema
  * 
  * Gestiona el flujo de entrada deln ID y la contraseña del usuario

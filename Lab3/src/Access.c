@@ -55,17 +55,20 @@ void init_users () {
 }
 
 bool verify_credentials(uint8_t *id, uint8_t *key) {
+    control_yellow_led(0);      // apagar el led amarillo
     for (int i = 0; i < MAX_USERS; i++) {
         printf("\nComparando usuario %d...", i);
 
         // Comparar ID
         if (memcmp(users[i].id, id, 6) == 0 && users[i].blocked == false) { // Cambiar a memcmp
             // Imprimir los IDs y claves que se comparan
+            /*
             printf("\nID Usuario en base de datos: %s", users[i].id);
             printf("\nID Usuario ingresado: %s", id);
             printf("\nClave Usuario en base de datos: %s", users[i].key);
             printf("\nClave Usuario ingresada: %s", key);
-
+            */
+           
             // Comparar clave
             if (memcmp(users[i].key, key, 4) == 0) { // Cambiar a memcmp
                 users[i].attempts = 0;
@@ -85,13 +88,25 @@ bool verify_credentials(uint8_t *id, uint8_t *key) {
     return false; // Retorna false si no se encuentra el usuario
 }
 
+void change_password(uint8_t *id, uint8_t *new_key) {
+    for (int i = 0; i < MAX_USERS; i++) {
+        if (memcmp(users[i].id, id, 6) == 0) {
+            strcpy(users[i].key, new_key);
+            printf("Clave cambiada\n");
+            return;
+        }
+    }
+    printf("Usuario no encontrado\n");
+}
+
 bool access_control(uint8_t *id, uint8_t *key) {
+    control_yellow_led(0); // Apaga el LED amarillo
     
     if (verify_credentials(id, key)) {
-        signal_success(5000); // LED verde por 5 segundos
+        signal_success(); // LED verde por 5 segundos
         return true;
     } else {
-        signal_error(2000); // LED rojo por 2 segundos
+        signal_error(); // LED rojo por 2 segundos
         return false;
     }
     

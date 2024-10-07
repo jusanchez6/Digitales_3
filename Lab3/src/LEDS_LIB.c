@@ -25,7 +25,7 @@
 #include "LEDS_LIB.h"
 
 /** @brief Timer para los leds */
-static alarm_id_t g_alarm_led_id;
+volatile alarm_id_t g_alarm_led_id = -1;  // Inicializamos a un valor inválido
 
 /** @brief Estado del led 0: no esta titilando, 1: esta titilando*/
 volatile bool g_led_state = false;
@@ -40,82 +40,73 @@ volatile bool g_led_state = false;
  * @return 500*1000 (500ms)
  */
 int64_t blink_callback(alarm_id_t id, void *user_data) {
+    if (id != g_alarm_led_id) {
+        return 0;  // Si la alarma ha sido cancelada, no continuar
+    }
     g_led_state = !g_led_state;
     gpio_put_masked(LED_YELLOW, g_led_state << 12);
-    return 500* 1000;   ///> Se retorna el tiempo en microsegundos para la siguiente interrupcion
+    return 500 * 1000;   // Retorna el tiempo en microsegundos para la siguiente interrupción
 }
 
-/**
- * @brief Funcion de callback para apagar los leds
- * 
- * @param id ID de la alarma
- * @param user_data Datos de usuario
- * 
- * @return 0
- */
-int64_t turn_off_red_callback(alarm_id_t id, void *user_data) {
-    gpio_put_masked(LED_RED, 0x00 << 10);
-    return 0;
-}
-
-/**
- * @brief Funcion de callback para apagar los leds
- * 
- * @param id ID de la alarma
- * @param user_data Datos de usuario
- * 
- * @return 0
- */
-int64_t turn_off_green_callback(alarm_id_t id, void *user_data) {
-    gpio_put_masked(LED_GREEN, 0 << 11);
-    return 0;
-}
-
-void init_leds(void)
-{
+void init_leds(void) {
     gpio_init_mask(LEDS_PINS);
     gpio_set_dir_out_masked(LEDS_PINS);
-    gpio_put_masked(LEDS_PINS,0);
+    gpio_put_masked(LEDS_PINS, 0);
 }
 
-void signal_success()
-{
-    cancel_alarm(g_alarm_led_id);
+void signal_success() {
+    if (g_alarm_led_id != -1) {
+        cancel_alarm(g_alarm_led_id);   // Cancela la alarma actual si existe
+        g_alarm_led_id = -1;            // Reinicializa el valor
+    }
     gpio_put_masked(LED_GREEN, LED_GREEN);
 }
 
-void signal_error()
-{
-    cancel_alarm(g_alarm_led_id);
+void signal_error() {
+    if (g_alarm_led_id != -1) {
+        cancel_alarm(g_alarm_led_id);   // Cancela la alarma actual si existe
+        g_alarm_led_id = -1;            // Reinicializa el valor
+    }
     gpio_put_masked(LED_RED, LED_RED);
 }
 
-void control_yellow_led(uint8_t state)
-{
-    if (state == 0)
-    {   
+void control_yellow_led(uint8_t state) {
+    if (state == 0) {
         //< Se apaga el led amarillo
-        gpio_put_masked(LED_YELLOW, 0);
-        cancel_alarm(g_alarm_led_id);
-        g_led_state = false;        //> No se esta titilando
-    }
-    else if (state == 1)
-    {
+        if (g_alarm_led_id != -1) {
+            cancel_alarm(g_alarm_led_id);   // Cancela la alarma si estaba titilando
+            g_alarm_led_id = -1;            // Reinicializa el valor
+        }
+        gpio_put_masked(LED_YELLOW, 0 << 12);
+    } 
+    else if (state == 1) {
         //< Se enciende el led amarillo
+        if (g_alarm_led_id != -1) {
+            cancel_alarm(g_alarm_led_id);   // Cancela la alarma si estaba titilando
+            g_alarm_led_id = -1;            // Reinicializa el valor
+        }
         gpio_put_masked(LED_YELLOW, LED_YELLOW);
-        cancel_alarm(g_alarm_led_id);
-        g_led_state = false;        //> No se esta titilando
-    }
-    else if (state == 2)
-    {
+    } 
+    else if (state == 2) {
         //< Se titila el led amarillo
-        add_alarm_in_ms(500, blink_callback, NULL, false);
+        if (g_alarm_led_id != -1) {
+            cancel_alarm(g_alarm_led_id);   // Cancela cualquier alarma previa
+        }
+        g_alarm_led_id = add_alarm_in_ms(500, blink_callback, NULL, false);  // Configura la nueva alarma
     }
 }
-
-void turn_off_leds(void)
-{
-    sleep_ms(2000);
+void turn_off_leds(void) {
+    sleep_ms(2000);  // Espera 2 segundos antes de apagar
     gpio_put_masked(LEDS_PINS, 0x000 << 10);
-    cancel_alarm(g_alarm_led_id);
+    gpio_put_masked(LED_YELLOW, 0x000 << 12);
+    
+    // Cancela la alarma de titilado si existe
+    if (g_alarm_led_id != -1) {
+        if (cancel_alarm(g_alarm_led_id)) {
+            printf("Alarma cancelada\n");
+            g_alarm_led_id = -1;  // Reinicializa el valor después de cancelar
+        } else {
+            printf("No se pudo cancelar la alarma\n");
+        }
+    }
 }
