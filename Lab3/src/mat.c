@@ -20,11 +20,8 @@
 #include "pico/stdlib.h"
 #include "mat.h"
 
-/** @brief Momento de lectura del teclado. */
-static volatile uint8_t reading;
-
-/** @brief GPIO que genera la interrupción. */
-static volatile uint8_t gpio_pressed; 
+static volatile uint8_t reading; /*!< Momento de lectura del teclado. */
+static volatile uint8_t gpio_pressed; /*!< GPIO que genera la interrupción. */
 
   /**
  * @brief Función que se ejecuta cuando se presiona una tecla

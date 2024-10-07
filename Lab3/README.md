@@ -7,6 +7,7 @@ Este proyecto implementa un sistema de control de acceso por medio de un teclado
 ## Contenidos
 
 - **`main.c`**: Archivo principal que contiene la función principal del programa, inicializa y empieza la ejecución del programa.
+- **`mat.h`**: Archivo de cabecera con las declaraciones de las funciones y variables utilizadas para la lectura del teclado matricial.
 - **`mat.c`**: Archivo que contiene las funciones utilizadas para la lectura del teclado matricial.
 - **`Access.h`**: Archivo de cabecera con las declaraciones de las funciones y variables utilizadas para la gestión del acceso.
 - **`Access.c`**: Archivo que contiene las funciones utilizadas para la gestión del acceso.
@@ -15,7 +16,7 @@ Este proyecto implementa un sistema de control de acceso por medio de un teclado
 - **`fsm.h`**: Archivo de cabecera con las declaraciones de las funciones y variables utilizadas para la interfaz de la máquina de estados.
 - **`fsm.c`**: Archivo que contiene las funciones utilizadas para la interfaz de la máquina de estados.
 - **`Doxyfile`**: Archivo de configuración para generar la documentación.
-- **`MainPage.dox`**: Archivo con el contenido de la pagina principal.
+- **`MainPage.dox`**: Archivo con el contenido de la página principal.
   
 
 ## Instrucciones de Uso
