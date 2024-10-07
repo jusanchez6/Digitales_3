@@ -1,58 +1,39 @@
 /**
  * @file main.c
- * @brief Archivo que contiene la función main.
- *
- * Archivo que contiene la función main del programa.
  * 
- * @authors Maria Del Mar Arbelaez Sandoval
- *         Julian Mauricio Sanchez Ceballos
+ * @brief Archivo principal del sistema de control de acceso con teclado matricial.
  * 
- * @date 2024-09-29
+ * Este archivo inicializa los periféricos y ejecuta la máquina de estados para manejar el flujo de control de acceso.
  * 
+ * @authors Maria Del Mar Arbelaez
+ *         Julian Mauricio Sanchez
  * 
+ * @date 2024-10-6
  */
 
-// Standard libraries
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "libs.h"
+#include "mat.h"            	// Teclado matricial
+#include "LEDS_LIB.h"           // Control de LEDs
+#include "access.h"  			// Control de acceso y usuarios
+#include "fsm.h"           		// Máquina de estados
 
-/**
- * @brief Main program.
- *
- * Función principal del programa, desde aqui se llama los metodos
- * que gestionan todo el juego.
- */
-#define JUANITA 1
+int main(void) {
+    // Inicialización de la entrada/salida estándar
+    stdio_init_all();   
 
-int main() {
-	return 0;    
-}
+    // Inicializar periféricos y recursos
+    init_mat();         // Inicializar el teclado matricial
+    init_leds();        // Inicializar los LEDs
+    init_users();       // Inicializar la base de datos de usuarios
 
-/**
- * int main() {
-	// STDIO initialization
-    stdio_init_all();
+    // Inicializar la máquina de estados
+    fsm_init();     
 
-    // initialize the gpios
-    init_mat();
-    init_callback();
-    //attach timer
-    //repeating_timer_t timer_mat;
-    //if(!add_repeating_timer_ms(5, repeating_timer_callback ,NULL, &timer_mat)){printf("timers don't work :(");}
-    
-    reading=0;
-    volatile uint8_t c=0;
-    bool done=false;
-
-    while (JUANITA) {
-        if(reading!=0){
-            done=read_mat(c);}
-        if (done){
-            done=false;
-        }
-        //sleep_ms(3);
+    // Bucle principal
+    while (true) {
+        fsm_run();      // Ejecutar la máquina de estados en cada iteración
     }
-    return 0;    
+
+    return 0;           // Nunca se llegará aquí, el bucle es infinito
 }
- */

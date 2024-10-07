@@ -91,8 +91,13 @@ void cancel_timeout_timer(void);
  * Gestiona el flujo de entrada deln ID y la contraseña del usuario
  * reliando la verificacion de las credenciales y senalizando el estado del usuario
  * con los leds
+ * 
+ * @param id ID ingresado por el usuario
+ * @param key Clave ingresada por el usuario
+ * 
+ * @return none
  */
-void access_control(void);
+bool access_control(uint8_t *id, uint8_t *key);
 
 
 #endif
