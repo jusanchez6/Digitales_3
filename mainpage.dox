@@ -1,0 +1,29 @@
+/*!
+\mainpage Sistema de Control de Acceso 
+
+\section intro_sec Descripción
+
+Este proyecto implementa un sistema de control de acceso por medio de un teclado matricial.
+Este laboratorio tiene como objetivo la estructuración de un programa simple, junto con la configuración para la
+lectura del teclado matricial, y utilizar los módulos de temporización. Conceptos de utilidad para el transcurso del
+laboratorio de la asignatura Electrónica Digital 3.
+
+
+Aquí se muestra la documentación del código. 
+\section details_sec Detalles del Programa
+El Sistema de Control de Acceso cuenta con las siguientes características:
+
+- Ingreso y validación de usuarios.
+- Bloqueo de usuario después de 3 intentos.
+- Cambio de contraseña.
+
+
+\section author_sec Información de los Autores
+- **Autores**: Maria Del Mar Arbelaez Sandoval, Julian Mauricio Sanchez Ceballos
+- **Asignatura**: Electrónica Digital 3
+- **Fecha**: 18/9/2024
+- **Versión**: 1.0
+
+\section notes_sec Notas
+La version del Sistema de Control de Acceso se puede encontrar en: https://github.com/jusanchez6/Digitales_3
+*/
