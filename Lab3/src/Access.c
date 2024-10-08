@@ -46,10 +46,22 @@ void init_users () {
     users[1].attempts = 0;
     users[1].blocked = false;
 
-    strcpy(users[1].id, "123123");
-    strcpy(users[1].key, "1231");
-    users[1].attempts = 0;
-    users[1].blocked = false;
+    strcpy(users[2].id, "ABCD12");
+    strcpy(users[2].key, "1234");
+    users[2].attempts = 0;
+    users[2].blocked = false;
+
+    strcpy(users[3].id, "ABCD34");
+    strcpy(users[3].key, "1234");
+    users[3].attempts = 0;
+    users[3].blocked = false;
+
+    strcpy(users[4].id, "987654");
+    strcpy(users[4].key, "1234");
+    users[4].attempts = 0;
+    users[4].blocked = false;
+
+    
 
     // Agregar mas usuarios si es necesario
 }
