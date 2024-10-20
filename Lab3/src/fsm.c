@@ -187,11 +187,13 @@ static void state_verifying(void) {
         }
         
         signal_success();
+        sleep_ms(5000);
 
     } else {
         // Acceso denegado
         printf("Acceso denegado\n");
-        signal_error(2000);
+        signal_error();
+        sleep_ms(2000);
         current_state = state_waiting;  // Vuelve al estado de espera si falla la autenticación
     }
     

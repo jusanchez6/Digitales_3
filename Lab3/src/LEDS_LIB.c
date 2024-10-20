@@ -96,7 +96,6 @@ void control_yellow_led(uint8_t state) {
     }
 }
 void turn_off_leds(void) {
-    sleep_ms(2000);  // Espera 2 segundos antes de apagar
     gpio_put_masked(LEDS_PINS, 0x000 << 10);
     gpio_put_masked(LED_YELLOW, 0x000 << 12);
     

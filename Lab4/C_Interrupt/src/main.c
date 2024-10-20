@@ -23,10 +23,6 @@
 
 #define PWM_PIN2 15
 
-volatile uint64_t g_last_edge_time = 0;
-volatile uint64_t g_period = 0;
-volatile uint64_t g_frequency = 0;
-
 int main() {
     stdio_init_all();
     project_pwm_init();
