@@ -20,18 +20,32 @@
 
 #include "detect_pwm.h"
 #include "pwm.h"
+#include "7_seg.h"
+#include "globals.h"  // Incluir el archivo de cabecera
+
+
 
 #define PWM_PIN2 15
 
+volatile uint8_t update_display_flag = 0;  // Definición de la bandera
+volatile uint64_t g_duty_cycle = 0; // Definición del ciclo de trabajo
+
 int main() {
     stdio_init_all();
-    project_pwm_init();
-    project_pwm_set_chan_level(3000);
-    init_pwm_detection();
     
-
+    init_pwm_detection();
+    init_7_seg();
+    
     while (1){
         __wfi();
+        uint8_t en = 0;
+
+        // Verifica si se necesita actualizar el display
+        if (update_display_flag) {
+            
+            write_decimals(g_duty_cycle, &en);  // Escribe el valor en el display
+            update_display_flag = 0;  // Resetea el flag
+        }
     }
-    return 0;
+   
 }

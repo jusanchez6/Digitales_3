@@ -12,18 +12,19 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include "pico/stdlib.h"
+#include "hardware/gpio.h"
+#include "7_seg.h"
+
 #ifndef __DETECT_PWM_H__
     #define __DETECT_PWM_H__
 
     /** @brief Pin al que se conecta la señal PWM*/
     #define PWM_PIN 12
 
-    
-    
-
-
 
     void pwm_detect_callback(unsigned int gpio, uint32_t events);
+    void update_display_values(uint8_t duty_cycle); 
     void init_pwm_detection();
 
 

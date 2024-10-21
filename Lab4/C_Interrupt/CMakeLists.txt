@@ -17,6 +17,7 @@ add_executable(C_Interrupt
     src/main.c
     src/detect_pwm.c
     src/pwm.c
+    src/7_seg.c
 )
 
 # Header folder
