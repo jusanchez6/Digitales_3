@@ -1,6 +1,15 @@
 /**
  * @file pwm.h
- * @brief Header file for the pwm.c file
+ * @brief Archivos de cabezera del archivo pwm.c
+ * 
+ * Este archivo contiene las definiciones de las funciones de la libreria pwm.c
+ * 
+ * @authors María Del Mar Arbeláez
+ *         Julián Mauricio Sánchez
+ * 
+ * @date 2024-10-21
+ * 
+ * @version 1.0
  */
 
 #include <stdint.h>

@@ -21,31 +21,40 @@
 #include "detect_pwm.h"
 #include "pwm.h"
 #include "7_seg.h"
-#include "globals.h"  // Incluir el archivo de cabecera
+#include "globals.h" 
 
 
+// Definición de variables globales
 
-#define PWM_PIN2 15
+volatile uint64_t g_current_time = 0;
+volatile uint64_t g_last_edge_time = 0;
+volatile uint64_t g_period = 0;
+volatile uint64_t g_frequency = 0;
+volatile uint64_t pulse_time_start = 0;
+volatile uint64_t g_duty_cycle = 0; 
+volatile uint8_t g_run = 0;  
 
-volatile uint8_t update_display_flag = 0;  // Definición de la bandera
-volatile uint64_t g_duty_cycle = 0; // Definición del ciclo de trabajo
 
+/**
+ * @brief Main function
+ * 
+ * Esta función inicializa el sistema y entra en un ciclo infinito.
+ * 
+ * @param void
+ * 
+ * @return void
+ */
 int main() {
-    stdio_init_all();
+
+    stdio_init_all();       // Inicializa la UART
+    sleep_ms(5000);         // Espera 5 segundos
     
-    init_pwm_detection();
-    init_7_seg();
+     
+    init_pwm_detection();   // Inicializa la detección de la señal PWM
+    init_7_seg();           // Inicializa los 7 segmentos
     
     while (1){
-        __wfi();
-        uint8_t en = 0;
-
-        // Verifica si se necesita actualizar el display
-        if (update_display_flag) {
-            
-            write_decimals(g_duty_cycle, &en);  // Escribe el valor en el display
-            update_display_flag = 0;  // Resetea el flag
-        }
+        __wfi();    // Espera a una interrupción
     }
    
 }

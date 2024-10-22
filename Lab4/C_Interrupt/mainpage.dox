@@ -1,0 +1,19 @@
+/*!
+\mainpage Medición del ciclo de duracion de una señal (C INTERRPUT) 
+
+\section intro_sec Descripción
+Este proyecto implementa un medidor de ciclo de dureza para una señal pwm y su visualización en 
+un display de 7 segmentos, para el cual se realiza su debida multiplexación. El proyecto funciona
+unicamente con un flujo de codigo de interrupciones. 
+
+Aquí se muestra la documentación del código. 
+
+\section author_sec Información de los Autores
+- **Autores**: Maria Del Mar Arbelaez Sandoval, Julian Mauricio Sanchez Ceballos
+- **Asignatura**: Electrónica Digital 3
+- **Fecha**: 21/10/2024
+- **Versión**: 1.0
+
+\section notes_sec Notas
+La version del Sistema de Control de Acceso se puede encontrar en: https://github.com/jusanchez6/Digitales_3
+*/
