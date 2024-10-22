@@ -1,16 +1,15 @@
 /**
  * @file globals.h
  * 
- * @brief Definición de variables globales
+ * @brief Global variables and constants
  * 
- * Este archivo contiene la definición de las variables globales que se utilizan en el proyecto.
+ * Este archivo contiene las variables y constantes globales que se utilizan en el programa.
  * 
- * @authors María Del Mar Arbeláez
- *         Julián Mauricio Sánchez
+ * @authors Maria Del Mar Arbeláez
+ *          Julian Mauricio Sánchez
  * 
  * @date 2024-10-21
- * 
- */
+ */ 
 
 #ifndef GLOBALS_H
 #define GLOBALS_H
@@ -38,4 +37,11 @@ extern volatile uint64_t g_frequency;
 /** @brief Variable que almacena el tiempo de inicio del pulso.*/
 extern volatile uint64_t pulse_time_start;
 
-#endif // GLOBALS_H
+/** @brief Variable que almacena la bandera de cambio del ciclo de trabajo*/
+extern volatile bool g_duty_cycle_flag;
+
+/** @brief Variable que almacena la bandera de cambio de la frecuencia*/
+extern volatile bool g_frecuency_flag;
+
+
+#endif
