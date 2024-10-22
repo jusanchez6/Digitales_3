@@ -15,6 +15,7 @@
 #define GLOBALS_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 /** @brief Variable que almacena el ciclo de trabajo de la señal.*/
 extern volatile uint64_t g_duty_cycle;
@@ -43,5 +44,7 @@ extern volatile bool g_duty_cycle_flag;
 /** @brief Variable que almacena la bandera de cambio de la frecuencia*/
 extern volatile bool g_frecuency_flag;
 
+/** @brief Variable que almacena la bandera de deteccion de flancos*/
+extern volatile bool g_edge_flag;
 
 #endif

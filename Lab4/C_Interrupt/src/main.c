@@ -9,15 +9,18 @@
  * 
  * @date 2024-10-15
  */
-
+// Standard libraries
 #include <stdio.h>
 #include <stdint.h>
+
+// Pico libraries
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "hardware/clocks.h"
 #include "hardware/sync.h"
 #include "pico/platform.h"
 
+// Project libraries
 #include "detect_pwm.h"
 #include "pwm.h"
 #include "7_seg.h"

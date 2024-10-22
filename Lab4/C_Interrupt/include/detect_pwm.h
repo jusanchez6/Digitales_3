@@ -1,6 +1,6 @@
 /**
  * @file detect_pwm.h
- * @brief Archivo de cabecera par las funciones del archivo detect_pwm.c
+ * @brief Archivo de cabecera para las funciones del archivo detect_pwm.c
  * 
  * Archivo de cabecera de las funciones de la libreria detect_pwm.
  * 

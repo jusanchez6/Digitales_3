@@ -12,10 +12,17 @@ pico_sdk_init()
 # C/C++ project files
 add_executable(C_Polling_Interrpupt
     src/main.c
+    src/detect_pwm.c
 )
 
 # pico_stdlib library. You can add more if they are needed
-target_link_libraries(C_Polling_Interrpupt pico_stdlib)
+target_link_libraries(C_Polling_Interrpupt 
+                    pico_stdlib
+                    hardware_gpio
+                    hardware_timer
+                    hardware_pwm   
+                    hardware_sync
+                    )
 
 # Enable usb output, disable uart output
 pico_enable_stdio_usb(C_Polling_Interrpupt 1)

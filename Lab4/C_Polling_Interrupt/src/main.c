@@ -9,7 +9,19 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 
+// Pico libraries
+#include "pico/stdlib.h"
+#include "hardware/gpio.h"
+#include "hardware/clocks.h"
+#include "hardware/sync.h"
+#include "pico/platform.h"
+
+
+
 // Include your own header files here
+#include "../include/detect_pwm.h"
+#include "../include/globals.h"
+
 
 /**
  * @brief Main program.
