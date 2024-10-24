@@ -26,15 +26,22 @@ int main(){
     //enable the first
 
     // Bucle principal
-    uint8_t en=0;
-    uint8_t c=0;
-    uint64_t start=time_us_64();
+    //uint8_t c=0;
+    //uint64_t start=time_us_64();
     while (true) {
-        if(time_us_64()-start>500*1000){
-            c++;
-            start=time_us_64();
-        }
-        write_decimals(c,&en);
+        uint16_t value=measure_duty_cycle();
+        //write_decimals(value);
+        printf("actual duty: %d",value);
+        sleep_ms(50);
+        /*if flanco==1
+            freq=start-time;
+            start=time-usndjnks 64
+        
+        else if flanco==2
+            down= time-start
+
+
+*/
     }
     return 0;           // Nunca se llegará aquí, el bucle es infinito
 }

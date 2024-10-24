@@ -15,4 +15,12 @@
 #ifndef _DETECT_PWM_H_
     #define _DETECT_PWM_H_
 
+    #define PWM_PIN 13
+    void init_pwm_detect();
+    uint8_t check_flank(void); //see which 
+    void setup_duty_cycle_read();
+    uint16_t measure_duty_cycle();
+    void calculate_duty();
+    
+
 #endif
