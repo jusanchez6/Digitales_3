@@ -1,10 +1,32 @@
 cmake_minimum_required(VERSION 3.13)
 
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# == DO NEVER EDIT THE NEXT LINES for Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.0.0)
+set(toolchainVersion 13_2_Rel1)
+set(picotoolVersion 2.0.0)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
+# Set the board type
+set(PICO_BOARD pico CACHE STRING "Board type")
+
 # Always include it
 include(pico_sdk_import.cmake)
 
-# Project's name (Replace C_Polling_Interrpupt with your own project's name)
-project(C_Polling_Interrpupt)
+# Set the project name
+project(C_Polling_Interrpupt C CXX ASM)
+
 
 # SDK Initialization - Mandatory
 pico_sdk_init()
@@ -15,18 +37,27 @@ add_executable(C_Polling_Interrpupt
     src/detect_pwm.c
 )
 
-# pico_stdlib library. You can add more if they are needed
-target_link_libraries(C_Polling_Interrpupt 
-                    pico_stdlib
-                    hardware_gpio
-                    hardware_timer
-                    hardware_pwm   
-                    hardware_sync
-                    )
+# Set the project name and version
+pico_set_program_name(C_Polling_Interrpupt "C_Polling_Interrpupt")
+pico_set_program_version(C_Polling_Interrpupt "0.1")
 
 # Enable usb output, disable uart output
 pico_enable_stdio_usb(C_Polling_Interrpupt 1)
 pico_enable_stdio_uart(C_Polling_Interrpupt 0)
+
+# pico_stdlib library. You can add more if they are needed
+target_link_libraries(C_Polling_Interrpupt 
+        pico_stdlib
+        hardware_gpio
+        hardware_timer
+        hardware_pwm   
+        hardware_sync)
+
+# Add the standard include files to the build
+target_include_directories(C_Polling_Interrpupt PRIVATE
+${CMAKE_CURRENT_LIST_DIR}
+${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
+)
 
 # Need to generate UF2 file for upload to RP2040
 pico_add_extra_outputs(C_Polling_Interrpupt)

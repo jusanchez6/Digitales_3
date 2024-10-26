@@ -17,6 +17,21 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+
+
+
+/** @brief Estructura, que almacena las banderas*/
+typedef struct {
+    bool duty_cycle_flag:   1;
+    bool frecuency_flag:    1;
+    bool edge_flag:         1;
+    bool fall_flag:         1;
+} flags_t;
+
+
+/** @brief Variable que almacena las banderas.*/
+extern flags_t g_flags;
+
 /** @brief Variable que almacena el ciclo de trabajo de la señal.*/
 extern volatile uint64_t g_duty_cycle;
 
@@ -38,13 +53,5 @@ extern volatile uint64_t g_frequency;
 /** @brief Variable que almacena el tiempo de inicio del pulso.*/
 extern volatile uint64_t pulse_time_start;
 
-/** @brief Variable que almacena la bandera de cambio del ciclo de trabajo*/
-extern volatile bool g_duty_cycle_flag;
-
-/** @brief Variable que almacena la bandera de cambio de la frecuencia*/
-extern volatile bool g_frecuency_flag;
-
-/** @brief Variable que almacena la bandera de deteccion de flancos*/
-extern volatile bool g_edge_flag;
 
 #endif

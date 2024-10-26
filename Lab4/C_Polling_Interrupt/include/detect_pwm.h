@@ -15,10 +15,13 @@
  */
 
 // Standar C Libraries
+#include <stdio.h>
 #include <stdint.h>
 
 // picoSDK Libraries
 #include "pico/stdlib.h"
+#include "hardware/gpio.h"
+
 
 #ifndef DETECT_PWM_H
     #define DETECT_PWM_H    

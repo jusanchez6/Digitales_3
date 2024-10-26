@@ -23,8 +23,9 @@
 #include "hardware/clocks.h"
 
 // User Libraries
-#include "detect_pwm.h"
-#include "globals.h"
+#include "../include/globals.h"
+#include "../include/detect_pwm.h"
+
 
 
 void detect_pwm_callback (unsigned int gpio, uint32_t events){
@@ -32,12 +33,12 @@ void detect_pwm_callback (unsigned int gpio, uint32_t events){
     {
     case GPIO_IRQ_EDGE_RISE:
         g_last_edge_time = time_us_64();
-        g_edge_flag = true;
+        g_flags.edge_flag = true;
         break;
     
     case GPIO_IRQ_EDGE_FALL:
         g_period = time_us_64();
-        g_edge_flag = true;
+        g_flags.fall_flag = true;
         break;
     default:
         break;
