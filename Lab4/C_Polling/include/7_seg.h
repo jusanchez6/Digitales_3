@@ -16,13 +16,13 @@
     #define _7_SEG_H_
 
     #define START_PIN 2
-    #define SEGMENTS_MASK 0x7F<<START_PIN
-    #define EN_1 11
-    #define EN_2 10
-    #define EN_3 9
-
+    #define SEGMENTS_MASK 0xFF<<START_PIN
+    #define EN_1 12
+    #define EN_2 11
+    #define EN_3 10
+    
     void init_7_seg(void);
-    void write_value(uint8_t value);
-    void write_decimals(uint8_t value,uint8_t*run);
+    static inline void write_value(uint8_t value);
+    void write_decimals(uint16_t value);
 
 #endif
