@@ -1,3 +1,9 @@
+cmake_minimum_required(VERSION 3.13)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # == DO NEVER EDIT THE NEXT LINES for Raspberry Pi Pico VS Code Extension to work ==
 if(WIN32)
     set(USERHOME $ENV{USERPROFILE})
@@ -12,15 +18,17 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-cmake_minimum_required(VERSION 3.13)
+
+#set board type
+set(PICO_BOARD pico_w CACHE STRING "Board type")
+
 
 # Always include it
 include(pico_sdk_import.cmake)
 
 # Project's name 
 project(C_Interrupt C CXX)
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
+
 
 # SDK Initialization - Mandatory
 pico_sdk_init()
@@ -33,21 +41,30 @@ add_executable(C_Interrupt
     src/7_seg.c
 )
 
+# Project's name and version
+pico_set_program_name(C_Interrupt "C_Interrupt")
+pico_set_program_version(C_Interrupt "0.1")
+
+# Enable usb output, disable uart output
+pico_enable_stdio_usb(C_Interrupt 1)
+pico_enable_stdio_uart(C_Interrupt 0)
+
 # Header folder
 include_directories(include)
 
 # pico_stdlib library. You can add more if they are needed
 target_link_libraries(C_Interrupt 
-                    pico_stdlib
-                    hardware_gpio
-                    hardware_timer
-                    hardware_pwm   
-                    hardware_sync
-                    )
+        pico_stdlib
+        hardware_gpio
+        hardware_timer
+        hardware_pwm   
+        hardware_sync)
 
-# Enable usb output, disable uart output
-pico_enable_stdio_usb(C_Interrupt 1)
-pico_enable_stdio_uart(C_Interrupt 0)
+target_include_directories(C_Interrupt PRIVATE 
+${CMAKE_CURRENT_LIST_DIR}
+${CMAKE_CURRENT_LIST_DIR}/..
+)
+                    
 
 # Need to generate UF2 file for upload to RP2040
 pico_add_extra_outputs(C_Interrupt)

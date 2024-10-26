@@ -17,7 +17,7 @@
 
 #define PWM_OUT_PIN 15
 #define FREQ 1000
-#define DUTY 2
+#define DUTY 50
 
 int main(){
     // Inicialización de la entrada/salida estándar
