@@ -29,21 +29,26 @@
 
 
 void detect_pwm_callback (unsigned int gpio, uint32_t events){
+
     switch (events)
     {
     case GPIO_IRQ_EDGE_RISE:
-        g_last_edge_time = time_us_64();
+        g_pulse_start = g_last_rise_time;
+        g_last_rise_time = time_us_64();
         g_flags.edge_flag = true;
         break;
     
     case GPIO_IRQ_EDGE_FALL:
-        g_period = time_us_64();
+        g_last_fall_time = time_us_64();
         g_flags.fall_flag = true;
         break;
+
     default:
         break;
     }
 }
+
+    
 
 void detect_pwm_init (void ){
     gpio_init(PWM_PIN);

@@ -57,7 +57,7 @@ void write_decimals(uint8_t value, uint8_t* run){
         printf("Current run: %d\n", *run);  
 
     // Control del tiempo de multiplexado
-    if ((time_us_32()-start) / 1000>2) {
+    if ((time_us_32()-start) > 4600) {
         if (*run > 0) {
             gpio_put(enables[*run - 1], 0);  // Apagar el display anterior
         } else {

@@ -18,14 +18,20 @@
 
 // User libraries
 #include "../include/globals.h"
+#include "../include/detect_pwm.h"
 
-volatile uint64_t g_duty_cycle;
+// Global variables
+volatile uint64_t g_last_rise_time;
+volatile uint64_t g_last_fall_time;
+volatile uint64_t g_pulse_start;
 volatile uint64_t g_frequency;
-volatile uint64_t g_last_edge_time;
-volatile uint64_t pulse_time_start;
 volatile uint64_t g_period;
+volatile uint64_t g_duty_cycle;
+volatile uint64_t g_pulse_time;
+
 
 flags_t g_flags;
+
 /**
  * @brief Main program.
  *
@@ -34,6 +40,7 @@ flags_t g_flags;
 int main() {
 	// STDIO initialization
     stdio_init_all();
+    detect_pwm_init();
 	
 	// Write your initialization code here
 	
@@ -42,34 +49,24 @@ int main() {
         // Espera a que se detecte un flanco de subida o bajada
         __wfi();
 
-        // Si se detecta un flanco de subida calculo del periodo y la frecuencia
-        if (g_flags.edge_flag && g_last_edge_time != 0){
-            // Calcula el periodo
-            g_period = time_us_64() - g_last_edge_time;
-            g_frequency = 1000000 / (uint32_t)g_period;
-            // Resetea la bandera de flanco de subida
+        // Si se detecta un flanco de subida calcula la frecuencia
+        if (g_flags.edge_flag){
+            g_period = g_last_rise_time - g_pulse_start;
+            g_frequency = 1000000 / g_period;
             g_flags.edge_flag = false;
         }
 
-        // Si se detecta un flanco de bajada calculo del ciclo de trabajo
-        if (g_flags.fall_flag && g_period != 0){
-            // Calcula el tiempo de inicio del pulso
-            pulse_time_start = time_us_64();
-            // Calcula el tiempo de duración del pulso
-            uint64_t pulse = pulse_time_start - g_last_edge_time;
-            // Calcula el ciclo de trabajo
-            g_duty_cycle = (pulse  * g_frequency) / 10000;
-            // Resetea la bandera de flanco de bajada
+        // Si se detecta un flanco de bajada calcula el ciclo de trabajo
+        if (g_flags.fall_flag){
+            g_pulse_time = g_last_fall_time - g_last_rise_time;
+            g_duty_cycle = (g_pulse_time * 100) / g_period;
             g_flags.fall_flag = false;
-
         }
 
-        // Mostrar los valores en la consola
-        printf("Periodo: %d us\n", (uint32_t)g_period);
-        printf("Frecuencia: %d Hz\n", (uint32_t)g_frequency);
-        printf("Ciclo de trabajo: %d %%\n", (uint32_t)g_duty_cycle);
-
-
+        // imprime la frecuencia
+        printf("Frequency: %llu Hz\n", g_frequency);
+        // imprime el ciclo de trabajo
+        printf("Duty cycle: %llu %%\n", g_duty_cycle);
     }
 	
     return 0;
