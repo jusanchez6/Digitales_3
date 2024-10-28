@@ -35,6 +35,7 @@ pico_sdk_init()
 add_executable(C_Polling_Interrpupt
     src/main.c
     src/detect_pwm.c
+    src/7_seg.c
 )
 
 # Set the project name and version

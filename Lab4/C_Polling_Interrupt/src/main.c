@@ -19,6 +19,7 @@
 // User libraries
 #include "../include/globals.h"
 #include "../include/detect_pwm.h"
+#include "../include/7_seg.h"
 
 // Global variables
 volatile uint64_t g_last_rise_time;
@@ -28,6 +29,7 @@ volatile uint64_t g_frequency;
 volatile uint64_t g_period;
 volatile uint64_t g_duty_cycle;
 volatile uint64_t g_pulse_time;
+volatile uint8_t g_run = 0;
 
 
 flags_t g_flags;
@@ -41,6 +43,7 @@ int main() {
 	// STDIO initialization
     stdio_init_all();
     detect_pwm_init();
+    init_7_seg();
 	
 	// Write your initialization code here
 	
@@ -63,10 +66,9 @@ int main() {
             g_flags.fall_flag = false;
         }
 
-        // imprime la frecuencia
-        printf("Frequency: %llu Hz\n", g_frequency);
-        // imprime el ciclo de trabajo
-        printf("Duty cycle: %llu %%\n", g_duty_cycle);
+
+        // multiplexado de los displays
+        write_decimals((uint8_t)g_duty_cycle, (uint8_t *)&g_run);
     }
 	
     return 0;
