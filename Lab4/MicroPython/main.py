@@ -86,16 +86,27 @@ def write_decimals(value):
     # Apaga el último display después de mostrar
     enable_pins[2].off()
 
-pwm_pin.irq(trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING, handler=pwm_callback)
 
-# Inicializa el display de 7 segmentos
-init()
 
-# Bucle principal
-while True:
-    # Imprime los resultados
-    print(f"Frecuencia: {frequency:.2f} Hz, Duty Cycle: {duty_cycle:.2f} %")
+
+def main():
+    pwm_pin.irq(trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING, handler=pwm_callback)
+
+    # Inicializa el display de 7 segmentos
+    init()
+
+    while True:
+        try:
+            # Imprime los resultados
+            print(f"Frecuencia: {frequency:.2f} Hz, Duty Cycle: {duty_cycle:.2f} %")
     
-    # Muestra el duty cycle en el display
-    write_decimals(int(duty_cycle))
+            # Muestra el duty cycle en el display
+            write_decimals(int(duty_cycle))
+
+        except KeyboardInterrupt:
+            print("Interrupción del usuario.")
+            break
+
+if __name__ == "__main__":
+    main()
 
