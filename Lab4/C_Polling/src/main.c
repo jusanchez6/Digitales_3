@@ -22,6 +22,7 @@ int main(){
 
     // Inicializar periféricos y recursos
     init_7_seg();
+    init_pwm_detect();
 
     //enable the first
 
@@ -30,18 +31,7 @@ int main(){
     //uint64_t start=time_us_64();
     while (true) {
         uint16_t value=measure_duty_cycle();
-        //write_decimals(value);
-        printf("actual duty: %d",value);
-        sleep_ms(50);
-        /*if flanco==1
-            freq=start-time;
-            start=time-usndjnks 64
-        
-        else if flanco==2
-            down= time-start
-
-
-*/
+        write_decimals(value);
     }
     return 0;           // Nunca se llegará aquí, el bucle es infinito
 }

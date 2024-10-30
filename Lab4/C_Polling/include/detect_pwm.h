@@ -20,7 +20,7 @@
     uint8_t check_flank(void); //see which 
     void setup_duty_cycle_read();
     uint16_t measure_duty_cycle();
-    void calculate_duty();
+    void calculate_duty(uint16_t* duty);
     
 
 #endif
