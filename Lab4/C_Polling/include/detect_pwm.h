@@ -15,12 +15,21 @@
 #ifndef _DETECT_PWM_H_
     #define _DETECT_PWM_H_
 
+    //Standard Libraries
+    #include <stdio.h>
+    #include <stdint.h>
+    #include <stdbool.h>
+
+    //Pico Libraries
+    #include "pico/stdlib.h"
+    #include "hardware/pwm.h"
+    
     #define PWM_PIN 13
+    
     void init_pwm_detect();
     uint8_t check_flank(void); //see which 
     void setup_duty_cycle_read();
     uint16_t measure_duty_cycle();
     void calculate_duty(uint16_t* duty);
     
-
 #endif

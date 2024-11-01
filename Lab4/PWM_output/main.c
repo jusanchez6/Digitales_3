@@ -16,14 +16,10 @@
 #include "hardware/pwm.h"
 
 #define PWM_OUT_PIN 15
-<<<<<<< Updated upstream
-#define FREQ 1000
-#define DUTY 70
-=======
-#define FREQ 1000000
->>>>>>> Stashed changes
 
-#define DUTY 100
+#define FREQ 5000
+#define DUTY 70
+
 #define WRAP 100 //--> VA DE 4.9khz a 1.25MHz //se puede configurar para una menor frecuencia 100%, pero que pereza
 
 //cambiar para cambiar frecuencia

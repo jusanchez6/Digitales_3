@@ -11,13 +11,6 @@
  * @date 2024-10-12
  */
 
-//Standard Libraries
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-
-//Pico Libraries
-#include "pico/stdlib.h"
 #include "7_seg.h"
 
 uint8_t lookup[10] = {
@@ -25,8 +18,8 @@ uint8_t lookup[10] = {
     0x6d, 0x7d, 0x07, 0x7f, 0x6f
 };
 
-static inline void write_value(uint8_t value){
-    gpio_put_masked(SEGMENTS_MASK,lookup[value]<<START_PIN);
+static inline void write_value(uint8_t value, bool dp){
+    gpio_put_masked(SEGMENTS_MASK,(lookup[value] | dp<<7)<<START_PIN);
 }
 
 void init_7_seg(){
@@ -49,24 +42,38 @@ void write_decimals(uint16_t value){
     static uint8_t en;
     uint8_t enables[]={EN_1,EN_2,EN_3,EN_1};
     uint8_t val_2_wr;
-   switch (en)
-    {
-    case 2: //units
-        val_2_wr=value % 10;
-        break;
-    case 0: //decimals
-        val_2_wr=(value%100)/10;
-        break;
-    case 1: //cents
-        val_2_wr=value/100;
-        break;
+
+    if (value / 1000){
+        val_2_wr= en==1 ? 1 : 0; //si es las cents, es 0
+        if((time_us_32()-start)>6000){
+            gpio_put(enables[en],false);
+            write_value(val_2_wr, 0); //00,01,10 -> solo es true cuando es 1.
+            gpio_put(enables[en+1],true);
+            start=time_us_32();
+            en++;
+            if(en>2){en=0;}
+        }
     }
-    if((time_us_32()-start)>6000){
-        gpio_put(enables[en],false);
-        write_value(val_2_wr);
-        gpio_put(enables[en+1],true);
-        start=time_us_32();
-        en++;
-        if(en>2){en=0;}
+    else{
+        switch (en)
+        {
+        case 2: //units
+            val_2_wr=value % 10;
+            break;
+        case 0: //decimals <- este va con dp
+            val_2_wr=(value%100)/10;
+            break;
+        case 1: //cents
+            val_2_wr=value/100;
+            break;
+        }
+        if((time_us_32()-start)>6000){
+            gpio_put(enables[en],false);
+            write_value(val_2_wr, !en); //00,01,10 -> solo es true cuando es 1.
+            gpio_put(enables[en+1],true);
+            start=time_us_32();
+            en++;
+            if(en>2){en=0;}
+        }
     }
 }

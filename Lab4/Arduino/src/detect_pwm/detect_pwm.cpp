@@ -51,7 +51,7 @@ void calculate_duty(uint16_t* duty){
     uint32_t count=pwm_get_counter(slice_num); // 52m se acaba el contador. 16 bits-> 65536
     uint32_t counting_rate =SYS_CLK_KHZ*10; //SYS_CLK_KHZ*1000 / 100;
     uint32_t max_possible_count = counting_rate * 0.05; //por el tiempo total de medicion 
-    *duty=100*count/max_possible_count;
+    *duty=1000*count/max_possible_count;
     printf("max_possible count:%d\n",max_possible_count);
     printf("duty count:%d\n",count);
     printf("duty percent:%d",*duty);

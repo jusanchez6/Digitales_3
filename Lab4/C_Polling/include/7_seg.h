@@ -10,10 +10,16 @@
  * @date 2024-10-12
  */
 
-#include <stdint.h>
-
 #ifndef _7_SEG_H_
     #define _7_SEG_H_
+
+    //Standard Libraries
+    #include <stdio.h>
+    #include <stdint.h>
+    #include <stdbool.h>
+
+    //Pico Libraries
+    #include "pico/stdlib.h"
 
     #define START_PIN 2
     #define SEGMENTS_MASK 0xFF<<START_PIN
@@ -22,7 +28,7 @@
     #define EN_3 10
     
     void init_7_seg(void);
-    static inline void write_value(uint8_t value);
+    static inline void write_value(uint8_t value, bool dp);
     void write_decimals(uint16_t value);
 
 #endif

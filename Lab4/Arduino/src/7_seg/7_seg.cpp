@@ -20,9 +20,9 @@ uint8_t lookup[10] = {
 };
 
 
-static inline void write_value(uint8_t value){
+static inline void write_value(uint8_t value,bool dp){
   for (int8_t i=0; i<=7;i++){
-    digitalWrite(i+START_PIN,(lookup[value]>>i)&1);
+    digitalWrite(i+START_PIN,((lookup[value] | dp<< 7 )>>i)&1);
   }
 }
 
@@ -40,24 +40,38 @@ void write_decimals(uint16_t value){
     static uint8_t en;
     uint8_t enables[]={EN_1,EN_2,EN_3,EN_1};
     uint8_t val_2_wr;
-   switch (en)
-    {
-    case 2: //units
-        val_2_wr=value % 10;
-        break;
-    case 0: //decimals
-        val_2_wr=(value%100)/10;
-        break;
-    case 1: //cents
-        val_2_wr=value/100;
-        break;
+
+    if (value / 1000){
+        val_2_wr= en==1 ? 1 : 0; //si es las cents, es 0
+        if((time_us_32()-start)>6000){
+            digitalWrite(enables[en],false);
+            write_value(val_2_wr, 0); //00,01,10 -> solo es true cuando es 1.
+            digitalWrite(enables[en+1],true);
+            start=time_us_32();
+            en++;
+            if(en>2){en=0;}
+        }
     }
-    if((time_us_32()-start)>6000){
-        digitalWrite(enables[en],false);
-        write_value(val_2_wr);
-        digitalWrite(enables[en+1],true);
-        start=time_us_32();
-        en++;
-        if(en>2){en=0;}
+    else{
+        switch (en)
+        {
+        case 2: //units
+            val_2_wr=value % 10;
+            break;
+        case 0: //decimals <- este va con dp
+            val_2_wr=(value%100)/10;
+            break;
+        case 1: //cents
+            val_2_wr=value/100;
+            break;
+        }
+        if((time_us_32()-start)>6000){
+            digitalWrite(enables[en],false);
+            write_value(val_2_wr, !en); //00,01,10 -> solo es true cuando es 1.
+            digitalWrite(enables[en+1],true);
+            start=time_us_32();
+            en++;
+            if(en>2){en=0;}
+        }
     }
 }

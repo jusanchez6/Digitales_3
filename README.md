@@ -9,3 +9,15 @@ Este proyecto implementa el juego Tres en Linea (Tic-Tac-Toe) en lenguaje C para
 
 ## Laboratorio 3: Sistema de Control de Acceso
 Este proyecto implementa un sistema de control de acceso por medio de un teclado matricial. Este laboratorio tiene como objetivo la estructuración de un programa simple, junto con la configuración para la lectura del teclado matricial, y utilizar los módulos de temporización.
+
+## Laboratorio 4: Arduino vs MicroPython vs C
+La aplicación que se desarrolla en esta práctica consiste en medir el porcentaje de dureza de una señal cuadrada
+de cualquier frecuencia y mostrar este valor en 3 displays de 7 segmentos conectado de forma multiplexada. Esta
+aplicación será implementada utilizando 5 flujos de programación para la Raspberry Pi Pico. Los flujos para los que
+se implementará la medición de frecuencia son:
+- C con polling.
+- C con Interrupciones.
+- C con Polling e Interrupciones.
+- Arduino IDE.
+- MicroPython
+

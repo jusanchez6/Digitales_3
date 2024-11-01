@@ -25,7 +25,7 @@
     #define EN_3 10
     
     void init_7_seg(void);
-    static inline void write_value(uint8_t value);
+    static inline void write_value(uint8_t value, bool dp);
     void write_decimals(uint16_t value);
 
 #endif

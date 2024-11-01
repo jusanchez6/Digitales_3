@@ -11,14 +11,6 @@
  * @date 2024-10-12
  */
 
-//Standard Libraries
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-
-//Pico Libraries
-#include "pico/stdlib.h"
-#include "hardware/pwm.h"
 #include "detect_pwm.h"
 
 uint8_t slice_num;
@@ -55,10 +47,10 @@ void setup_duty_cycle_read(){
 void calculate_duty(uint16_t* duty){
     pwm_set_enabled(slice_num, false); //apaga el slice
     uint32_t count=pwm_get_counter(slice_num); // 52m se acaba el contador. 16 bits-> 65536
-    uint32_t counting_rate =SYS_CLK_KHZ*10; //SYS_CLK_KHZ*1000 / 100;
-    uint32_t max_possible_count = counting_rate * 0.05; //por el tiempo total de medicion 
-    *duty=100*count/max_possible_count;
-    printf("max_possible count:%d\n",max_possible_count);
+    uint32_t max_possible_count = SYS_CLK_KHZ /2;
+    *duty=1000*count/max_possible_count; //se multiplica por 1000 para que tenga espacio para el decimal
+    printf("max_possible count 1:%d\n",max_possible_count);
+    printf("max_possible count 1:%d\n",max_possible_count);
     printf("duty count:%d\n",count);
     printf("duty percent:%d",*duty);
 }
