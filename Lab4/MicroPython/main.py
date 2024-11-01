@@ -14,8 +14,9 @@ Este archivo contiene el código principal del proyecto. Se encarga de leer la s
 from machine import Pin
 import time
 
+PWN_IN_PIN = 13
 # Configuración del pin de entrada
-pwm_pin = Pin(12, Pin.IN)
+pwm_pin = Pin(PWN_IN_PIN, Pin.IN)
 
 # Variables globales
 last_rising_edge = 0      # Tiempo del último flanco de subida
@@ -25,11 +26,11 @@ duty_cycle = 0            # Ciclo de trabajo calculado
 pulse_high_time = 0       # Tiempo en alto del pulso
 
 START_PIN = 2
-EN_1_PIN = 11
-EN_2_PIN = 10
-EN_3_PIN = 9
+EN_1_PIN = 12
+EN_2_PIN = 11
+EN_3_PIN = 10
 
-SEGMENT_PINS = [Pin(i, Pin.OUT) for i in range(START_PIN, START_PIN + 7)]
+SEGMENT_PINS = [Pin(i, Pin.OUT) for i in range(START_PIN, START_PIN + 8)]
 EN_1 = Pin(EN_1_PIN, Pin.OUT)
 EN_2 = Pin(EN_2_PIN, Pin.OUT)
 EN_3 = Pin(EN_3_PIN, Pin.OUT)

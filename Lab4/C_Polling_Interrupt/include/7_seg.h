@@ -21,16 +21,16 @@
     #define START_PIN 2
 
     /** @brief Máscara de los gpios */
-    #define SEGMENTS_MASK 0x7F<<START_PIN
+    #define SEGMENTS_MASK 0xFF<<START_PIN
     
     /** @brief Pines de habilitación del display 1 */
-    #define EN_1 11
+    #define EN_1 12
 
     /** @brief Pines de habilitación del display 2 */
-    #define EN_2 10
+    #define EN_2 11
 
     /** @brief Pines de habilitación del display 3 */
-    #define EN_3 9
+    #define EN_3 10
 
     /**
      * @brief Inicializa los pines de los 7 segmentos

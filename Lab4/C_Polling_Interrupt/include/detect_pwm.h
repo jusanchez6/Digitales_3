@@ -26,7 +26,7 @@
 #ifndef DETECT_PWM_H
     #define DETECT_PWM_H    
 
-    #define PWM_PIN 12
+    #define PWM_PIN 13
 
     /**
      * @brief Función que detecta los flancos de subida y bajada de una señal PWM

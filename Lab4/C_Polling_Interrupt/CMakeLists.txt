@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
+# Project's name 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -18,15 +19,12 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-# Set the board type
-set(PICO_BOARD pico_w CACHE STRING "Board type")
+set(PICO_BOARD pico CACHE STRING "Board type")
 
 # Always include it
 include(pico_sdk_import.cmake)
 
-# Set the project name
 project(C_Polling_Interrpupt C CXX ASM)
-
 
 # SDK Initialization - Mandatory
 pico_sdk_init()
@@ -34,13 +32,12 @@ pico_sdk_init()
 # C/C++ project files
 add_executable(C_Polling_Interrpupt
     src/main.c
-    src/detect_pwm.c
     src/7_seg.c
+    src/detect_pwm.c
 )
 
-# Set the project name and version
-pico_set_program_name(C_Polling_Interrpupt "C_Polling_Interrpupt")
-pico_set_program_version(C_Polling_Interrpupt "0.1")
+# Header folder
+include_directories(include)
 
 # Enable usb output, disable uart output
 pico_enable_stdio_usb(C_Polling_Interrpupt 1)
@@ -54,10 +51,9 @@ target_link_libraries(C_Polling_Interrpupt
         hardware_pwm   
         hardware_sync)
 
-# Add the standard include files to the build
 target_include_directories(C_Polling_Interrpupt PRIVATE
 ${CMAKE_CURRENT_LIST_DIR}
-${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
+${CMAKE_CURRENT_LIST_DIR}/..
 )
 
 # Need to generate UF2 file for upload to RP2040

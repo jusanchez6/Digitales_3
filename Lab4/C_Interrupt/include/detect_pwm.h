@@ -22,7 +22,7 @@
     #define __DETECT_PWM_H__
 
     /** @brief Pin al que se conecta la señal PWM*/
-    #define PWM_PIN 12
+    #define PWM_PIN 13
 
     /** @brief Función que se llama cuando se detecta un flanco de subida en la señal PWM
      * 
