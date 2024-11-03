@@ -24,11 +24,33 @@
     #include "pico/stdlib.h"
     #include "hardware/pwm.h"
     
+    /** @brief Pin al que se conecta la señal PWM*/
     #define PWM_PIN 13
     
+    /** @brief Función que averigua el canal y el slice del gpio
+     * 
+     * @param void 
+     * 
+     * @return void
+    */
     void init_pwm_detect();
-    uint8_t check_flank(void); //see which 
+
+    /** @brief Función que hace el setup de la lectura del pwm con hardware
+     * 
+     * @param void
+     * 
+     * @return void
+    */
     void setup_duty_cycle_read();
+
+    /** @brief Función con el flujo de la lectura del pwm
+     * 
+     * Esta función hace el setup, espera cierto tiempo 
+     * 
+     * @param void
+     * 
+     * @return void
+    */
     uint16_t measure_duty_cycle();
     void calculate_duty(uint16_t* duty);
     

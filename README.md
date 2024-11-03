@@ -15,9 +15,9 @@ La aplicación que se desarrolla en esta práctica consiste en medir el porcenta
 de cualquier frecuencia y mostrar este valor en 3 displays de 7 segmentos conectado de forma multiplexada. Esta
 aplicación será implementada utilizando 5 flujos de programación para la Raspberry Pi Pico. Los flujos para los que
 se implementará la medición de frecuencia son:
-- C con polling.
+- C con Polling.
 - C con Interrupciones.
 - C con Polling e Interrupciones.
 - Arduino IDE.
-- MicroPython
+- MicroPython.
 

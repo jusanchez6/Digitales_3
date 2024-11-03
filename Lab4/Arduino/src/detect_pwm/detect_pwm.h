@@ -21,7 +21,10 @@
     //Pico Libraries
     #include "hardware/pwm.h"
     
+    /** @brief Frecuencia del sistema en KHz*/
     #define SYS_CLK_KHZ 125000
+
+    /** @brief Pin al que se conecta la señal PWM*/
     #define PWM_PIN 13
     void init_pwm_detect();
     uint8_t check_flank(void); //see which 

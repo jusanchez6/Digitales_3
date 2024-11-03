@@ -23,10 +23,7 @@
 #include "globals.h"
 #include "detect_pwm.h"
 
-
 void pwm_detect_callback (uint gpio, uint32_t events){
-    
-
     switch (events)    
     {
     case GPIO_IRQ_EDGE_RISE:
@@ -58,11 +55,9 @@ void pwm_detect_callback (uint gpio, uint32_t events){
 
 }
 
-
 void init_pwm_detection(){
     gpio_init(PWM_PIN);
     gpio_set_dir(PWM_PIN, GPIO_IN);
     gpio_pull_down(PWM_PIN);
     gpio_set_irq_enabled_with_callback(PWM_PIN, GPIO_IRQ_EDGE_RISE|GPIO_IRQ_EDGE_FALL, true, &pwm_detect_callback);
 }
-
