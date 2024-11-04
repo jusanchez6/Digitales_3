@@ -1,17 +1,13 @@
 /**
- * @file 7_seg.c
+ * @file Arduino.ino
  * 
- * @brief Implementacion de la escritura a los 7 segmentos
- * 
- * Este archivo contiene la implementación de los siete segmentos.
+ * @brief Este archivo contiene la función principal del proyecto.
  * 
  * @authors María Del Mar Arbeláez
  *          Julián Mauricio Sánchez
  * 
- * @date 2024-10-12
+ * @date 2024-11-4
  */
-
-//#include "./libs/detect_pwm/detect_pwm.h"
 
 #include <stdio.h>
 #include <stdint.h>
@@ -19,8 +15,6 @@
 
 #include "./src/detect_pwm/detect_pwm.h"
 #include "./src/7_seg/7_seg.h"
-
-#include "hardware/pwm.h"
 
 
 void setup() {

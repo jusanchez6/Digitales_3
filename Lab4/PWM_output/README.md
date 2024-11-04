@@ -1,17 +1,12 @@
-# Implementación con Interrupciones
+# Implementación de generador de PWM
 
 ## Descripción
 
-Esta implementación se hace siguiendo el flujo de desarrollo con interrupciones de GPIO.
+Esta implementación genera un PWM teniendo una frecuencia y un ciclo de dureza, se utiliza el módulo hardware del PWM.
   
 ## Contenidos
 
 - **`main.c`**: Archivo principal que contiene la función principal del programa, inicializa y empieza la ejecución del programa.
-- **`7_seg.h`**: Archivo con las declaraciones de las funciones y variables utilizadas para la visualización en los displays de 7 segmentos.
-- **`7_seg.c`**: Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.
-- **`detect_pwm.c`**: Archivo con las declaraciones de las funciones y variables utilizadas para la lectura del ciclo de dureza.
-- **`detect_pwm.h`**: Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.
-- **`globals.h`**: Archivo que contiene variables globales.
 - **`Doxyfile`**: Archivo de configuración para generar la documentación.
 - **`MainPage.dox`**: Archivo con el contenido de la página principal.
   
@@ -30,7 +25,7 @@ De este laboratorio en adelante se utilizará la extensión de la Raspberry Pi P
 
 ## Instrucciones para la generación de la documentación
 
-1. En la carpeta `C_Interrupt` ejecutar el siguiente comando:
+1. En la carpeta `PWM_output` ejecutar el siguiente comando:
    ```bash
    doxygen Doxyfile
    ```

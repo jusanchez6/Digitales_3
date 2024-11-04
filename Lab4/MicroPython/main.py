@@ -1,51 +1,79 @@
-"""
-@file main.py
-@brief  Archivo principal del proyecto.
-
-Este archivo contiene el código principal del proyecto. Se encarga de leer la señal PWM de un pin de entrada y mostrar la frecuencia y el ciclo de trabajo en un display de 7 segmentos.
-
-@authors Maria Del Mar Arbelaez
-        Julian Mauricio Sanchez
-
-@date 2024-10-28
-"""
-
+##
+# @file main.py
+#
+# @brief  Archivo principal del proyecto.
+#
+# Este archivo contiene el código principal del proyecto.
+# Se encarga de leer la señal PWM de un pin de entrada y mostrar la frecuencia y el ciclo de trabajo en un display de 7 segmentos.
+#
+# @author María Del Mar Arbeláez
+# @author Julián Mauricio Sánchez
+#
+# @date 2024-11-04
+##
 
 from machine import Pin
 import time
 
+## Pin de entrada de PWM
 PWN_IN_PIN = 13
-# Configuración del pin de entrada
+
+## Configuración del pin de entrada
 pwm_pin = Pin(PWN_IN_PIN, Pin.IN)
 
 # Variables globales
-last_rising_edge = 0      # Tiempo del último flanco de subida
-period = 0                # Periodo de la señal
-frequency = 0             # Frecuencia calculada
-duty_cycle = 0            # Ciclo de trabajo calculado
-pulse_high_time = 0       # Tiempo en alto del pulso
 
+## Tiempo del último flanco de subida
+last_rising_edge = 0  
+
+## Periodo de la señal
+period = 0
+
+## Frecuencia calculada
+frequency = 0
+
+## Ciclo de trabajo calculado
+duty_cycle = 0
+
+ ## Tiempo en alto del pulso
+pulse_high_time = 0      
+
+## Offset de los pines de salida
 START_PIN = 2
+
+## PIN para habilitar display 1
 EN_1_PIN = 12
+
+## PIN para habilitar display 2
 EN_2_PIN = 11
+
+## PIN para habilitar display 3
 EN_3_PIN = 10
 
+## Habilitar pines del siete segmentos como salida
 SEGMENT_PINS = [Pin(i, Pin.OUT) for i in range(START_PIN, START_PIN + 8)]
+
+## Habilitar pines del display 1 como salida
 EN_1 = Pin(EN_1_PIN, Pin.OUT)
+
+## Habilitar pines del display 2 como salida
 EN_2 = Pin(EN_2_PIN, Pin.OUT)
+
+## Habilitar pines del display 3 como salida
 EN_3 = Pin(EN_3_PIN, Pin.OUT)
 
+## Lista de los pines de habilitación
 enable_pins = [EN_1, EN_2, EN_3]
 
-# Tabla de conversión
+## Tabla de conversión
 lookup = [
     0x3f, 0x06, 0x5b, 0x4f, 0x66,
     0x6d, 0x7d, 0x07, 0x7f, 0x6f
 ]
 
+
 def pwm_callback(pin):
-    """
-    @brief Callback para la señal PWM.
+    """! Callback para la señal PWM.
     
     Esta función se llama cuando se detecta un flanco de subida o bajada en la señal PWM.
 
@@ -69,8 +97,7 @@ def pwm_callback(pin):
             duty_cycle = (pulse_high_time / period) * 100
 
 def init():
-    """
-    @brief Inicializa el display de 7 segmentos.
+    """! Inicializa el display de 7 segmentos.
 
     Esta función inicializa el display de 7 segmentos apagando todos los segmentos y displays.
 
@@ -86,8 +113,7 @@ def init():
     print("Display de 7 segmentos inicializado.")
 
 def write_value(value):
-    """
-    @brief Escribe un valor en el display de 7 segmentos.
+    """! Escribe un valor en el display de 7 segmentos.
     
     Esta función escribe un valor en el display de 7 segmentos.
 
@@ -100,10 +126,9 @@ def write_value(value):
         seg_pin.value((bits >> i) & 1)
 
 def write_decimals(value):
-    """
-    @brief Muestra el valor en el display de 7 segmentos.
+    """! Muestra el valor en el display de 7 segmentos.
     
-    Esta función se encarga de gestionar la multiplexacion en un display de 7 segmentos triple
+    Esta función se encarga de gestionar la multiplexacion en un display de 7 segmentos triple.
 
     @param value Valor a mostrar en el display.
 
@@ -138,8 +163,7 @@ def write_decimals(value):
 
 
 def main():
-    """
-    @brief Función principal del programa.
+    """! Función principal del programa.
 
     Esta función es la función principal del programa. Se encarga de inicializar el pin de entrada y el display de 7 segmentos, y de mostrar la frecuencia y el ciclo de trabajo de la señal PWM.
 

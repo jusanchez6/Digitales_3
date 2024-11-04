@@ -13,27 +13,16 @@
 
 #include "detect_pwm.h"
 
+/** @brief Slice del GPIO de la lectura*/
 uint8_t slice_num;
+
+/** @brief Canal del GPIO de la lectura (Siempre debería ser B)*/
 uint8_t channel;
 
 void init_pwm_detect(){
     // Only the PWM B pins can be used as inputs.
   slice_num = pwm_gpio_to_slice_num(PWM_PIN);
   channel= pwm_gpio_to_channel(PWM_PIN);
-}
-//podría usar una estructura para las banderas !!!
-uint8_t check_flank(void){
-    //para que no haya flanco: 0
-    //para que sea de subida: 1
-    //para que sea de bajada: 2
-    static bool before;
-    bool now=digitalRead(PWM_PIN);
-    if (before^now){
-        before=now;
-        if(now) {return 1;}
-        else {return 2;}
-    }
-    return 0;
 }
 
 void setup_duty_cycle_read(){

@@ -1,17 +1,17 @@
 /*!
-\mainpage Medición del ciclo de duracion de una señal (microPython) 
+\mainpage Medición del ciclo de duracion de una señal (C Polling) 
 
 \section intro_sec Descripción
-Este proyecto implementa un medidor de ciclo de dureza para una señal pwm y su visualización en 
-un display de 7 segmentos, para el cual se realiza su debida multiplexación. Utilizando el flujo de programación de 
-interrupciones y escrito en microPython.
+Este proyecto implementa un medidor de ciclo de dureza para una señal PWM y su visualización en 
+un display de 7 segmentos, para el cual se realiza su debida multiplexación. El proyecto funciona
+unicamente con un flujo de codigo de polling. 
 
 Aquí se muestra la documentación del código. 
 
 \section author_sec Información de los Autores
 - **Autores**: María Del Mar Arbeláez Sandoval, Julián Mauricio Sánchez Ceballos
 - **Asignatura**: Electrónica Digital 3
-- **Fecha**: 28/10/2024
+- **Fecha**: 04/11/2024
 - **Versión**: 1.0
 
 \section notes_sec Notas

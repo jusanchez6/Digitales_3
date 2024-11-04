@@ -14,6 +14,7 @@
 
 #include "7_seg.h"
 
+/** @brief Look-up table de las máscaras de salida del 7 segmentos*/
 uint8_t lookup[10] = {
     0x3f, 0x06, 0x5b, 0x4f, 0x66,
     0x6d, 0x7d, 0x07, 0x7f, 0x6f
