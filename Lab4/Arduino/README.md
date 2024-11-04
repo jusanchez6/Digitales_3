@@ -7,11 +7,11 @@ Se utiliza el ArduinoCore Mbed para la integración con el RP2040, manteniendo c
   
 ## Contenidos
 
-- **`Arduino.ino`**: Archivo principal que contiene la función principal del programa, inicializa y empieza la ejecución del programa.
-- **`7_seg.h`**: Archivo con las declaraciones de las funciones y variables utilizadas para la visualización en los displays de 7 segmentos.
-- **`7_seg.cpp`**: Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.
-- **`detect_pwm.cpp`**: Archivo con las declaraciones de las funciones y variables utilizadas para la lectura del ciclo de dureza.
-- **`detect_pwm.h`**:  Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.
+- [Arduino.ino](#Arduino.ino): Archivo principal que contiene la función principal del programa, inicializa y empieza la ejecución del programa.
+- [7_seg.h](#./Arduino/src/7_seg/7_seg.h): Archivo con las declaraciones de las funciones y variables utilizadas para la visualización en los displays de 7 segmentos.
+- [7_seg.cpp](#7_seg.cpp): Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.
+- [detect_pwm.h](#./Arduino/src/detect_pwm/detect_pwm.h): Archivo con las declaraciones de las funciones y variables utilizadas para la lectura del ciclo de dureza.
+- [detect_pwm.cpp](#detect_pwm.cpp):  Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.
 - **`Doxyfile`**: Archivo de configuración para generar la documentación.
 - **`MainPage.dox`**: Archivo con el contenido de la página principal.
   

@@ -1,5 +1,5 @@
 /**
- * @file 7_seg.h
+ * @file ./Arduino/src/7_seg/7_seg.h
  * @brief Archivo de cabecera de las funciones de los 7 segmentos.
  * 
  * Archivo de cabecera de las funciones de la libreria.

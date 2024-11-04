@@ -1,5 +1,5 @@
 /**
- * @file detect_pwm.h
+ * @file ./Arduino/src/detect_pwm/detect_pwm.h
  * @brief Archivo de cabecera de las funciones de los 7 segmentos.
  * 
  * Archivo de cabecera de las funciones de la librería.
