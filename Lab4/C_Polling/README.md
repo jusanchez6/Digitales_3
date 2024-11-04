@@ -5,9 +5,9 @@
 Esta implementación se hace siguiendo el flujo de desarrollo con Polling, utilizando el módulo de hardware de pwm para hacer la lectura del ciclo de dureza.
   
 ## Contenidos
-
-- **`main.c`**: Archivo principal que contiene la función principal del programa, inicializa y empieza la ejecución del programa.
-- **`7_seg.h`**: Archivo con las declaraciones de las funciones y variables utilizadas para la visualización en los displays de 7 segmentos.
+\ref ./C_Polling/src/main.c "main.c"
+- **`./C_Polling/src/main.c`**: Archivo principal que contiene la función principal del programa, inicializa y empieza la ejecución del programa.
+- **`./C_Polling/include/7_seg.h`**: Archivo con las declaraciones de las funciones y variables utilizadas para la visualización en los displays de 7 segmentos.
 - **`7_seg.c`**: Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.
 - **`detect_pwm.c`**: Archivo con las declaraciones de las funciones y variables utilizadas para la lectura del ciclo de dureza.
 - **`detect_pwm.h`**: Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.

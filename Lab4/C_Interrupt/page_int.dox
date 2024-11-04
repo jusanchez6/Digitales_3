@@ -1,12 +1,12 @@
 /*!
-\mainpage Medición del ciclo de duracion de una señal (C INTERRPUT) 
+\page page_int Medición del ciclo de duracion de una señal (C INTERRUPT) 
 
 \section intro_sec Descripción
 Este proyecto implementa un medidor de ciclo de dureza para una señal PWM y su visualización en 
 un display de 7 segmentos, para el cual se realiza su debida multiplexación. El proyecto funciona
 unicamente con un flujo de codigo de interrupciones. 
 
-Aquí se muestra la documentación del código. 
+Aquí se muestra la documentación del [código](./C_Interrupt/README.md). 
 
 \section author_sec Información de los Autores
 - **Autores**: María Del Mar Arbeláez Sandoval, Julián Mauricio Sánchez Ceballos

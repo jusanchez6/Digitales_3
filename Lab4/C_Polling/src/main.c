@@ -1,5 +1,5 @@
 /**
- * @file main.c
+ * @file ./C_Polling/src/main.c
  * 
  * @brief Archivo principal del medidor de ciclo de dureza.
  * 

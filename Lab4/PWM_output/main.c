@@ -5,8 +5,8 @@
  * 
  * Este archivo se encarga de generar la salida de otro microcontrolador de pwm con un determinado ciclo de dureza
  * 
- * @authors María Del Mar Arbeláez
- *          Julián Mauricio Sánchez
+ * @author María Del Mar Arbeláez
+ * @author Julián Mauricio Sánchez
  * 
  * @date 2024-10-22
  */
@@ -15,20 +15,25 @@
 #include "pico/stdlib.h"
 #include "hardware/pwm.h"
 
+/**@brief Pin de salida de PWM*/
 #define PWM_OUT_PIN 15
 
+/**@brief Frecuencia de PWM*/
 #define FREQ 5000
+
+/**@brief Ciclo de Dureza de PWM*/
 #define DUTY 70
 
+/**@brief Valor máximo de contador de hardware*/
 #define WRAP 100 //--> VA DE 4.9khz a 1.25MHz //se puede configurar para una menor frecuencia 100%, pero que pereza
 
-//cambiar para cambiar frecuencia
+/** Para cambiar frecuencia:
+** WRAP=CLOCK_SYS/(FREQ*DIV)
+** preescaler=CLOCK_SYS/FREC*WRAP
+** quiero que el wrap sea de 100
+** duty -> duty/100*wrap
+**/
 
-//WRAP=CLOCK_SYS/(FREQ*DIV)
-//preescaler=CLOCK_SYS/FREC*WRAP
-//quiero que el wrap sea de 10000
-//duty -> duty/100*wrap
-//
 int main(){
     // Inicialización de la entrada/salida estándar
     stdio_init_all();

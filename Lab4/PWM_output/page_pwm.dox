@@ -1,0 +1,18 @@
+/*!
+\page page_pwm Generación de una señal de PWM 
+
+\section intro_sec Descripción
+Este proyecto implementa un generador de señal PWM con entradas de frecuencia y ciclo de dureza
+utilizando el módulo de hardware de PWM.
+
+Aquí se muestra la documentación del [código](./PWM_output/README.md). 
+
+\section author_sec Información de los Autores
+- **Autores**: María Del Mar Arbeláez Sandoval, Julián Mauricio Sánchez Ceballos
+- **Asignatura**: Electrónica Digital 3
+- **Fecha**: 04/11/2024
+- **Versión**: 1.0
+
+\section notes_sec Notas
+La version del proyecto se puede encontrar en: https://github.com/jusanchez6/Digitales_3
+*/

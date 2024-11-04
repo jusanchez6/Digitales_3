@@ -1,24 +1,31 @@
 /*!
-\mainpage Implementación de Cifrado AES-128
+\mainpage Laboratorio 4: Comparación entre flujos de desarrollo
 
 \section intro_sec Introducción
 
-Como primer laboratorio de la asignatura de Electrónica Digital 3, se propone la implementación de un cifrado AES-128 en C. El cifrado AES (Advanced Encryption Standard) es un algoritmo de cifrado simétrico que se utiliza para proteger datos confidenciales. AES-128 es la variante más común de este algoritmo y utiliza una clave de 128 bits para cifrar los datos. Esto es útil para el entendimiento de operaciones a nivel de bit y el acercamiento a la programación en lenguaje C.
+Como cuarto laboratorio de la asignatura de Electrónica Digital 3, se propone la implementación de un lector de ciclo de dureza para la
+Raspberry Pi Pico.
 
-Este proyecto implementa el algoritmo de cifrado AES-128 en C. El archivo principal, \ref main.c "main.c", contiene la función principal que gestiona la encriptación de datos. A continuación se detallan los componentes principales y el flujo de ejecución del programa.
+Este proyecto implementa este medidor en diferentes flujos de desarrollo e IDEs.
+Aquí se muestra la documentación del [código](./README.md). 
 
-\section details_sec Detalles del Programa
-- La clave y el estado se leen desde archivos de texto.
-- La clave se expande para el cifrado AES-128.
-- El estado se encripta utilizando la clave expandida.
-- El resultado se guarda en el archivo `encripted.txt`.
+\section details_sec Flujos de desarrollo
+
+- \ref page_pol "Polling": se implementa usando el SDK de la Raspberry Pi Pico. Pregunta constantemente banderas de hardware.
+- \ref page_int "Interrupción": se implementa usando el SDK de la Raspberry Pi Pico. Se gestiona el flujo del programa después de una interrupción.
+- \ref page_pol_int "Polling + Interrupciones": se implementa usando el SDK de la Raspberry Pi Pico. Se gestiona el flujo del programa después de una interrupción.
+- \ref page_micro "Micropython": se implementa usando el SDK de la Raspberry Pi Pico, con la opción de Micropython. Se utilizó el flujo de interrupciones.
+- \ref page_ard "Arduino": se implementa mediante polling usando el IDE de Arduino.
+
+\section details2_sec Generador de PWM
+Adicionalmente, se implementa un \ref page_pwm "generador de PWM" con frecuencia y señal variable.
 
 \section author_sec Información de los Autores
-- **Autores**: Maria Del Mar Arbelaez Sandoval, Julian Mauricio Sanchez Ceballos
+- **Autores**: María Del Mar Arbeláez Sandoval, Julián Mauricio Sánchez Ceballos
 - **Asignatura**: Electrónica Digital 3
-- **Fecha**: 27/8/2024
+- **Fecha**: 04/11/2024
 - **Versión**: 1.1
 
 \section notes_sec Notas
-Asegúrate de que los archivos de entrada y salida estén correctamente configurados antes de ejecutar el programa.
+La version del proyecto se puede encontrar en: https://github.com/jusanchez6/Digitales_3
 */
