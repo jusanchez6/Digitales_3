@@ -1,5 +1,5 @@
 /**
- * @file globals.h
+ * @file ./C_Polling_Interrupt/include/globals.h
  * 
  * @brief Global variables and constants
  * 

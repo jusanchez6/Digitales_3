@@ -1,5 +1,5 @@
 /**
- * @file 7_seg.h
+ * @file ./C_Interrupt/include/7_seg.h
  * @brief Archivo de cabecera de las funciones del archivo 7_seg.c
  * 
  * Archivo de cabecera de las funciones de la libreria.

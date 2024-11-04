@@ -12,8 +12,7 @@ Se utiliza el ArduinoCore Mbed para la integración con el RP2040, manteniendo c
 - [7_seg.cpp](#7_seg.cpp): Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.
 - [detect_pwm.h](#./Arduino/src/detect_pwm/detect_pwm.h): Archivo con las declaraciones de las funciones y variables utilizadas para la lectura del ciclo de dureza.
 - [detect_pwm.cpp](#detect_pwm.cpp):  Archivo que contiene las funciones utilizadas para la visualización en los displays de 7 segmentos.
-- **`Doxyfile`**: Archivo de configuración para generar la documentación.
-- **`MainPage.dox`**: Archivo con el contenido de la página principal.
+- **`page_ard.dox`**: Archivo con el contenido de la página de ArduinoS.
   
 ## Instrucciones de Uso
 
@@ -22,13 +21,5 @@ Se utiliza el ArduinoCore Mbed para la integración con el RP2040, manteniendo c
 
 2. **Ejecución:**
    Presionar el botón de `Upload` con la Raspberry Pi Pico conectada.
-
-## Instrucciones para la generación de la documentación
-
-1. En la carpeta `Arduino` ejecutar el siguiente comando:
-   ```bash
-   doxygen Doxyfile
-   ```
-2. Se generará una carpeta con el nombre `html` en esta carpeta hay un archivo llamado `index.html` al abrir ese archivo se obtendrá la documentación en doxygen.
 
 D:

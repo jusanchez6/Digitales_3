@@ -1,5 +1,5 @@
 /**
- * @file 7_seg.c
+ * @file ./C_Polling/src/7_seg.c
  * 
  * @brief Implementacion de la escritura a los 7 segmentos
  * 
@@ -11,7 +11,7 @@
  * @date 2024-10-12
  */
 
-#include "7_seg.h"
+#include "../include/7_seg.h"
 
 /**
  * @brief Tabla de conversión de valores a 7 segmentos

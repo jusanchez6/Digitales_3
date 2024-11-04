@@ -1,5 +1,5 @@
 /**
- * @file main.c
+ * @file ./PWM_output/main.c
  * 
  * @brief Archivo principal del generador de ciclo de dureza.
  * 

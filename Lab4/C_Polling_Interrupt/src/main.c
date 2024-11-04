@@ -1,5 +1,5 @@
 /**
- * @file main.c
+ * @file ./C_Polling_Interrupt/src/main.c
  * @brief This is a brief description of the main C file.
  *
  * Detailed description of the main C file.

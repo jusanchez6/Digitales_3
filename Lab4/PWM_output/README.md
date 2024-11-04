@@ -6,9 +6,8 @@ Esta implementación genera un PWM teniendo una frecuencia y un ciclo de dureza,
   
 ## Contenidos
 
-- **`main.c`**: Archivo principal que contiene la función principal del programa, inicializa y empieza la ejecución del programa.
-- **`Doxyfile`**: Archivo de configuración para generar la documentación.
-- **`MainPage.dox`**: Archivo con el contenido de la página principal.
+- [main.c](#./PWM_output/main.c): Archivo principal que contiene la función principal del programa, inicializa y empieza la ejecución del programa.
+- **`page_pwm.dox`**: Archivo con el contenido de la página del generador de PWM.
   
 
 ## Instrucciones de Uso
@@ -23,12 +22,5 @@ De este laboratorio en adelante se utilizará la extensión de la Raspberry Pi P
 3. **Ejecución:**
    Presionar el botón de `Run` con la Raspberry Pi Pico conectada, si no nota la board conectada, es necesario conectarla en modo boot, como se suele hacer.
 
-## Instrucciones para la generación de la documentación
-
-1. En la carpeta `PWM_output` ejecutar el siguiente comando:
-   ```bash
-   doxygen Doxyfile
-   ```
-2. Se generará una carpeta con el nombre `html` en esta carpeta hay un archivo llamado `index.html` al abrir ese archivo se obtendrá la documentación en doxygen.
 
 D:

@@ -1,5 +1,5 @@
 /**
- * @file detect_pwm.h
+ * @file ./C_Polling/include/detect_pwm.h
  * @brief Archivo de cabecera de las funciones de los 7 segmentos.
  * 
  * Archivo de cabecera de las funciones de la libreria.

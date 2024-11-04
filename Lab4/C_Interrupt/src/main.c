@@ -1,5 +1,5 @@
 /**
- * @file main.c
+ * @file ./C_Interrupt/src/main.c
  * @brief Main file for the project
  * 
  * This file contains the main function for the project.

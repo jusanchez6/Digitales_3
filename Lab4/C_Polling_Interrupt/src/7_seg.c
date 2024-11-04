@@ -1,5 +1,5 @@
 /**
- * @file 7_seg.c
+ * @file ./C_Polling_Interrupt/src/7_seg.c
  * 
  * @brief Implementacion de la escritura a los 7 segmentos
  * 
