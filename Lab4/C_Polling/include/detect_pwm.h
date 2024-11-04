@@ -45,13 +45,21 @@
 
     /** @brief Función con el flujo de la lectura del pwm
      * 
-     * Esta función hace el setup, espera cierto tiempo 
+     * Esta función hace el setup, espera cierto tiempo y llama al cálculo
      * 
      * @param void
      * 
      * @return void
     */
     uint16_t measure_duty_cycle();
+
+    /** @brief Función con el cálculo del ciclo de dureza
+     *  
+     * 
+     * @param duty puntero al valor del ciclo de dureza
+     * 
+     * @return void
+    */
     void calculate_duty(uint16_t* duty);
     
 #endif

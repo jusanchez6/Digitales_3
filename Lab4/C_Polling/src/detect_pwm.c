@@ -18,20 +18,7 @@ uint8_t slice_num;
 void init_pwm_detect(){
     // Only the PWM B pins can be used as inputs.
     slice_num = pwm_gpio_to_slice_num(PWM_PIN);
-}
-//podría usar una estructura para las banderas !!!
-uint8_t check_flank(void){
-    //para que no haya flanco: 0
-    //para que sea de subida: 1
-    //para que sea de bajada: 2
-    static bool before;
-    bool now=gpio_get(PWM_PIN);
-    if (before^now){
-        before=now;
-        if(now) {return 1;}
-        else {return 2;}
-    }
-    return 0;
+    setup_duty_cycle_read(); //aquí configura y prende el slice
 }
 
 void setup_duty_cycle_read(){
@@ -57,17 +44,11 @@ void calculate_duty(uint16_t* duty){
 
 uint16_t measure_duty_cycle() {
     static uint16_t duty;
-    static uint8_t moment;
-    static uint64_t start;
-    if(!moment){
-        moment=1;
+    static uint32_t start;
+    if((time_us_64()-start)>=50000){ //espera de 50ms
+        calculate_duty(&duty);
         setup_duty_cycle_read(); //aquí configura y prende el slice
         start=time_us_32();
-
-    }
-    else if((time_us_64()-start)>=50000){ //espera de 50ms
-        calculate_duty(&duty);
-        moment=0;
     }
     return duty;
 }
