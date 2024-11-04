@@ -69,15 +69,12 @@ void write_decimals(uint16_t value, uint8_t* run){
         {
         case 0:
             val_2_wr=value % 10;                        // parte decimal
-            printf("Value to display 0: %d\n", val_2_wr);
             break;
         case 1:
-            val_2_wr=(value /10) % 10;
-            printf("Value to display 1: %d\n", val_2_wr);
+            val_2_wr=(value %100) / 10;
             break;
         case 2:
-            val_2_wr=(value /100) % 10;
-            printf("Value to display 2: %d\n", val_2_wr);
+            val_2_wr=(value /100);
             break;
         default:
             val_2_wr=0;

@@ -53,7 +53,7 @@
      * 
      * @return void
      */
-    void write_value(uint8_t value);
+    void write_value(uint8_t value, bool dp);
 
     /**
      * @brief Escribe un valor en los 7 segmentos
@@ -67,6 +67,6 @@
      * 
      * @return void
      */
-    void write_decimals(uint8_t value,uint8_t*run);
+    void write_decimals(uint16_t value);
 
 #endif

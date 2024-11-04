@@ -68,7 +68,7 @@ int main() {
 
 
         // multiplexado de los displays
-        write_decimals((uint8_t)g_duty_cycle, (uint8_t *)&g_run);
+        write_decimals((uint16_t)g_duty_cycle);
     }
 	
     return 0;
