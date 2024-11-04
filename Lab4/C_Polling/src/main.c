@@ -13,8 +13,8 @@
 
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "detect_pwm.h"  			// Detectar el pwm
-#include "7_seg.h"           		// 7 segmentos
+#include "../include/detect_pwm.h"  			// Detectar el pwm
+#include "../include/7_seg.h"           		// 7 segmentos
 
 int main(){
     // Inicialización de la entrada/salida estándar

@@ -1,5 +1,5 @@
 /**
- * @file main.c
+ * @file ./C_Interrupt/src/main.c
  * @brief Main file for the project
  * 
  * This file contains the main function for the project.
@@ -21,10 +21,9 @@
 #include "pico/platform.h"
 
 // Project libraries
-#include "detect_pwm.h"
-#include "pwm.h"
-#include "7_seg.h"
-#include "globals.h" 
+#include "../include/detect_pwm.h"
+#include "../include/7_seg.h"
+#include "../include/globals.h" 
 
 
 // Definición de variables globales

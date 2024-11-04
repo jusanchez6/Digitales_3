@@ -1,5 +1,5 @@
 /**
- * @file detect_pwm.c
+ * @file ./C_Interrupt/src/detect_pwm.c
  * @brief Detecta la frecuencia de una señal PWM
  * 
  * Este archivo contiene la función detect_pwm que se encarga de detectar la frecuencia de una señal PWM.
@@ -20,8 +20,8 @@
 #include "hardware/clocks.h"
 
 // User Libraries
-#include "globals.h"
-#include "detect_pwm.h"
+#include "../include/globals.h"
+#include "../include/detect_pwm.h"
 
 void pwm_detect_callback (uint gpio, uint32_t events){
     switch (events)    

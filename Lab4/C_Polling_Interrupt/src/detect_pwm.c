@@ -1,5 +1,5 @@
 /**
- * @file detect_pwm.c
+ * @file ./C_Polling_Interrupt/src/detect_pwm.c
  * 
  * @brief Funciones para la detección de señales PWM
  * 

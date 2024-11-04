@@ -1,5 +1,5 @@
 /**
- * @file detect_pwm.c
+ * @file ./C_Polling/src/detect_pwm.c
  * 
  * @brief Implementacion de la detección del PWM
  * 
@@ -11,7 +11,7 @@
  * @date 2024-10-12
  */
 
-#include "detect_pwm.h"
+#include "../include/detect_pwm.h"
 
 uint8_t slice_num;
 

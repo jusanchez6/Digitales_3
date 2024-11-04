@@ -1,5 +1,5 @@
 /**
- * @file detect_pwm.h
+ * @file ./C_Polling_Interrupt/include/detect_pwm.h
  * 
  * @brief Archivo de cabecera para las funciones del archivo detect_pwm.c
  * 

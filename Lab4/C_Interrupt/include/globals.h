@@ -1,5 +1,5 @@
 /**
- * @file globals.h
+ * @file ./C_Interrupt/include/globals.h
  * 
  * @brief Definición de variables globales
  * 
