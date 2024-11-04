@@ -48,7 +48,7 @@ void write_value(uint8_t value){
     gpio_put_masked(SEGMENTS_MASK,lookup[value]<<START_PIN);
 }
 
-void write_decimals(uint8_t value, uint8_t* run){
+void write_decimals(uint16_t value, uint8_t* run){
     static uint32_t start;
     uint8_t enables[] = {EN_1, EN_2, EN_3};  // Pines de habilitación de cada dígito
     uint8_t val_2_wr;
@@ -68,15 +68,15 @@ void write_decimals(uint8_t value, uint8_t* run){
         switch (*run)
         {
         case 0:
-            val_2_wr=value % 10;
+            val_2_wr=value % 10;                        // parte decimal
             printf("Value to display 0: %d\n", val_2_wr);
             break;
         case 1:
-            val_2_wr=(value%100)/10;
+            val_2_wr=(value /10) % 10;
             printf("Value to display 1: %d\n", val_2_wr);
             break;
         case 2:
-            val_2_wr=value/100;
+            val_2_wr=(value /100) % 10;
             printf("Value to display 2: %d\n", val_2_wr);
             break;
         default:
@@ -92,7 +92,6 @@ void write_decimals(uint8_t value, uint8_t* run){
         // Actualizar el tiempo para el multiplexado
         start = time_us_32();
         (*run)++;
-        printf("Run incremented to: %d\n", *run);
 
         // Si ya mostramos los tres dígitos, volvemos a empezar
         if (*run > 2) {

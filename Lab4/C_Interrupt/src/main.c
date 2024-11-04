@@ -22,7 +22,6 @@
 
 // Project libraries
 #include "detect_pwm.h"
-#include "pwm.h"
 #include "7_seg.h"
 #include "globals.h" 
 
