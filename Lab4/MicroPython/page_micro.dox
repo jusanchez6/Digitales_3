@@ -6,7 +6,7 @@ Este proyecto implementa un medidor de ciclo de dureza para una señal pwm y su 
 un display de 7 segmentos, para el cual se realiza su debida multiplexación. Utilizando el flujo de programación de 
 interrupciones y escrito en microPython.
 
-Aquí se muestra la documentación del [código](./Micropython/README.md). 
+Aquí se muestra la documentación del [código](./MicroPython/README.md). 
 
 \section author_sec Información de los Autores
 - **Autores**: María Del Mar Arbeláez Sandoval, Julián Mauricio Sánchez Ceballos
