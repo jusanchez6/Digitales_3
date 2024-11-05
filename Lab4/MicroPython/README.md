@@ -22,7 +22,7 @@ De este laboratorio en adelante se utilizará la extensión de la Raspberry Pi P
    ```bash
     cp .\RPI_PICO-20241025-v1.24.0.uf2.uf2 D:/
     ```
-   Si se está trabajando con la Pico W, se escribe `.\RPI_PICOW-20241025-v1.24.0.uf2`.
+   Si se está trabajando con la Pico W, se escribe `.\RPI_PICO_W-20241025-v1.24.0.uf2`.
 
 2. **Ejecución:**
    Presionar el botón de `Run` con la Raspberry Pi Pico conectada para cargar el archivo actual, que sería `main.py`.
