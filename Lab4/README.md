@@ -23,9 +23,6 @@ se implementará la medición de ciclo de dureza son:
 - **`Doxyfile`**: Archivo de configuración para generar la documentación.
 - **`MainPage.dox`**: Archivo con el contenido de la página principal.
   
-
-## Comparación entre flujos de desarrollo
-
 ## Instrucciones para la generación de la documentación
 
 1. En la carpeta `Lab_4` ejecutar el siguiente comando:
