@@ -18,7 +18,7 @@ se implementará la medición de ciclo de dureza son:
 - [**`C_Interrupt`**](./C_Interrupt/README.md): Carpeta con los archivos para la implementación con interrupciones.
 - [**`C_Polling`**](./C_Polling/README.md): Carpeta con los archivos para la implementación con Polling.
 - [**`C_Polling_Interrupt`**](./C_Polling_Interrupt/README.md): Carpeta con los archivos para la implementación con Polling e Interrupciones.
-- [**`Micropython`**](./Micropython/README.md):Carpeta con los archivos para la implementación de MicroPython.
+- [**`MicroPython`**](./MicroPython/README.md):Carpeta con los archivos para la implementación de MicroPython.
 - [**`PWM_output`**](./PWM_output/README.md): Carpeta con los archivos para la implementación de un generador de PWM con un ciclo de dureza y frecuencia determinados.
 - **`Doxyfile`**: Archivo de configuración para generar la documentación.
 - **`MainPage.dox`**: Archivo con el contenido de la página principal.
