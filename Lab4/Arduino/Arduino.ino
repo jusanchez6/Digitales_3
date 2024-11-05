@@ -3,8 +3,8 @@
  * 
  * @brief Este archivo contiene la función principal del proyecto.
  * 
- * @authors María Del Mar Arbeláez
- *          Julián Mauricio Sánchez
+ * @author María Del Mar Arbeláez
+ * @author  Julián Mauricio Sánchez
  * 
  * @date 2024-11-4
  */
