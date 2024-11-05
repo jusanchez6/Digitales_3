@@ -19,20 +19,6 @@ void init_pwm_detect(){
     // Only the PWM B pins can be used as inputs.
     slice_num = pwm_gpio_to_slice_num(PWM_PIN);
 }
-//podría usar una estructura para las banderas !!!
-uint8_t check_flank(void){
-    //para que no haya flanco: 0
-    //para que sea de subida: 1
-    //para que sea de bajada: 2
-    static bool before;
-    bool now=gpio_get(PWM_PIN);
-    if (before^now){
-        before=now;
-        if(now) {return 1;}
-        else {return 2;}
-    }
-    return 0;
-}
 
 void setup_duty_cycle_read(){
     // Count once for every 100 cycles the PWM B input is high --> Freq max 1.25M

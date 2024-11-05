@@ -6,14 +6,12 @@
 # Este archivo contiene el código principal del proyecto.
 # Se encarga de leer la señal PWM de un pin de entrada y mostrar la frecuencia y el ciclo de trabajo en un display de 7 segmentos.
 #
-# @author María Del Mar Arbeláez
-# @author Julián Mauricio Sánchez
-#
 # @date 2024-11-04
 ##
 
 from machine import Pin
 import time
+import gc
 
 ## Pin de entrada de PWM
 PWN_IN_PIN = 13
@@ -22,21 +20,11 @@ PWN_IN_PIN = 13
 pwm_pin = Pin(PWN_IN_PIN, Pin.IN)
 
 # Variables globales
-
-## Tiempo del último flanco de subida
-last_rising_edge = 0  
-
-## Periodo de la señal
-period = 0
-
-## Frecuencia calculada
-frequency = 0
-
-## Ciclo de trabajo calculado
-duty_cycle = 0
-
- ## Tiempo en alto del pulso
-pulse_high_time = 0      
+last_rising_edge = 0      # Tiempo del último flanco de subida
+period = 0                # Periodo de la señal
+frequency = 0             # Frecuencia calculada
+duty_cycle = 0            # Ciclo de trabajo calculado
+pulse_high_time = 0       # Tiempo en alto del pulso
 
 ## Offset de los pines de salida
 START_PIN = 2
@@ -53,24 +41,30 @@ EN_3_PIN = 10
 ## Habilitar pines del siete segmentos como salida
 SEGMENT_PINS = [Pin(i, Pin.OUT) for i in range(START_PIN, START_PIN + 8)]
 
-## Habilitar pines del display 1 como salida
+## Habilitar pines del display como salida
 EN_1 = Pin(EN_1_PIN, Pin.OUT)
-
-## Habilitar pines del display 2 como salida
 EN_2 = Pin(EN_2_PIN, Pin.OUT)
-
-## Habilitar pines del display 3 como salida
 EN_3 = Pin(EN_3_PIN, Pin.OUT)
-
-## Lista de los pines de habilitación
 enable_pins = [EN_1, EN_2, EN_3]
 
-## Tabla de conversión
+## Tabla de conversión para el display de 7 segmentos
 lookup = [
     0x3f, 0x06, 0x5b, 0x4f, 0x66,
     0x6d, 0x7d, 0x07, 0x7f, 0x6f
 ]
 
+def mostrar_memoria():
+    """! Muestra el consumo de memoria.
+    
+    Esta función imprime la memoria libre y total disponible.
+
+    @return None
+    """
+    gc.collect()  # Ejecuta recolección de basura
+    memoria_libre = gc.mem_free()
+    memoria_total = gc.mem_alloc() + memoria_libre
+    print(f"Memoria libre: {memoria_libre} bytes")
+    print(f"Memoria total: {memoria_total} bytes")
 
 def pwm_callback(pin):
     """! Callback para la señal PWM.
@@ -90,7 +84,6 @@ def pwm_callback(pin):
             period = time.ticks_diff(current_time, last_rising_edge)
             frequency = 1000000 / period  # Frecuencia en Hz
         last_rising_edge = current_time
-    
     else:  # Flanco de bajada
         pulse_high_time = time.ticks_diff(current_time, last_rising_edge)
         if period > 0:
@@ -101,10 +94,7 @@ def init():
 
     Esta función inicializa el display de 7 segmentos apagando todos los segmentos y displays.
 
-    @param None
-
     @return None
-
     """
     for seg_pin in SEGMENT_PINS:
         seg_pin.off()
@@ -115,8 +105,6 @@ def init():
 def write_value(value):
     """! Escribe un valor en el display de 7 segmentos.
     
-    Esta función escribe un valor en el display de 7 segmentos.
-
     @param value Valor a escribir en el display.
 
     @return None
@@ -135,13 +123,11 @@ def write_decimals(value):
     @return None
     """
     for run in range(3):  # Muestra en 3 dígitos
-        # Apaga el display anterior
         if run > 0:
             enable_pins[run - 1].off()
         else:
             enable_pins[2].off()
 
-        # Descomponer el valor en unidades, decenas y centenas
         if run == 0:
             val_to_write = value % 10
         elif run == 1:
@@ -149,41 +135,30 @@ def write_decimals(value):
         else:
             val_to_write = (value // 100) % 10
 
-        # Escribe el valor en el display
         write_value(val_to_write)
-        enable_pins[run].on()  # Enciende el display actual
+        enable_pins[run].on()
 
-        # Mantiene el dígito encendido por un tiempo breve
-        time.sleep(0.0074)  # Mantiene el dígito encendido por 10 ms
+        time.sleep(0.0074)
 
-    # Apaga el último display después de mostrar
     enable_pins[2].off()
-
-
-
 
 def main():
     """! Función principal del programa.
 
-    Esta función es la función principal del programa. Se encarga de inicializar el pin de entrada y el display de 7 segmentos, y de mostrar la frecuencia y el ciclo de trabajo de la señal PWM.
-
-    @param None
+    Esta función inicializa el pin de entrada y el display de 7 segmentos, y muestra la frecuencia y el ciclo de trabajo de la señal PWM.
 
     @return None
-
     """
     pwm_pin.irq(trigger=Pin.IRQ_RISING | Pin.IRQ_FALLING, handler=pwm_callback)
 
-    # Inicializa el display de 7 segmentos
-    init()
+    init()  # Inicializa el display de 7 segmentos
+    mostrar_memoria()  # Muestra la memoria antes de iniciar el programa
 
     while True:
         try:
-            # Imprime los resultados
             print(f"Frecuencia: {frequency:.2f} Hz, Duty Cycle: {duty_cycle:.2f} %")
-    
-            # Muestra el duty cycle en el display
             write_decimals(int(duty_cycle))
+            mostrar_memoria()  # Muestra la memoria en cada ciclo
 
         except KeyboardInterrupt:
             print("Interrupción del usuario.")
@@ -191,4 +166,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -19,10 +19,10 @@
 #define PWM_OUT_PIN 15
 
 /**@brief Frecuencia de PWM*/
-#define FREQ 5000
+#define FREQ 50
 
 /**@brief Ciclo de Dureza de PWM*/
-#define DUTY 70
+#define DUTY 50
 
 /**@brief Valor máximo de contador de hardware*/
 #define WRAP 100 //--> VA DE 4.9khz a 1.25MHz //se puede configurar para una menor frecuencia 100%, pero que pereza

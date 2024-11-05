@@ -45,7 +45,7 @@ void init_7_seg(){
 }
 
 void write_value(uint8_t value, bool dp){
-    gpio_put_masked(SEGMENTS_MASK,lookup[value]<<START_PIN);
+    gpio_put_masked(SEGMENTS_MASK,(lookup[value] | dp<<7)<<START_PIN);
 }
 
 void write_decimals(uint16_t value){
@@ -68,13 +68,13 @@ void write_decimals(uint16_t value){
     else{
         switch (en)
         {
-        case 2: //units
+        case 0: //units
             val_2_wr=value % 10;
             break;
-        case 0: //decimals <- este va con dp
+        case 1: //decimals <- este va con dp
             val_2_wr=(value%100)/10;
             break;
-        case 1: //cents
+        case 2: //cents
             val_2_wr=value/100;
             break;
         }

@@ -43,6 +43,9 @@ include_directories(include)
 pico_enable_stdio_usb(C_Polling_Interrpupt 1)
 pico_enable_stdio_uart(C_Polling_Interrpupt 0)
 
+# Generate map/bin/hex file
+target_link_options(C_Polling_Interrpupt PRIVATE "-Wl,-Map=C_Polling_Interrpupt.map")
+
 # pico_stdlib library. You can add more if they are needed
 target_link_libraries(C_Polling_Interrpupt 
         pico_stdlib

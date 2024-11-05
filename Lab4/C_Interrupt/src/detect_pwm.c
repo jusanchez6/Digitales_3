@@ -45,7 +45,7 @@ void pwm_detect_callback (uint gpio, uint32_t events){
         if (g_period != 0){
             g_duty_cycle = (pulse  * g_frequency) / 10000;  // Convertir a porcentaje
             printf("Duty cycle: %llu%%\n", (uint8_t)g_duty_cycle);
-            write_decimals((uint16_t)g_duty_cycle, (uint8_t *)&g_run);
+            write_decimals((uint16_t)g_duty_cycle);
 
         }
         break;

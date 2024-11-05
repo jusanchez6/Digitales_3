@@ -17,6 +17,8 @@
 #ifndef _7_SEG_H_
     #define _7_SEG_H_
 
+    #include "pico/stdlib.h"
+
     /** @brief Offset de los gpios */
     #define START_PIN 2
 
@@ -53,7 +55,7 @@
      * 
      * @return void
      */
-    void write_value(uint8_t value);
+    void write_value(uint8_t value, bool dp);
 
     /**
      * @brief Escribe un valor en los 7 segmentos
@@ -67,6 +69,6 @@
      * 
      * @return void
      */
-    void write_decimals(uint16_t value,uint8_t*run);
+    void write_decimals(uint16_t value);
 
 #endif

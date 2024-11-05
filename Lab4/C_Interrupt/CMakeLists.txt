@@ -19,7 +19,7 @@ if (EXISTS ${picoVscode})
     include(${picoVscode})
 endif()
 # ====================================================================================
-set(PICO_BOARD pico CACHE STRING "Board type")
+set(PICO_BOARD pico_w CACHE STRING "Board type")
 
 # Always include it
 include(pico_sdk_import.cmake)
@@ -45,6 +45,9 @@ include_directories(include)
 # Enable usb output, disable uart output
 pico_enable_stdio_usb(C_Interrupt 1)
 pico_enable_stdio_uart(C_Interrupt 0)
+
+# Add map file generation for memory usage
+target_link_options(C_Interrupt PRIVATE "-Wl,-Map=C_Interrpupt.map")
 
 # pico_stdlib library. You can add more if they are needed
 target_link_libraries(C_Interrupt 
