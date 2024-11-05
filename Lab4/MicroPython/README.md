@@ -19,7 +19,7 @@ De este laboratorio en adelante se utilizará la extensión de la Raspberry Pi P
    - Instalar correctamente la extensión e importar la carpeta como un proyecto de Raspberry Pi Pico.
    - Presionar el botón de `Boot` de la RPP mientras se conecta al PC, esto abrirá una carpeta `RPI-RP2 (D:)` en la que se debe cargar el archivo mencionado anteriormente, esto se puede efectuar desde la terminal ubicándose en la carpeta `Micropython` del proyecto:
 
-      ```bash
+   ```bash
     cp .\RPI_PICO-20241025-v1.24.0.uf2.uf2 D:/
     ```
    Si se está trabajando con la Pico W, se escribe `.\RPI_PICO-20241025-v1.24.0.uf2`.
