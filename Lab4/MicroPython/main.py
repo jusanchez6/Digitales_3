@@ -20,11 +20,21 @@ PWN_IN_PIN = 13
 pwm_pin = Pin(PWN_IN_PIN, Pin.IN)
 
 # Variables globales
-last_rising_edge = 0      # Tiempo del último flanco de subida
-period = 0                # Periodo de la señal
-frequency = 0             # Frecuencia calculada
-duty_cycle = 0            # Ciclo de trabajo calculado
-pulse_high_time = 0       # Tiempo en alto del pulso
+
+## Tiempo del último flanco de subida
+last_rising_edge = 0  
+
+## Periodo de la señal
+period = 0
+
+## Frecuencia calculada
+frequency = 0
+
+## Ciclo de trabajo calculado
+duty_cycle = 0
+
+ ## Tiempo en alto del pulso
+pulse_high_time = 0      
 
 ## Offset de los pines de salida
 START_PIN = 2
@@ -41,13 +51,19 @@ EN_3_PIN = 10
 ## Habilitar pines del siete segmentos como salida
 SEGMENT_PINS = [Pin(i, Pin.OUT) for i in range(START_PIN, START_PIN + 8)]
 
-## Habilitar pines del display como salida
+## Habilitar pines del display 1 como salida
 EN_1 = Pin(EN_1_PIN, Pin.OUT)
+
+## Habilitar pines del display 2 como salida
 EN_2 = Pin(EN_2_PIN, Pin.OUT)
+
+## Habilitar pines del display 3 como salida
 EN_3 = Pin(EN_3_PIN, Pin.OUT)
+
+## Lista de los pines de habilitación
 enable_pins = [EN_1, EN_2, EN_3]
 
-## Tabla de conversión para el display de 7 segmentos
+## Tabla de conversión
 lookup = [
     0x3f, 0x06, 0x5b, 0x4f, 0x66,
     0x6d, 0x7d, 0x07, 0x7f, 0x6f
